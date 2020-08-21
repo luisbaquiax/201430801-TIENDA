@@ -174,6 +174,7 @@ public class Sistema {
         });
         Collections.reverse(productos);
     }
+
     /**
      * ORDENA LOS PRODUCTO POR PRECIO > ASCENDENTEMENTE
      */
@@ -191,6 +192,7 @@ public class Sistema {
             }
         });
     }
+
     /**
      * ORDENA LOS PRODUCTOS POR PRECIO > DESCENDENTEMENTE
      */
