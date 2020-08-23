@@ -19,7 +19,10 @@ public class ModificadorCliente extends javax.swing.JFrame {
     private Cliente cliente;
 
     /**
-     * Creates new form RegistroNuevoCliente
+     * Para modificar los datos de un cliente
+     *
+     * @param tableClients
+     * @param cliente
      */
     public ModificadorCliente(TableClients tableClients, Cliente cliente) {
         initComponents();

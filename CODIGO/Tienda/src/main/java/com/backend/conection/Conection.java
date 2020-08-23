@@ -25,13 +25,6 @@ public class Conection {
     private Connection connection = DriverManager.getConnection(url, user, password);
 
     public Conection() throws SQLException {
-//         try (Connection connection = DriverManager.getConnection(url, user, password)) {
-//             probarConection(connection);
-//             System.out.println("conexion exitosa");
-//            connection.close();
-//        } catch (SQLException ex) {
-//            System.out.println("Error: " + ex.getMessage());
-//        }
     }
 
     public void probarConection(Connection connection) {
@@ -66,13 +59,12 @@ public class Conection {
      * @param email
      * @param horario
      */
-    public static void crearTienda(Connection connection, String codigo, String nombre, String direccion, String telefono, String telefono2, String email, String horario) {
+    public void crearTienda(Connection connection, String codigo, String nombre, String direccion, String telefono, String telefono2, String email, String horario) {
         String query = "INSERT INTO TIENDAS VALUES (?,?,?,?,?,?,?)";
-        /*
-         * CODIGO VARCHAR(45) NOT NULL, nombre VARCHAR(45) NOT NULL, direccion
-         * VARCHAR(45) NOT NULL, telefono VARCHAR(8) NOT NULL, telefono2
-         * VARCHAR(8), email VARCHAR(45), horario VARCHAR(45), PRIMARY KEY(CODIGO)
-         */
+//        ID INT NOT NULL AUTO_INCREMENT,
+//  codigo_tienda_origen VARCHAR(45) NOT NULL,
+//  codigo_tienda_destino VARCHAR(45) NOT NULL,
+//  tiempo_traslado INT NOT NULL,
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
@@ -92,6 +84,65 @@ public class Conection {
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Método para agregar una tiempo de envío/traslado
+     *
+     * @param connection
+     * @param codigoTiendaOrigen
+     * @param codigoTiendaDestino
+     * @param tiempo
+     */
+    public void crearTiempoDeEnvio(Connection connection, String codigoTiendaOrigen,
+            String codigoTiendaDestino, String tiempo) {
+
+        String query = "INSERT INTO TIENDAS ENVIOS (?,?,?)";
+        //  codigo_tienda_origen VARCHAR(45) NOT NULL,
+        //  codigo_tienda_destino VARCHAR(45) NOT NULL,
+        //  tiempo_traslado INT NOT NULL,
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, codigoTiendaOrigen);
+            preSt.setString(2, codigoTiendaDestino);
+            preSt.setInt(3, Integer.parseInt(tiempo));
+
+            preSt.executeUpdate();
+
+            System.out.println("tiempo agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void crearProducto(Connection connection, String codigo, String nombre, String fabricante, String cantidad, String precio,
+            String descripcion, String garantia, String codigoTiendaExistencia) {
+//	CODIGO VARCHAR(45) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	fabricante VARCHAR(45) NOT NULL,
+//	cantidad INT NOT NULL,
+//  precio DOUBLE NOT NULL,
+//  descripcion VARCHAR(200),
+//  garantia
+//  CODIGO_TIENDA_EXISTENCIA VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, codigoTiendaOrigen);
+            preSt.setString(2, codigoTiendaDestino);
+            preSt.setInt(3, Integer.parseInt(tiempo));
+
+            preSt.executeUpdate();
+
+            System.out.println("tiempo agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
     }
 
     /**

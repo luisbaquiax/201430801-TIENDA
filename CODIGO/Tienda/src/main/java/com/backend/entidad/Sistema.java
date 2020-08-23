@@ -359,6 +359,16 @@ public class Sistema {
     }
 
     /**
+     * Me sirvió para ver los datos con errores
+     */
+    public void mostrarDatosErroneos() {
+        System.out.println("datos errónes");
+        for (String errores : datosErroneos) {
+            System.out.println(errores);
+        }
+    }
+
+    /**
      * @return the tiendas
      */
     public ArrayList<Tienda> getTiendas() {

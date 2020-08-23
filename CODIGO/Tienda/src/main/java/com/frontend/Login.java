@@ -310,8 +310,13 @@ public class Login extends javax.swing.JFrame {
                         this.sistema.getConection().crearTienda(sistema.getConection().getConnection(), tienda.getCodigo(), tienda.getNombreTienda(), tienda.getDireccion(),
                                 tienda.getTelefono(), tienda.getTelefono2(), tienda.getCorreoElectronico(), tienda.getHorario());
                     } else if (infLinea[0].equalsIgnoreCase("tiempo")) {
-                        this.tiempoDeEnvio = new TiempoDeEnvio(infLinea[1], infLinea[2], infLinea[3]);
-                        this.sistema.getTiemposDeEnvio().add(tiempoDeEnvio);
+                        if (sistema.esNumeroEntero(infLinea[3])) {
+                            this.tiempoDeEnvio = new TiempoDeEnvio(infLinea[1], infLinea[2], infLinea[3]);
+                            this.sistema.getTiemposDeEnvio().add(tiempoDeEnvio);
+                        } else {
+                            this.sistema.getDatosErroneos().add(lineas[i]);
+                        }
+
                     } else if (infLinea[0].equalsIgnoreCase("producto")) {
                         this.producto = new Producto(infLinea[1], infLinea[2], infLinea[3], infLinea[4], infLinea[5], infLinea[6]);
                         this.sistema.getProductos().add(producto);
@@ -333,17 +338,18 @@ public class Login extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-//        this.sistema.mostraTiendas();
-//        System.out.println("");
-//        this.sistema.mostrarPedidos();
-//        System.out.println("");
-//        this.sistema.mostrarClinetes();
-//        System.out.println("");
-//        this.sistema.mostrarEmpleados();
-//        System.out.println("");
-//        this.sistema.mostrarProductos();
-//        System.out.println("");
-//        this.sistema.mostrarTiemposDeEnvio();
+        this.sistema.mostraTiendas();
+        System.out.println("");
+        this.sistema.mostrarPedidos();
+        System.out.println("");
+        this.sistema.mostrarClinetes();
+        System.out.println("");
+        this.sistema.mostrarEmpleados();
+        System.out.println("");
+        this.sistema.mostrarProductos();
+        System.out.println("");
+        this.sistema.mostrarTiemposDeEnvio();
+        this.sistema.mostrarDatosErroneos();
 
     }
 
