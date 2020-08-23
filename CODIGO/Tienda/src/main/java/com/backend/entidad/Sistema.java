@@ -4,6 +4,7 @@
 package com.backend.entidad;
 
 import com.backend.conection.Conection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,7 +25,9 @@ public class Sistema {
 
     private ArrayList<String> datosErroneos = new ArrayList<>();
 
-    public Sistema() {
+    private Conection conection = new Conection();
+
+    public Sistema() throws SQLException {
     }
 
     /**
@@ -395,6 +398,19 @@ public class Sistema {
      */
     public ArrayList<Empleado> getEmpleados() {
         return empleados;
+    }
+
+    public ArrayList<String> getDatosErroneos() {
+        return datosErroneos;
+    }
+
+    /**
+     * Clase Conection
+     *
+     * @return
+     */
+    public Conection getConection() {
+        return conection;
     }
 
     /**

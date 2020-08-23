@@ -49,8 +49,7 @@ public class Login extends javax.swing.JFrame {
 
     private int informacionCargada = 0;
 
-    private Conection conection;
-
+    //private Conection conection;
     /**
      *
      * @param principal
@@ -66,8 +65,7 @@ public class Login extends javax.swing.JFrame {
 
         this.sistema = new Sistema();
 
-        this.conection = new Conection();
-
+        //this.conection = new Conection();
     }
 
     /**
@@ -309,8 +307,8 @@ public class Login extends javax.swing.JFrame {
                     if (infLinea[0].equalsIgnoreCase("tienda")) {
                         this.tienda = new Tienda(infLinea[1], infLinea[2], infLinea[3], infLinea[4]);
                         this.sistema.getTiendas().add(tienda);
-                        this.conection.crearTienda(conection.getConnection(), tienda.getCodigo(), tienda.getNombreTienda(), tienda.getDireccion(),
-                                 tienda.getTelefono(), tienda.getTelefono2(), tienda.getCorreoElectronico(), tienda.getHorario());
+                        this.sistema.getConection().crearTienda(sistema.getConection().getConnection(), tienda.getCodigo(), tienda.getNombreTienda(), tienda.getDireccion(),
+                                tienda.getTelefono(), tienda.getTelefono2(), tienda.getCorreoElectronico(), tienda.getHorario());
                     } else if (infLinea[0].equalsIgnoreCase("tiempo")) {
                         this.tiempoDeEnvio = new TiempoDeEnvio(infLinea[1], infLinea[2], infLinea[3]);
                         this.sistema.getTiemposDeEnvio().add(tiempoDeEnvio);
