@@ -5,6 +5,7 @@
  */
 package com.frontend;
 
+import com.backend.conection.Conection;
 import com.frontend.cliente.CatalogoProductos;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Empleado;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.sql.SQLException;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
@@ -47,11 +49,13 @@ public class Login extends javax.swing.JFrame {
 
     private int informacionCargada = 0;
 
+    private Conection conection;
+
     /**
      *
      * @param principal
      */
-    public Login() {
+    public Login() throws SQLException {
         initComponents();
 
         setTitle(" INICIAR SESIÓN ");
@@ -61,6 +65,8 @@ public class Login extends javax.swing.JFrame {
         this.txtIngresarCliente.setBorder(borde);
 
         this.sistema = new Sistema();
+
+        this.conection = new Conection();
 
     }
 
@@ -303,6 +309,8 @@ public class Login extends javax.swing.JFrame {
                     if (infLinea[0].equalsIgnoreCase("tienda")) {
                         this.tienda = new Tienda(infLinea[1], infLinea[2], infLinea[3], infLinea[4]);
                         this.sistema.getTiendas().add(tienda);
+                        this.conection.crearTienda(conection.getConnection(), tienda.getCodigo(), tienda.getNombreTienda(), tienda.getDireccion(),
+                                 tienda.getTelefono(), tienda.getTelefono2(), tienda.getCorreoElectronico(), tienda.getHorario());
                     } else if (infLinea[0].equalsIgnoreCase("tiempo")) {
                         this.tiempoDeEnvio = new TiempoDeEnvio(infLinea[1], infLinea[2], infLinea[3]);
                         this.sistema.getTiemposDeEnvio().add(tiempoDeEnvio);
@@ -327,17 +335,17 @@ public class Login extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-        this.sistema.mostraTiendas();
-        System.out.println("");
-        this.sistema.mostrarPedidos();
-        System.out.println("");
-        this.sistema.mostrarClinetes();
-        System.out.println("");
-        this.sistema.mostrarEmpleados();
-        System.out.println("");
-        this.sistema.mostrarProductos();
-        System.out.println("");
-        this.sistema.mostrarTiemposDeEnvio();
+//        this.sistema.mostraTiendas();
+//        System.out.println("");
+//        this.sistema.mostrarPedidos();
+//        System.out.println("");
+//        this.sistema.mostrarClinetes();
+//        System.out.println("");
+//        this.sistema.mostrarEmpleados();
+//        System.out.println("");
+//        this.sistema.mostrarProductos();
+//        System.out.println("");
+//        this.sistema.mostrarTiemposDeEnvio();
 
     }
 

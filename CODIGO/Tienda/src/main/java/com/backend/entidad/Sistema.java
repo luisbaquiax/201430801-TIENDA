@@ -22,7 +22,7 @@ public class Sistema {
     private ArrayList<Empleado> empleados = new ArrayList<>();
     private ArrayList<Pedido> pedidos = new ArrayList<>();
 
-    private Conection conection = new Conection();
+    private ArrayList<String> datosErroneos = new ArrayList<>();
 
     public Sistema() {
     }
@@ -346,11 +346,13 @@ public class Sistema {
         }
     }
 
-    public boolean conDatos() {
-        if (this.getClientes() != null) {
-            return true;
-        }
-        return false;
+    /**
+     * Método para agregar los datos erróneos
+     *
+     * @param datoErroneo
+     */
+    public void agregarDatoErroneo(String datoErroneo) {
+        this.datosErroneos.add(datoErroneo);
     }
 
     /**
@@ -396,10 +398,32 @@ public class Sistema {
     }
 
     /**
-     * @return the conection
+     * Método que verifica si una cadena es un decimal/Double
+     *
+     * @param cadena
+     * @return
      */
-    public Conection getConection() {
-        return conection;
+    public boolean esDecimal(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    /**
+     * Método que verifica si una cadena es un número entero
+     *
+     * @param cadena
+     * @return
+     */
+    public boolean esNumeroEntero(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
