@@ -18,6 +18,7 @@ import java.sql.Statement;
  */
 public class Conection {
 
+    
     private String url = "jdbc:mysql://localhost:3306/TIENDA?useSSL=false";
     private String user = "user_tienda";
     private String password = "Usuario123.";
@@ -25,6 +26,7 @@ public class Conection {
     private Connection connection = DriverManager.getConnection(url, user, password);
 
     public Conection() throws SQLException {
+        probarConection(connection);
     }
 
     public void probarConection(Connection connection) {
@@ -37,9 +39,9 @@ public class Conection {
             if (resultSet.next()) {
                 System.out.println(resultSet.getString(1));
             }
-
-            resultSet.close();
-            statement.close();
+            System.out.println("conexión exitosa");
+//            resultSet.close();
+//            statement.close();
         } catch (SQLException e) {
             System.out.println("Conection fallida");
             System.out.println("Error: " + e.getMessage());
@@ -61,10 +63,6 @@ public class Conection {
      */
     public void crearTienda(Connection connection, String codigo, String nombre, String direccion, String telefono, String telefono2, String email, String horario) {
         String query = "INSERT INTO TIENDAS VALUES (?,?,?,?,?,?,?)";
-//        ID INT NOT NULL AUTO_INCREMENT,
-//  codigo_tienda_origen VARCHAR(45) NOT NULL,
-//  codigo_tienda_destino VARCHAR(45) NOT NULL,
-//  tiempo_traslado INT NOT NULL,
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
@@ -97,7 +95,7 @@ public class Conection {
     public void crearTiempoDeEnvio(Connection connection, String codigoTiendaOrigen,
             String codigoTiendaDestino, String tiempo) {
 
-        String query = "INSERT INTO TIENDAS ENVIOS (?,?,?)";
+        String query = "INSERT INTO ENVIOS VALUES (?,?,?)";
         //  codigo_tienda_origen VARCHAR(45) NOT NULL,
         //  codigo_tienda_destino VARCHAR(45) NOT NULL,
         //  tiempo_traslado INT NOT NULL,
@@ -118,25 +116,206 @@ public class Conection {
         }
     }
 
+    /**
+     * Métod para crear un producto en la base de datos
+     *
+     * @param connection
+     * @param codigo
+     * @param nombre
+     * @param fabricante
+     * @param cantidad
+     * @param precio
+     * @param descripcion
+     * @param garantia
+     * @param codigoTiendaExistencia
+     */
     public void crearProducto(Connection connection, String codigo, String nombre, String fabricante, String cantidad, String precio,
             String descripcion, String garantia, String codigoTiendaExistencia) {
 //	CODIGO VARCHAR(45) NOT NULL,
 //	nombre VARCHAR(45) NOT NULL,
 //	fabricante VARCHAR(45) NOT NULL,
 //	cantidad INT NOT NULL,
-//  precio DOUBLE NOT NULL,
-//  descripcion VARCHAR(200),
-//  garantia
-//  CODIGO_TIENDA_EXISTENCIA VARCHAR(45),
+//      precio DOUBLE NOT NULL,
+//      descripcion VARCHAR(200),
+//      garantia
+//      CODIGO_TIENDA_EXISTENCIA VARCHAR(45),
+        String query = "INSERT INTO PRODUCTO VALUES (?,?,?,?,?,?,?,?)";
+
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
-            preSt.setString(1, codigoTiendaOrigen);
-            preSt.setString(2, codigoTiendaDestino);
-            preSt.setInt(3, Integer.parseInt(tiempo));
+            preSt.setString(1, codigo);
+            preSt.setString(2, nombre);
+            preSt.setString(3, fabricante);
+            preSt.setInt(4, Integer.parseInt(cantidad));
+            preSt.setDouble(5, Double.parseDouble(precio));
+            preSt.setString(6, descripcion);
+            preSt.setString(7, garantia);
+            preSt.setString(8, codigo);
 
             preSt.executeUpdate();
 
-            System.out.println("tiempo agregado");
+            System.out.println("producto agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Método para crear un cliente y luego se agregará a la base de datos
+     *
+     * @param connection
+     * @param nit
+     * @param nombre
+     * @param telefono
+     * @param dpi
+     * @param credito
+     * @param email
+     * @param direccion
+     */
+    public void crearCliente(Connection connection,
+            String nit,
+            String nombre,
+            String telefono,
+            String dpi,
+            String credito,
+            String email,
+            String direccion) {
+//	NIT VARCHAR(13) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	telefono VARCHAR(8) NOT NULL,
+//      dpi VARCHAR(13),
+//      credito DOUBLE,
+//      email VARCHAR(45),
+//      direccion VARCHAR(45),
+
+        String query = "INSERT INTO CLIENTE VALUES (?,?,?,?,?,?,?)";
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, nit);
+            preSt.setString(2, nombre);
+            preSt.setString(3, telefono);
+            preSt.setString(4, dpi);
+            preSt.setDouble(5, Double.parseDouble(credito));
+            preSt.setString(6, email);
+            preSt.setString(7, direccion);
+
+            preSt.executeUpdate();
+
+            System.out.println("cliente agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Método para crear un empleado y agregar a la base de datos
+     *
+     * @param connection
+     * @param codigo
+     * @param nombre
+     * @param telefono
+     * @param dpi
+     * @param nit
+     * @param email
+     * @param direccion
+     */
+    public void crearEmpleado(Connection connection,
+            String codigo,
+            String nombre,
+            String telefono,
+            String dpi,
+            String nit,
+            String email,
+            String direccion) {
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  DPI VARCHAR(13) NOT NULL,
+//  NIT VARCHAR(13) NOT NULL,
+//  EMAIL VARCHAR(45),
+//  direccion VARCHAR(45),
+
+        String query = "INSERT INTO EMPLEADO VALUES (?,?,?,?,?,?,?)";
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, codigo);
+            preSt.setString(2, nombre);
+            preSt.setString(3, telefono);
+            preSt.setString(4, dpi);
+            preSt.setString(5, nit);
+            preSt.setString(6, email);
+            preSt.setString(7, direccion);
+
+            preSt.executeUpdate();
+
+            System.out.println("empleado agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * Método parra crear un pedido y agregar a la base de datos
+     *
+     * @param connection
+     * @param codigo
+     * @param fecha
+     * @param cantidad
+     * @param total
+     * @param anticipo
+     * @param tiendaOrigen
+     * @param tiendaDestino
+     * @param nitCliente
+     * @param codigoProducto
+     */
+    public void crearPedido(Connection connection,
+            String codigo,
+            String fecha,
+            String cantidad,
+            String total,
+            String anticipo,
+            String tiendaOrigen,
+            String tiendaDestino,
+            String nitCliente,
+            String codigoProducto) {
+
+//  CODIGO VARCHAR(45) NOT NULL,
+//  fecha DATE NOT NULL,
+//  cantidad INT NOT NULL,
+//  total DOUBLE,
+//  anticipo DOUBLE,
+//  tienda_origen VARCHAR(45) NOT NULL,
+//  tienda_destino VARCHAR(45) NOT NULL,
+//  NIT_cliente VARCHAR(13) NOT NULL,
+//  CODIGO_producto VARCHAR(45) NOT NULL,
+        String query = "INSERT INTO PEDIDO VALUES (?,?,?,?,?,?,?,?,?)";
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, codigo);
+            preSt.setString(2, fecha);
+            preSt.setInt(3, Integer.parseInt(cantidad));
+            preSt.setDouble(4, Double.parseDouble(total));
+            preSt.setDouble(5, Double.parseDouble(anticipo));
+            preSt.setString(6, tiendaOrigen);
+            preSt.setString(7, tiendaDestino);
+            preSt.setString(8, nitCliente);
+            preSt.setString(9, codigoProducto);
+
+            preSt.executeUpdate();
+
+            System.out.println("pedido agregado");
 
             preSt.close();
         } catch (SQLException e) {

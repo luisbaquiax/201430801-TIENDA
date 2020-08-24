@@ -362,7 +362,7 @@ public class Sistema {
      * Me sirvió para ver los datos con errores
      */
     public void mostrarDatosErroneos() {
-        System.out.println("datos errónes");
+        System.out.println("datos erróneos");
         for (String errores : datosErroneos) {
             System.out.println(errores);
         }
