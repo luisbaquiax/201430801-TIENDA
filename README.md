@@ -1,4 +1,4 @@
-##MANUAL TECNICO
+## MANUAL TECNICO
 ### Requerimientos de la aplicación
 
 > Procesador: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz 2.40GHz
@@ -7,4 +7,5 @@
 
 ### DIAGRAMA DE CLASES
 ![alt DIAGRAMA_DE_CLASE](IMAGENES/diagramaClase.png)
-![alt DIAGRAMA_DE_CLASE](IMAGENES/diagramaRE.png)
+### DIAGRAMA ENTIDAD RELACION
+![alt DIAGRAMA_RE](IMAGENES/diagramaRE.png)
