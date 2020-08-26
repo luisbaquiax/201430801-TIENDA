@@ -4,6 +4,7 @@
 package com.backend.entidad;
 
 import com.backend.conection.Conection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,9 +23,27 @@ public class Sistema {
     private ArrayList<Empleado> empleados = new ArrayList<>();
     private ArrayList<Pedido> pedidos = new ArrayList<>();
 
+    private ArrayList<String> datosErroneos = new ArrayList<>();
+    private ArrayList<String> codigosExistentes = new ArrayList<>();
+
     private Conection conection = new Conection();
 
-    public Sistema() {
+    public Sistema() throws SQLException {
+    }
+
+    /**
+     * Verificamos si no se ha ingresado un producto con el mismo codigo
+     *
+     * @param codigoProducto
+     * @return
+     */
+    public boolean yaExisteCodigoCadena(String codigoProducto) {
+        for (String codigo : codigosExistentes) {
+            if (codigo.equals(codigoProducto)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -174,6 +193,7 @@ public class Sistema {
         });
         Collections.reverse(productos);
     }
+
     /**
      * ORDENA LOS PRODUCTO POR PRECIO > ASCENDENTEMENTE
      */
@@ -191,6 +211,7 @@ public class Sistema {
             }
         });
     }
+
     /**
      * ORDENA LOS PRODUCTOS POR PRECIO > DESCENDENTEMENTE
      */
@@ -344,11 +365,23 @@ public class Sistema {
         }
     }
 
-    public boolean conDatos() {
-        if (this.getClientes() != null) {
-            return true;
+    /**
+     * Método para agregar los datos erróneos
+     *
+     * @param datoErroneo
+     */
+    public void agregarDatoErroneo(String datoErroneo) {
+        this.datosErroneos.add(datoErroneo);
+    }
+
+    /**
+     * Me sirvió para ver los datos con errores
+     */
+    public void mostrarDatosErroneos() {
+        System.out.println("datos erróneos");
+        for (String errores : datosErroneos) {
+            System.out.println(errores);
         }
-        return false;
     }
 
     /**
@@ -393,11 +426,55 @@ public class Sistema {
         return empleados;
     }
 
+    public ArrayList<String> getDatosErroneos() {
+        return datosErroneos;
+    }
+
     /**
-     * @return the conection
+     * Me permite alamacenar momentáneamente cadenas/codigos
+     *
+     * @return
+     */
+    public ArrayList<String> getCodigosExistentes() {
+        return codigosExistentes;
+    }
+
+    /**
+     * Clase Conection
+     *
+     * @return
      */
     public Conection getConection() {
         return conection;
     }
 
+    /**
+     * Método que verifica si una cadena es un decimal/Double
+     *
+     * @param cadena
+     * @return
+     */
+    public boolean esDecimal(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Método que verifica si una cadena es un número entero
+     *
+     * @param cadena
+     * @return
+     */
+    public boolean esNumeroEntero(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

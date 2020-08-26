@@ -17,14 +17,16 @@ public class ModificarEmpleado extends javax.swing.JFrame {
 
     private TablaEmpleados tablaEmpleados;
     private Empleado empleado;
+    private Sistema sistema;
 
     /**
      * Creates new form RegistroNuevoCliente
      */
-    public ModificarEmpleado(TablaEmpleados tablaEmpleados, Empleado empleado) {
+    public ModificarEmpleado(TablaEmpleados tablaEmpleados, Empleado empleado, Sistema sistema) {
         initComponents();
         this.tablaEmpleados = tablaEmpleados;
         this.empleado = empleado;
+        this.sistema = sistema;
 
         this.txtCodigoEmplead.setText(empleado.getCodigo());
         this.txtNombreEmpleado.setText(empleado.getNomgre());
@@ -204,7 +206,15 @@ public class ModificarEmpleado extends javax.swing.JFrame {
             this.empleado.setNit(txtNITempleado.getText());
             this.empleado.setNomgre(txtNombreEmpleado.getText());
             this.empleado.setTelefono(txtTelefonoEmpleado.getText());
-
+            this.sistema.getConection().modificarEmpleado(sistema.getConection().getConnection(),
+                    empleado.getCodigo(),
+                    empleado.getNomgre(),
+                    empleado.getTelefono(),
+                    empleado.getDpi(),
+                    empleado.getNit(),
+                    empleado.getCorreoElectronico(),
+                    empleado.getDireccion());
+            JOptionPane.showMessageDialog(null, "Empleado actualizado");
         }
         this.txtCorreoElectronicoEmpleado.setText("");
         this.txtDPIempleado.setText("");
@@ -212,7 +222,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
         this.txtNITempleado.setText("");
         this.txtNombreEmpleado.setText("");
         this.txtTelefonoEmpleado.setText("");
-        
+
         this.tablaEmpleados.repaint();
         this.tablaEmpleados.revalidate();
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed

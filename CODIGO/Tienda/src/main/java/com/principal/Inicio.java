@@ -6,7 +6,7 @@
 package com.principal;
 
 import com.frontend.Login;
-import com.frontend.VentanaEmpleado;
+import java.sql.SQLException;
 
 /**
  *
@@ -17,8 +17,9 @@ public class Inicio {
 
     /**
      * @param args the command line arguments
+     * @throws java.sql.SQLException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         Login login = new Login();
         login.setVisible(true);

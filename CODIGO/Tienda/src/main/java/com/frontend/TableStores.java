@@ -53,6 +53,10 @@ public class TableStores extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnMostarTiendas = new javax.swing.JButton();
         btnOrdenarTiendas = new javax.swing.JButton();
+        txtFiltroCodigo = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtFiltroNombre = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,41 +94,72 @@ public class TableStores extends javax.swing.JFrame {
             }
         });
 
+        txtFiltroCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroCodigoKeyReleased(evt);
+            }
+        });
+
+        jLabel2.setText("Buscar tienda por codigo (filtrado):");
+
+        jLabel3.setText("Buscar tienda filtrando el nombre:");
+
+        txtFiltroNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroNombreKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTablaEmpleados)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(scrollTablaEmpleados)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(btnMostarTiendas)
+                        .addGap(47, 47, 47)
+                        .addComponent(btnOrdenarTiendas)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addComponent(jLabel2)))
+                .addGap(36, 36, 36)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFiltroNombre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(113, 113, 113)
+                .addComponent(btnRegresar)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(456, 456, 456))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(84, 84, 84)
-                .addComponent(btnMostarTiendas)
-                .addGap(222, 222, 222)
-                .addComponent(btnOrdenarTiendas)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE)
-                .addComponent(btnRegresar)
-                .addGap(98, 98, 98))
+                .addGap(471, 471, 471))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(btnMostarTiendas))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnOrdenarTiendas)
-                            .addComponent(btnRegresar))))
-                .addGap(18, 18, 18)
-                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMostarTiendas)
+                    .addComponent(jLabel2)
+                    .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegresar)
+                    .addComponent(btnOrdenarTiendas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtFiltroNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -162,6 +197,18 @@ public class TableStores extends javax.swing.JFrame {
         llenarTablaTiendas();
     }//GEN-LAST:event_btnOrdenarTiendasActionPerformed
 
+    private void txtFiltroCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroCodigoKeyReleased
+        // TODO add your handling code here:
+        this.dfm.setRowCount(0);
+        this.sistema.getConection().buscarTiendaCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
+    }//GEN-LAST:event_txtFiltroCodigoKeyReleased
+
+    private void txtFiltroNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNombreKeyReleased
+        // TODO add your handling code here:
+        this.dfm.setRowCount(0);
+        this.sistema.getConection().buscarTiendaNombre(this.sistema.getConection().getConnection(), txtFiltroNombre.getText(), dfm);
+    }//GEN-LAST:event_txtFiltroNombreKeyReleased
+
     public void llenarTablaTiendas() {
         dfm = (DefaultTableModel) tableListaEmpleados.getModel();
         for (Tienda tienda : this.sistema.getTiendas()) {
@@ -188,8 +235,12 @@ public class TableStores extends javax.swing.JFrame {
     private javax.swing.JButton btnOrdenarTiendas;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scrollTablaEmpleados;
     private javax.swing.JTable tableListaEmpleados;
+    private javax.swing.JTextField txtFiltroCodigo;
+    private javax.swing.JTextField txtFiltroNombre;
     // End of variables declaration//GEN-END:variables
 }

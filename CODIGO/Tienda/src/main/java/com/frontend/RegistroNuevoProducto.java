@@ -21,7 +21,10 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
     private String codigoTiendoExistencia;
 
     /**
-     * Creates new form RegistroNuevoCliente
+     *
+     * @param ventanaTienda
+     * @param sistema
+     * @param codigoTiendoExistencia
      */
     public RegistroNuevoProducto(VentanaTienda ventanaTienda, Sistema sistema, String codigoTiendoExistencia) {
         initComponents();
@@ -57,7 +60,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         txtPrecioProducto = new javax.swing.JTextField();
         txtDescripcion = new javax.swing.JTextField();
         txtGarantíaProducto = new javax.swing.JTextField();
-        btnGuardarDatosCliente = new javax.swing.JButton();
+        btnGuardarProducto = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
 
@@ -80,10 +83,10 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
 
         jLabel8.setText("Garantía:");
 
-        btnGuardarDatosCliente.setText("Guardar cambios");
-        btnGuardarDatosCliente.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarProducto.setText("Guardar cambios");
+        btnGuardarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarDatosClienteActionPerformed(evt);
+                btnGuardarProductoActionPerformed(evt);
             }
         });
 
@@ -126,7 +129,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                             .addComponent(jLabel1)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(187, 187, 187)
-                        .addComponent(btnGuardarDatosCliente)))
+                        .addComponent(btnGuardarProducto)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -173,14 +176,14 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(txtGarantíaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnGuardarDatosCliente)
+                .addComponent(btnGuardarProducto)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarDatosClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosClienteActionPerformed
+    private void btnGuardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarProductoActionPerformed
         // TODO add your handling code here:
         try {
             if (txtNombreProducto.getText().isEmpty() || (txtFabricante.getText().isEmpty()) || (txtCodigoProducto.getText().isEmpty()) || (txtCantidad.getText().isEmpty())
@@ -193,9 +196,30 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                         txtGarantíaProducto.setText("Sin garantía");
                     }
                 }
-                this.productoNuevo = new Producto(txtNombreProducto.getText(), txtFabricante.getText(), txtCodigoProducto.getText(), txtCantidad.getText(), txtPrecioProducto.getText(),
-                        this.codigoTiendoExistencia, txtDescripcion.getText(), txtGarantíaProducto.getText());
+                this.productoNuevo = new Producto(txtNombreProducto.getText(),
+                        txtFabricante.getText(),
+                        txtCodigoProducto.getText(),
+                        txtCantidad.getText(),
+                        txtPrecioProducto.getText(),
+                        this.codigoTiendoExistencia,
+                        txtDescripcion.getText(),
+                        txtGarantíaProducto.getText());
                 this.sistema.agregarProductoNuevo(productoNuevo);
+
+                //se agrega a la base de datos el nuevo producto
+                this.sistema.getConection().crearProducto(this.sistema.getConection().getConnection(),
+                        productoNuevo.getCodigo(),
+                        productoNuevo.getNombre(),
+                        productoNuevo.getFabricante(),
+                        productoNuevo.getDescripcion(),
+                        productoNuevo.getGarantia());
+                //se crea la existencia para la tienda actual
+                this.sistema.getConection().crearExistentes(this.sistema.getConection().getConnection(),
+                        productoNuevo.getCantidad() + "",
+                        productoNuevo.getPrecio() + "",
+                        this.codigoTiendoExistencia,
+                        productoNuevo.getCodigo());
+                JOptionPane.showMessageDialog(null, "Producto guardado");
 
             }
         } catch (Exception e) {
@@ -209,7 +233,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         this.txtNombreProducto.setText("");
         this.txtPrecioProducto.setText("");
 
-    }//GEN-LAST:event_btnGuardarDatosClienteActionPerformed
+    }//GEN-LAST:event_btnGuardarProductoActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
@@ -219,7 +243,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardarDatosCliente;
+    private javax.swing.JButton btnGuardarProducto;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

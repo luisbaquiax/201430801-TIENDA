@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author luis
  */
 public class RegistroNuevaTienda extends javax.swing.JFrame {
-
+    
     private VentanaTienda ventanaTienda;
     private VentanaEmpleado ventanaEmpleado;
     private VerificadorTiempoEnvio vrEnvio;
@@ -36,9 +36,9 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.ventanaTienda = ventanaTienda;
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
-
+        
         this.sistema.agregarItemsTienda(comboTiendas);
-
+        
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         String cadena = "";
     }
@@ -67,7 +67,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         txtTelefono2 = new javax.swing.JTextField();
         txtCorreoElectronico = new javax.swing.JTextField();
         txtHORARIO = new javax.swing.JTextField();
-        btnGuardarDatosCliente = new javax.swing.JButton();
+        btnGuardarDatosTienda = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         comboTiendas = new javax.swing.JComboBox<>();
@@ -94,10 +94,10 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
 
         jLabel8.setText("Horario:");
 
-        btnGuardarDatosCliente.setText("Guardar cambios");
-        btnGuardarDatosCliente.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardarDatosTienda.setText("Guardar cambios");
+        btnGuardarDatosTienda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarDatosClienteActionPerformed(evt);
+                btnGuardarDatosTiendaActionPerformed(evt);
             }
         });
 
@@ -169,7 +169,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addComponent(btnAgregarTiempo)
                                 .addGap(46, 46, 46)
-                                .addComponent(btnGuardarDatosCliente)
+                                .addComponent(btnGuardarDatosTienda)
                                 .addGap(51, 51, 51))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,7 +196,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAgregarTiempo)
-                    .addComponent(btnGuardarDatosCliente))
+                    .addComponent(btnGuardarDatosTienda))
                 .addGap(20, 20, 20)
                 .addComponent(spinerTiempoEnvío, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42))
@@ -234,7 +234,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarDatosClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosClienteActionPerformed
+    private void btnGuardarDatosTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosTiendaActionPerformed
         // TODO add your handling code here:
         if (txtNombreTienda.getText().isEmpty() || (txtDireccionTienda.getText().isEmpty())
                 || (txtCodigoTienda.getText().isEmpty()) || (txtTelefono.getText().isEmpty())) {
@@ -255,6 +255,16 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
             this.sistema.agregarTiendaNueva(tiendaNueva);
             this.ventanaEmpleado.getComboTiendas().addItem(tiendaNueva.getCodigo());
             tiendaNueva.mostrarDatos();
+            //se guarda los datos de la nueva tienda en la base de datos
+            this.sistema.getConection().crearTienda(this.sistema.getConection().getConnection(),
+                    tiendaNueva.getCodigo(),
+                    tiendaNueva.getNombreTienda(),
+                    tiendaNueva.getDireccion(),
+                    tiendaNueva.getTelefono(),
+                    tiendaNueva.getTelefono2(),
+                    tiendaNueva.getCorreoElectronico(),
+                    tiendaNueva.getHorario());
+            JOptionPane.showMessageDialog(null, "Tienda registrada");
         }
         this.txtCodigoTienda.setText("");
         this.txtCorreoElectronico.setText("");
@@ -263,9 +273,9 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.txtNombreTienda.setText("");
         this.txtTelefono.setText("");
         this.txtTelefono2.setText("");
+        
 
-
-    }//GEN-LAST:event_btnGuardarDatosClienteActionPerformed
+    }//GEN-LAST:event_btnGuardarDatosTiendaActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
@@ -289,6 +299,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                 this.tiempoDeEnvioNueva = new TiempoDeEnvio(codigoNuevaTienda, tiendaDestino, tiempo);
                 this.sistema.agregarTiempoDeEnvio(tiempoDeEnvioNueva);
                 this.tiempoDeEnvioNueva.mostrarDatos();
+                this.sistema.getConection().crearTiempoDeEnvio(this.sistema.getConection().getConnection(), tiendaNueva.getCodigo(), tiendaDestino, tiempo);
             } else {
                 JOptionPane.showMessageDialog(null, "Guarde los cambios", "GUARDE DATOS", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -297,7 +308,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarTiempo;
-    private javax.swing.JButton btnGuardarDatosCliente;
+    private javax.swing.JButton btnGuardarDatosTienda;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> comboTiendas;
     private javax.swing.JLabel jLabel1;
