@@ -11,6 +11,7 @@ com/frontend/VentanaEmpleado$1.class
 com/backend/entidad/Sistema$2.class
 com/frontend/VerificadorTiempoEnvio$1.class
 com/frontend/TiendaDatos$1.class
+com/frontend/TableClients$6.class
 com/frontend/ReportWindow$2.class
 com/backend/entidad/Empleado.class
 com/frontend/cliente/CatalogoProductos$1.class
@@ -24,7 +25,9 @@ com/frontend/TableClients$3.class
 com/frontend/RegistroNuevoCliente$2.class
 com/frontend/VerificadorTiempoEnvio$4.class
 com/frontend/TableStores$2.class
+com/frontend/TablaEmpleados$6.class
 com/principal/Inicio.class
+com/frontend/VentanaTienda$12.class
 com/frontend/VerificadorTiempoEnvio$2.class
 com/frontend/ModificadorCliente$2.class
 com/frontend/VentanaTienda$1.class
@@ -33,6 +36,7 @@ com/backend/entidad/Sistema$4.class
 com/frontend/Login$1.class
 com/backend/entidad/Sistema$8.class
 com/frontend/cliente/RastreoDelPedido.class
+com/frontend/TableClients$5.class
 com/frontend/RegistroNuevaTienda$2.class
 com/frontend/ModificarEmpleado.class
 com/backend/entidad/Sistema$1.class
@@ -52,10 +56,13 @@ com/frontend/ModificarEmpleado$1.class
 com/frontend/Login.class
 com/backend/entidad/Sistema$3.class
 com/frontend/TableStores$1.class
+com/frontend/TablaEmpleados$5.class
 com/frontend/VentanaEmpleado$2.class
 com/frontend/VentanaTienda$2.class
 com/frontend/TableClients$1.class
 com/frontend/DatoErroneo.class
+com/frontend/TableStores$5.class
+com/frontend/VentanaTienda$10.class
 com/frontend/TablaEmpleados.class
 com/frontend/Login$3.class
 com/backend/conection/Conection.class
@@ -77,6 +84,7 @@ com/frontend/VentanaTienda$6.class
 com/backend/entidad/Pedido.class
 com/frontend/TiendaDatos.class
 com/frontend/TableStores.class
+com/frontend/TableStores$4.class
 com/frontend/ReportWindow$1.class
 com/frontend/Login$2.class
 com/frontend/VentanaTienda$3.class
@@ -84,3 +92,4 @@ com/frontend/ReportWindow.class
 com/backend/entidad/Sistema$6.class
 com/backend/entidad/FechaPedido.class
 com/backend/entidad/Sistema.class
+com/frontend/VentanaTienda$11.class
