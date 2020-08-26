@@ -95,7 +95,7 @@ public class Conection {
     public void crearTiempoDeEnvio(Connection connection, String codigoTiendaOrigen,
             String codigoTiendaDestino, String tiempo) {
 
-        String query = "INSERT INTO ENVIOS VALUES (?,?,?)";
+        String query = "INSERT INTO ENVIOS (codigo_tienda_origen, codigo_tienda_destino, tiempo_traslado)VALUES (?,?,?)";
         //  codigo_tienda_origen VARCHAR(45) NOT NULL,
         //  codigo_tienda_destino VARCHAR(45) NOT NULL,
         //  tiempo_traslado INT NOT NULL,
@@ -131,15 +131,16 @@ public class Conection {
      */
     public void crearProducto(Connection connection, String codigo, String nombre, String fabricante, String cantidad, String precio,
             String descripcion, String garantia, String codigoTiendaExistencia) {
+////	ID INT NOT NULL AUTO_INCREMENT,
 //	CODIGO VARCHAR(45) NOT NULL,
 //	nombre VARCHAR(45) NOT NULL,
 //	fabricante VARCHAR(45) NOT NULL,
 //	cantidad INT NOT NULL,
 //      precio DOUBLE NOT NULL,
 //      descripcion VARCHAR(200),
-//      garantia
+//      garantia VARCHAR(45),
 //      CODIGO_TIENDA_EXISTENCIA VARCHAR(45),
-        String query = "INSERT INTO PRODUCTO VALUES (?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO PRODUCTO (CODIGO, nombre, fabricante, cantidad, precio, descripcion, garantia, CODIGO_TIENDA_EXISTENCIA)VALUES (?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
@@ -150,7 +151,7 @@ public class Conection {
             preSt.setDouble(5, Double.parseDouble(precio));
             preSt.setString(6, descripcion);
             preSt.setString(7, garantia);
-            preSt.setString(8, codigo);
+            preSt.setString(8, codigoTiendaExistencia);
 
             preSt.executeUpdate();
 
@@ -289,7 +290,7 @@ public class Conection {
             String tiendaDestino,
             String nitCliente,
             String codigoProducto) {
-
+//  ID INT NOT NULL AUTO_INCREMENT,
 //  CODIGO VARCHAR(45) NOT NULL,
 //  fecha DATE NOT NULL,
 //  cantidad INT NOT NULL,
@@ -298,8 +299,8 @@ public class Conection {
 //  tienda_origen VARCHAR(45) NOT NULL,
 //  tienda_destino VARCHAR(45) NOT NULL,
 //  NIT_cliente VARCHAR(13) NOT NULL,
-//  CODIGO_producto VARCHAR(45) NOT NULL,
-        String query = "INSERT INTO PEDIDO VALUES (?,?,?,?,?,?,?,?,?)";
+//  codigo_producto VARCHAR(45),
+        String query = "INSERT INTO PEDIDO (CODIGO, fecha, cantidad, total, anticipo, tienda_origen, tienda_destino, NIT_cliente, CODIGO_producto)VALUES (?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
