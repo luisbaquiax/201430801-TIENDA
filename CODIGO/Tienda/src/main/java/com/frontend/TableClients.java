@@ -164,7 +164,7 @@ public class TableClients extends javax.swing.JFrame {
             //obtenemso el valor de la columna 2, es decir el NIT del clientey en base a eso se procede a buscar al clienteElegido
             String nit = String.valueOf(this.dfm.getValueAt(fila, 2));
             this.clienteElegido = this.sistema.buscarCliente(nit);
-            this.modificadorCliente = new ModificadorCliente(this, clienteElegido);
+            this.modificadorCliente = new ModificadorCliente(this, clienteElegido, this.sistema);
             this.modificadorCliente.setVisible(true);
             super.setVisible(false);
             dfm.setRowCount(0);

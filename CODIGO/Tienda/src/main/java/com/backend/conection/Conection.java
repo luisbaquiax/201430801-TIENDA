@@ -18,7 +18,6 @@ import java.sql.Statement;
  */
 public class Conection {
 
-    
     private String url = "jdbc:mysql://localhost:3306/TIENDA?useSSL=false";
     private String user = "user_tienda";
     private String password = "Usuario123.";
@@ -123,25 +122,21 @@ public class Conection {
      * @param codigo
      * @param nombre
      * @param fabricante
-     * @param cantidad
-     * @param precio
      * @param descripcion
      * @param garantia
-     * @param codigoTiendaExistencia
      */
-    public void crearProducto(Connection connection, 
-            String codigo, 
-            String nombre, 
+    public void crearProducto(Connection connection,
+            String codigo,
+            String nombre,
             String fabricante,
-            String descripcion, 
+            String descripcion,
             String garantia) {
-        
+
 //CODIGO VARCHAR(45) NOT NULL,
 //	nombre VARCHAR(45) NOT NULL,
 //	fabricante VARCHAR(45) NOT NULL,
 //  descripcion VARCHAR(200),
 //  garantia VARCHAR(45),
-
         String query = "INSERT INTO PRODUCTO (CODIGO, nombre, fabricante, descripcion, garantia)VALUES (?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
@@ -162,18 +157,18 @@ public class Conection {
         }
 
     }
-    public void crearExistentes(Connection connection, 
-            String cantidad, 
-            String precio, 
+
+    public void crearExistentes(Connection connection,
+            String cantidad,
+            String precio,
             String tiendaDondeExiste,
             String codgioProducto) {
-        
+
 //  ID INT NOT NULL AUTO_INCREMENT,
 //  cantidad INT NOT NULL,
 //  precio DOUBLE NOT NULL,
 //  CODIGO_TIENDA_EXISTENCIA VARCHAR(45) NOT NULL,
 //  codigo_producto VARCHAR(45) NOT NULL,
-
         String query = "INSERT INTO EXISTENTES (cantidad, precio, CODIGO_TIENDA_EXISTENCIA, codigo_producto)VALUES (?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
@@ -246,6 +241,56 @@ public class Conection {
     }
 
     /**
+     * MODIFICA UN CLIENTE EN LA BASE DE DATOS
+     *
+     * @param connection
+     * @param nombre
+     * @param telefono
+     * @param dpi
+     * @param credito
+     * @param correo
+     * @param direccion
+     */
+    public static void modificarCliente(Connection connection,
+            String nombre,
+            String telefono,
+            String dpi,
+            String credito,
+            String correo,
+            String direccion,
+            String nit) {
+
+        String query = "UPDATE CLIENTE SET nombre = ?, telefono = ?, dpi = ?, credito = ?, email = ?, direccion = ? WHERE NIT = ?";
+        String NIT = nit;
+
+//	NIT VARCHAR(13) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	telefono VARCHAR(8) NOT NULL,
+//  dpi VARCHAR(13),
+//  credito DOUBLE,
+//  email VARCHAR(45),
+//  direccion VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, nombre);
+            preSt.setString(2, telefono);
+            preSt.setString(3, dpi);
+            preSt.setDouble(4, Double.parseDouble(credito));
+            preSt.setString(5, correo);
+            preSt.setString(6, direccion);
+            preSt.setString(7, NIT);
+
+            preSt.executeUpdate();
+
+            System.out.println("Cliente actualizado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
      * Método para crear un empleado y agregar a la base de datos
      *
      * @param connection
@@ -290,6 +335,59 @@ public class Conection {
             System.out.println("empleado agregado");
 
             preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+
+    /**
+     * *
+     * MOdifica el empleado en la base de datos
+     *
+     * @param connection
+     * @param codigo
+     * @param nombre
+     * @param telefono
+     * @param dpi
+     * @param nit
+     * @param email
+     * @param direccion
+     */
+    public void modificarEmpleado(Connection connection,
+            String codigo,
+            String nombre,
+            String telefono,
+            String dpi,
+            String nit,
+            String email,
+            String direccion) {
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  DPI VARCHAR(13) NOT NULL,
+//  NIT VARCHAR(13) NOT NULL,
+//  EMAIL VARCHAR(45),
+//  direccion VARCHAR(45),
+
+        String query = "UPDATE EMPLEADO SET nombre = ?, telefono = ?, DPI = ?, NIT = ?, EMAIL = ?, direccion = ? WHERE CODIGO = ?";
+        String CODIGO = codigo;
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, nombre);
+            preSt.setString(2, telefono);
+            preSt.setString(3, dpi);
+            preSt.setString(4, nit);
+            preSt.setString(5, email);
+            preSt.setString(6, direccion);
+            preSt.setString(7, CODIGO);
+
+            preSt.executeUpdate();
+
+            System.out.println("empleado actualizado");
+
+            //preSt.close();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }

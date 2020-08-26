@@ -189,6 +189,15 @@ public class RegistroNuevoEmpleado extends javax.swing.JFrame {
                     txtDPIempleado.getText(), txtNITempleado.getText(), txtCorreoElectronicoEmpleado.getText(), txtDireccionEmpleado.getText());
             this.sistema.agregarEmpleadoNuevo(this.empleadoNuevo);
 
+            //se agrega a la base de datos
+            this.sistema.getConection().crearEmpleado(this.sistema.getConection().getConnection(),
+                    empleadoNuevo.getCodigo(),
+                    empleadoNuevo.getNomgre(),
+                    empleadoNuevo.getTelefono(),
+                    empleadoNuevo.getDpi(),
+                    empleadoNuevo.getNit(),
+                    empleadoNuevo.getCorreoElectronico(),
+                    empleadoNuevo.getDireccion());
         }
         this.txtCodigoEmpleado.setText("");
         this.txtCorreoElectronicoEmpleado.setText("");

@@ -17,6 +17,7 @@ public class ModificadorCliente extends javax.swing.JFrame {
 
     private TableClients tableClients;
     private Cliente cliente;
+    private Sistema sistema;
 
     /**
      * Para modificar los datos de un cliente
@@ -24,10 +25,12 @@ public class ModificadorCliente extends javax.swing.JFrame {
      * @param tableClients
      * @param cliente
      */
-    public ModificadorCliente(TableClients tableClients, Cliente cliente) {
+    public ModificadorCliente(TableClients tableClients, Cliente cliente, Sistema sistema) {
         initComponents();
         this.tableClients = tableClients;
         this.cliente = cliente;
+        this.sistema = sistema;
+
         this.txtCorreoElectronico.setText(cliente.getCorreoElctronico());
         this.txtCreditoCliente.setText(cliente.getCredito() + "");
         this.txtDPI_Cliente.setText(cliente.getDPI());
@@ -213,6 +216,14 @@ public class ModificadorCliente extends javax.swing.JFrame {
             this.cliente.setDireccion(txtDireccionCliente.getText());
             this.cliente.setNombreCliente(txtNombreCliente.getText());
             this.cliente.setTelefono(txtTelefono_cliente.getText());
+            this.sistema.getConection().modificarCliente(sistema.getConection().getConnection(),
+                    cliente.getNombreCliente(),
+                    cliente.getTelefono(),
+                    cliente.getDPI(),
+                    cliente.getCredito() + "",
+                    cliente.getCorreoElctronico(),
+                    cliente.getDireccion(),
+                    cliente.getNit());
         }
         this.txtCorreoElectronico.setText("");
         this.txtCreditoCliente.setText("");

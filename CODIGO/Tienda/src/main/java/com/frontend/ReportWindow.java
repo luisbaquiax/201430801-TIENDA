@@ -6,8 +6,10 @@
 package com.frontend;
 
 import com.backend.entidad.Pedido;
+import com.backend.entidad.Reporte;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.Tienda;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -21,6 +23,8 @@ public class ReportWindow extends javax.swing.JFrame {
     private Tienda tiendaActual;
     private DefaultTableModel dfm;
 
+    private Reporte reporte;
+
     /**
      * Creates new form Reporte
      */
@@ -28,9 +32,11 @@ public class ReportWindow extends javax.swing.JFrame {
         initComponents();
         this.sistema = sistema;
         this.ventanaTienda = ventanaTienda;
+        this.tiendaActual = tiendaActual;
+        this.reporte = new Reporte();
 
         llenarTableListaPedidosLlegaran();
-        
+
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -48,7 +54,7 @@ public class ReportWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableListaPedidosLlegaran = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        btnExportarListaPedidosLlegaran = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -57,6 +63,7 @@ public class ReportWindow extends javax.swing.JFrame {
         jTable3 = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
+        btnRegresar = new javax.swing.JButton();
 
         jButton1.setText("jButton1");
 
@@ -74,14 +81,16 @@ public class ReportWindow extends javax.swing.JFrame {
 
         jLabel1.setText("Lista de pedidos que llegarán a  esta tienda");
 
-        jButton2.setText("Exportar datos");
+        btnExportarListaPedidosLlegaran.setText("Exportar datos");
+        btnExportarListaPedidosLlegaran.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarListaPedidosLlegaranActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
@@ -128,6 +137,13 @@ public class ReportWindow extends javax.swing.JFrame {
         ));
         jScrollPane5.setViewportView(jTable4);
 
+        btnRegresar.setText("Regresar a la ventana anterior");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -142,19 +158,26 @@ public class ReportWindow extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(61, 61, 61)
-                        .addComponent(jButton2)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(btnExportarListaPedidosLlegaran)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresar))
                     .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jButton2))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(btnExportarListaPedidosLlegaran))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnRegresar)
+                        .addGap(10, 10, 10)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,27 +206,64 @@ public class ReportWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExportarListaPedidosLlegaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarListaPedidosLlegaranActionPerformed
+        // TODO add your handling code here:
+
+        String htmlTable = "<table style=\"width:75%\">\n"
+                + "  <tr>\n"
+                + "    <th>Tienda actual</th>\n"
+                + "    <th>Fecha del pedido</th>\n"
+                + "    <th>NIT-cliente</th>\n"
+                + "    <th>Código producto</th>\n"
+                + "    <th>Cantidad de artículos</th>\n"
+                + "    <th>Total</th>\n"
+                + "    <th>Anticipo</th>\n"
+                + "  </tr>";
+
+        for (Pedido pedido : this.sistema.getPedidos()) {
+            if (pedido.getCodigoTiendaDESTINO().endsWith(tiendaActual.getCodigo())) {
+                htmlTable += "<tr>"
+                        + "<td>" + tiendaActual.getCodigo() + "</td>"
+                        + "<td>" + pedido.getFechaPedido().mostrarFECHAS() + "</td>"
+                        + "<td>" + pedido.getNitCliente() + "</td>"
+                        + "<td>" + pedido.getCodigoProductoPedido() + "</td>"
+                        + "<td>" + pedido.getCantidadArticulos() + "</td>"
+                        + "<td>" + pedido.getTotalPagar() + "</td>"
+                        + "<td>" + pedido.getAnticipo() + "</td>"
+                        + "</tr>";
+            }
+
+        }
+        htmlTable += "</table>";
+        this.reporte.reporteHTML("listaTodosPedidos" + tiendaActual.getCodigo() + ".html", htmlTable);
+        JOptionPane.showMessageDialog(null, "Datos exportados");
+    }//GEN-LAST:event_btnExportarListaPedidosLlegaranActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        super.setVisible(false);
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     public void llenarTableListaPedidosLlegaran() {
         dfm = (DefaultTableModel) tableListaPedidosLlegaran.getModel();
         for (Pedido pedido : this.sistema.getPedidos()) {
-            if (pedido.getCodigoTiendaDESTINO().equals(tiendaActual.getCodigo())) {
+            if (pedido.getCodigoTiendaDESTINO().endsWith(tiendaActual.getCodigo())) {
                 String[] datos = {tiendaActual.getCodigo(),
                     pedido.getFechaPedido().mostrarFECHAS(),
                     pedido.getNitCliente(),
                     pedido.getCodigoProductoPedido(),
-                    pedido.getCantidadArticulos()+"",
-                    pedido.getTotalPagar()+"",
-                    pedido.getAnticipo()+"",
-                };
+                    pedido.getCantidadArticulos() + "",
+                    pedido.getTotalPagar() + "",
+                    pedido.getAnticipo() + "",};
                 dfm.addRow(datos);
             }
-
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportarListaPedidosLlegaran;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  * @author luis
  */
 public class RegistroNuevaTienda extends javax.swing.JFrame {
-
+    
     private VentanaTienda ventanaTienda;
     private VentanaEmpleado ventanaEmpleado;
     private VerificadorTiempoEnvio vrEnvio;
@@ -36,9 +36,9 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.ventanaTienda = ventanaTienda;
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
-
+        
         this.sistema.agregarItemsTienda(comboTiendas);
-
+        
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         String cadena = "";
     }
@@ -255,6 +255,16 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
             this.sistema.agregarTiendaNueva(tiendaNueva);
             this.ventanaEmpleado.getComboTiendas().addItem(tiendaNueva.getCodigo());
             tiendaNueva.mostrarDatos();
+            
+            this.sistema.getConection().crearTienda(this.sistema.getConection().getConnection(),
+                    tiendaNueva.getCodigo(),
+                    tiendaNueva.getNombreTienda(),
+                    tiendaNueva.getDireccion(),
+                    tiendaNueva.getTelefono(),
+                    tiendaNueva.getTelefono2(),
+                    tiendaNueva.getCorreoElectronico(),
+                    tiendaNueva.getHorario());
+            JOptionPane.showMessageDialog(null, "Tienda registrada");
         }
         this.txtCodigoTienda.setText("");
         this.txtCorreoElectronico.setText("");
@@ -263,7 +273,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.txtNombreTienda.setText("");
         this.txtTelefono.setText("");
         this.txtTelefono2.setText("");
-
+        
 
     }//GEN-LAST:event_btnGuardarDatosClienteActionPerformed
 
@@ -289,6 +299,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                 this.tiempoDeEnvioNueva = new TiempoDeEnvio(codigoNuevaTienda, tiendaDestino, tiempo);
                 this.sistema.agregarTiempoDeEnvio(tiempoDeEnvioNueva);
                 this.tiempoDeEnvioNueva.mostrarDatos();
+                this.sistema.getConection().crearTiempoDeEnvio(this.sistema.getConection().getConnection(), tiendaNueva.getCodigo(), tiendaDestino, tiempo);
             } else {
                 JOptionPane.showMessageDialog(null, "Guarde los cambios", "GUARDE DATOS", JOptionPane.INFORMATION_MESSAGE);
             }

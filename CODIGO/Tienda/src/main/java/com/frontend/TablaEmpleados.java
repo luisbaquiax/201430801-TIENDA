@@ -174,7 +174,7 @@ public class TablaEmpleados extends javax.swing.JFrame {
 
             this.empleadoModificando = this.sistema.buscarEmpleado(codigo);
 
-            this.modificarEmpleado = new ModificarEmpleado(this, this.empleadoModificando);
+            this.modificarEmpleado = new ModificarEmpleado(this, this.empleadoModificando,this.sistema);
             this.modificarEmpleado.setVisible(true);
             super.setVisible(false);
             this.dfm.setRowCount(0);

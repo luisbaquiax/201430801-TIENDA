@@ -190,6 +190,16 @@ public class RegistroNuevoCliente extends javax.swing.JFrame {
             this.nuevoCliente = new Cliente(txtNombreCliente.getText(), txtNITcliente.getText(), txtTelefono_cliente.getText(),
                     txtCreditoCliente.getText(), txtDPI_Cliente.getText(), txtCorreoElectronico.getText(), txtDireccionCliente.getText());
             this.sistema.agregarClienteNuevo(nuevoCliente);
+
+            this.sistema.getConection().crearCliente(this.sistema.getConection().getConnection(),
+                    nuevoCliente.getNit(),
+                    nuevoCliente.getNombreCliente(),
+                    nuevoCliente.getTelefono(),
+                    nuevoCliente.getDPI(),
+                    nuevoCliente.getCredito() + "",
+                    nuevoCliente.getCorreoElctronico(),
+                    nuevoCliente.getDireccion());
+            JOptionPane.showMessageDialog(null, "Cliente creado");
         }
         this.txtCorreoElectronico.setText("");
         this.txtCreditoCliente.setText("");
