@@ -129,33 +129,63 @@ public class Conection {
      * @param garantia
      * @param codigoTiendaExistencia
      */
-    public void crearProducto(Connection connection, String codigo, String nombre, String fabricante, String cantidad, String precio,
-            String descripcion, String garantia, String codigoTiendaExistencia) {
-////	ID INT NOT NULL AUTO_INCREMENT,
-//	CODIGO VARCHAR(45) NOT NULL,
+    public void crearProducto(Connection connection, 
+            String codigo, 
+            String nombre, 
+            String fabricante,
+            String descripcion, 
+            String garantia) {
+        
+//CODIGO VARCHAR(45) NOT NULL,
 //	nombre VARCHAR(45) NOT NULL,
 //	fabricante VARCHAR(45) NOT NULL,
-//	cantidad INT NOT NULL,
-//      precio DOUBLE NOT NULL,
-//      descripcion VARCHAR(200),
-//      garantia VARCHAR(45),
-//      CODIGO_TIENDA_EXISTENCIA VARCHAR(45),
-        String query = "INSERT INTO PRODUCTO (CODIGO, nombre, fabricante, cantidad, precio, descripcion, garantia, CODIGO_TIENDA_EXISTENCIA)VALUES (?,?,?,?,?,?,?,?)";
+//  descripcion VARCHAR(200),
+//  garantia VARCHAR(45),
+
+        String query = "INSERT INTO PRODUCTO (CODIGO, nombre, fabricante, descripcion, garantia)VALUES (?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, codigo);
             preSt.setString(2, nombre);
             preSt.setString(3, fabricante);
-            preSt.setInt(4, Integer.parseInt(cantidad));
-            preSt.setDouble(5, Double.parseDouble(precio));
-            preSt.setString(6, descripcion);
-            preSt.setString(7, garantia);
-            preSt.setString(8, codigoTiendaExistencia);
+            preSt.setString(4, descripcion);
+            preSt.setString(5, garantia);
 
             preSt.executeUpdate();
 
             System.out.println("producto agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+    }
+    public void crearExistentes(Connection connection, 
+            String cantidad, 
+            String precio, 
+            String tiendaDondeExiste,
+            String codgioProducto) {
+        
+//  ID INT NOT NULL AUTO_INCREMENT,
+//  cantidad INT NOT NULL,
+//  precio DOUBLE NOT NULL,
+//  CODIGO_TIENDA_EXISTENCIA VARCHAR(45) NOT NULL,
+//  codigo_producto VARCHAR(45) NOT NULL,
+
+        String query = "INSERT INTO EXISTENTES (cantidad, precio, CODIGO_TIENDA_EXISTENCIA, codigo_producto)VALUES (?,?,?,?)";
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setInt(1, Integer.parseInt(cantidad));
+            preSt.setDouble(2, Double.parseDouble(precio));
+            preSt.setString(3, tiendaDondeExiste);
+            preSt.setString(4, codgioProducto);
+
+            preSt.executeUpdate();
+
+            System.out.println("existencia agregado");
 
             preSt.close();
         } catch (SQLException e) {
@@ -290,25 +320,25 @@ public class Conection {
             String tiendaDestino,
             String nitCliente,
             String codigoProducto) {
-//  ID INT NOT NULL AUTO_INCREMENT,
+//ID INT NOT NULL AUTO_INCREMENT,
 //  CODIGO VARCHAR(45) NOT NULL,
 //  fecha DATE NOT NULL,
-//  cantidad INT NOT NULL,
 //  total DOUBLE,
 //  anticipo DOUBLE,
+//  cantidad_articulos INT NOT NULL,
 //  tienda_origen VARCHAR(45) NOT NULL,
 //  tienda_destino VARCHAR(45) NOT NULL,
 //  NIT_cliente VARCHAR(13) NOT NULL,
 //  codigo_producto VARCHAR(45),
-        String query = "INSERT INTO PEDIDO (CODIGO, fecha, cantidad, total, anticipo, tienda_origen, tienda_destino, NIT_cliente, CODIGO_producto)VALUES (?,?,?,?,?,?,?,?,?)";
+        String query = "INSERT INTO PEDIDO (CODIGO, fecha, total, anticipo, cantidad_articulos, tienda_origen, tienda_destino, NIT_cliente, CODIGO_producto)VALUES (?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, codigo);
             preSt.setString(2, fecha);
-            preSt.setInt(3, Integer.parseInt(cantidad));
-            preSt.setDouble(4, Double.parseDouble(total));
-            preSt.setDouble(5, Double.parseDouble(anticipo));
+            preSt.setDouble(3, Double.parseDouble(total));
+            preSt.setDouble(4, Double.parseDouble(anticipo));
+            preSt.setInt(5, Integer.parseInt(cantidad));
             preSt.setString(6, tiendaOrigen);
             preSt.setString(7, tiendaDestino);
             preSt.setString(8, nitCliente);

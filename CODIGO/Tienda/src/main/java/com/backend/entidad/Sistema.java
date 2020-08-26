@@ -24,10 +24,26 @@ public class Sistema {
     private ArrayList<Pedido> pedidos = new ArrayList<>();
 
     private ArrayList<String> datosErroneos = new ArrayList<>();
+    private ArrayList<String> codigosExistentes = new ArrayList<>();
 
     private Conection conection = new Conection();
 
     public Sistema() throws SQLException {
+    }
+
+    /**
+     * Verificamos si no se ha ingresado un producto con el mismo codigo
+     *
+     * @param codigoProducto
+     * @return
+     */
+    public boolean yaExisteCodigoCadena(String codigoProducto) {
+        for (String codigo : codigosExistentes) {
+            if (codigo.equals(codigoProducto)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -412,6 +428,15 @@ public class Sistema {
 
     public ArrayList<String> getDatosErroneos() {
         return datosErroneos;
+    }
+
+    /**
+     * Me permite alamacenar momentáneamente cadenas/codigos
+     *
+     * @return
+     */
+    public ArrayList<String> getCodigosExistentes() {
+        return codigosExistentes;
     }
 
     /**

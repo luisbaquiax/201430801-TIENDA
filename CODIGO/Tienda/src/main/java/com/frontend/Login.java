@@ -329,18 +329,41 @@ public class Login extends javax.swing.JFrame {
 
                         if (sistema.esNumeroEntero(infLinea[4]) && sistema.esDecimal(infLinea[5])) {
 
-                            this.producto = new Producto(infLinea[1], infLinea[2], infLinea[3], infLinea[4], infLinea[5], infLinea[6]);
-                            this.sistema.getProductos().add(producto);
-                            //se agrega el produtcto a la base de datos
-                            this.sistema.getConection().crearProducto(this.sistema.getConection().getConnection(), producto.getCodigo(), producto.getNombre(),
-                                    producto.getFabricante(), String.valueOf(producto.getCantidad()), String.valueOf(producto.getPrecio()), producto.getDescripcion(),
-                                    producto.getGarantia(), producto.getTiendaDondeExiste());
+                            if (sistema.yaExisteCodigoCadena(infLinea[3])) {
+
+                                this.producto = new Producto(infLinea[1], infLinea[2], infLinea[3], infLinea[4], infLinea[5], infLinea[6]);
+                                this.sistema.getProductos().add(producto);
+                                //se agrega la existencia a la base de datos
+                                this.sistema.getConection().crearExistentes(this.sistema.getConection().getConnection(),
+                                        producto.getCantidad() + "",
+                                        producto.getPrecio() + "",
+                                        producto.getTiendaDondeExiste(),
+                                        producto.getCodigo());
+                            } else {
+                                this.sistema.getCodigosExistentes().add(infLinea[3]);
+                                this.producto = new Producto(infLinea[1], infLinea[2], infLinea[3], infLinea[4], infLinea[5], infLinea[6]);
+                                this.sistema.getProductos().add(producto);
+                                //se agrega el produtcto a la base de datos
+                                this.sistema.getConection().crearProducto(this.sistema.getConection().getConnection(),
+                                        producto.getCodigo(),
+                                        producto.getNombre(),
+                                        producto.getFabricante(),
+                                        producto.getDescripcion(),
+                                        producto.getGarantia());
+                                //se agrega la existencia a la base de datos
+                                this.sistema.getConection().crearExistentes(this.sistema.getConection().getConnection(),
+                                        producto.getCantidad() + "",
+                                        producto.getPrecio() + "",
+                                        producto.getTiendaDondeExiste(),
+                                        producto.getCodigo());
+                            }
 
                         } else {
                             this.sistema.getDatosErroneos().add(lineas[i]);
                         }
 
                     } else if (infLinea[0].equalsIgnoreCase("empleado")) {
+                        
                         if (sistema.esNumeroEntero(infLinea[3])) {
                             this.empleado = new Empleado(infLinea[1], infLinea[2], infLinea[3], infLinea[4]);
                             this.sistema.getEmpleados().add(empleado);
@@ -353,11 +376,24 @@ public class Login extends javax.swing.JFrame {
 
                     } else if (infLinea[0].equalsIgnoreCase("cliente")) {
                         if (sistema.esDecimal(infLinea[4])) {
-                            this.cliente = new Cliente(infLinea[1], infLinea[2], infLinea[3], infLinea[4]);
-                            this.sistema.getClientes().add(cliente);
-                            //se agrega el cliente a la base de datos
-                            this.sistema.getConection().crearCliente(this.sistema.getConection().getConnection(), cliente.getNit(), cliente.getNombreCliente(),
-                                    cliente.getTelefono(), cliente.getDPI(), String.valueOf(cliente.getCredito()), cliente.getCorreoElctronico(), cliente.getDireccion());
+                            if (sistema.yaExisteCodigoCadena(infLinea[2])) {
+
+                            } else {
+                                this.cliente = new Cliente(infLinea[1], infLinea[2], infLinea[3], infLinea[4]);
+                                this.sistema.getClientes().add(cliente);
+                                //se agrega el cliente a la base de datos
+                                this.sistema.getConection().crearCliente(this.sistema.getConection().getConnection(),
+                                        cliente.getNit(),
+                                        cliente.getNombreCliente(),
+                                        cliente.getTelefono(),
+                                        cliente.getDPI(),
+                                        String.valueOf(cliente.getCredito()),
+                                        cliente.getCorreoElctronico(),
+                                        cliente.getDireccion());
+                                //
+                                this.sistema.getCodigosExistentes().add(infLinea[2]);
+                            }
+
                         } else {
                             this.sistema.getDatosErroneos().add(lineas[i]);
                         }
@@ -367,10 +403,13 @@ public class Login extends javax.swing.JFrame {
                         if ((sistema.esNumeroEntero(infLinea[7]))
                                 && (sistema.esDecimal(infLinea[8])
                                 && (sistema.esDecimal(infLinea[9])))) {
+
                             String[] fecha = infLinea[4].split("-");
                             this.fechaPedido = new FechaPedido(fecha[0], fecha[1], fecha[2]);
+
                             this.pedido = new Pedido(infLinea[1], infLinea[2], infLinea[3], fechaPedido, infLinea[5], infLinea[6], infLinea[7], infLinea[8], infLinea[9]);
                             this.sistema.getPedidos().add(pedido);
+                            //se agrega el pedido a la base de datos
                             this.sistema.getConection().crearPedido(this.sistema.getConection().getConnection(), pedido.getCodigoPedido(), pedido.getFechaPedido().mostrarFECHAS(),
                                     String.valueOf(pedido.getCantidadArticulos()), String.valueOf(pedido.getTotalPagar()), String.valueOf(pedido.getAnticipo()),
                                     pedido.getCodigoTiendaORIGEN(), pedido.getCodigoTiendaDESTINO(), pedido.getNitCliente(), pedido.getCodigoProductoPedido());
@@ -382,7 +421,7 @@ public class Login extends javax.swing.JFrame {
                 }
                 informacionCargada++;
             } catch (IOException ex) {
-                
+
             }
         }
         this.sistema.mostraTiendas();
