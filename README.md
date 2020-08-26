@@ -9,3 +9,5 @@
 ![alt DIAGRAMA_DE_CLASE](IMAGENES/diagramaClase.png)
 ### DIAGRAMA ENTIDAD RELACION
 ![alt DIAGRAMA_RE](IMAGENES/diagramaRE.png)
+### DIAGRAMA MAPEO FÍSICO
+![alt DIAGRAMA_RE](IMAGENES/mapeo.png)
