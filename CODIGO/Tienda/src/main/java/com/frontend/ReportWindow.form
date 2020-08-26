@@ -104,7 +104,7 @@
                   <Table columnCount="7" rowCount="0">
                     <Column editable="true" title="Tienda actual" type="java.lang.Object"/>
                     <Column editable="true" title="Fecha" type="java.lang.Object"/>
-                    <Column editable="true" title="C&#xf3;digo-cliente" type="java.lang.Object"/>
+                    <Column editable="true" title="NIT-cliente" type="java.lang.Object"/>
                     <Column editable="true" title="Art&#xed;culo-c&#xf3;digo" type="java.lang.Object"/>
                     <Column editable="true" title="Catidad-art&#xed;culos" type="java.lang.Object"/>
                     <Column editable="true" title="Total" type="java.lang.Object"/>

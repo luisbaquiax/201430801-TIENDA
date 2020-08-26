@@ -5,17 +5,31 @@
  */
 package com.frontend;
 
+import com.backend.entidad.Pedido;
+import com.backend.entidad.Sistema;
+import com.backend.entidad.Tienda;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author luis
  */
 public class ReportWindow extends javax.swing.JFrame {
 
+    private Sistema sistema;
+    private VentanaTienda ventanaTienda;
+    private Tienda tiendaActual;
+    private DefaultTableModel dfm;
+
     /**
      * Creates new form Reporte
      */
-    public ReportWindow() {
+    public ReportWindow(VentanaTienda ventanaTienda, Sistema sistema, Tienda tiendaActual) {
         initComponents();
+        this.sistema = sistema;
+        this.ventanaTienda = ventanaTienda;
+
+        llenarTableListaPedidosLlegaran();
         
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -53,7 +67,7 @@ public class ReportWindow extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Tienda actual", "Fecha", "Código-cliente", "Artículo-código", "Catidad-artículos", "Total", "Anticipo"
+                "Tienda actual", "Fecha", "NIT-cliente", "Artículo-código", "Catidad-artículos", "Total", "Anticipo"
             }
         ));
         jScrollPane1.setViewportView(tableListaPedidosLlegaran);
@@ -168,6 +182,24 @@ public class ReportWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public void llenarTableListaPedidosLlegaran() {
+        dfm = (DefaultTableModel) tableListaPedidosLlegaran.getModel();
+        for (Pedido pedido : this.sistema.getPedidos()) {
+            if (pedido.getCodigoTiendaDESTINO().equals(tiendaActual.getCodigo())) {
+                String[] datos = {tiendaActual.getCodigo(),
+                    pedido.getFechaPedido().mostrarFECHAS(),
+                    pedido.getNitCliente(),
+                    pedido.getCodigoProductoPedido(),
+                    pedido.getCantidadArticulos()+"",
+                    pedido.getTotalPagar()+"",
+                    pedido.getAnticipo()+"",
+                };
+                dfm.addRow(datos);
+            }
+
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

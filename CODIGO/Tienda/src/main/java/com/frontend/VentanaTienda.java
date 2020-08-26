@@ -27,6 +27,7 @@ public class VentanaTienda extends javax.swing.JFrame {
     private TableStores tableStores;
     private VerificadorTiempoEnvio verifidorTiempoEnvio;
     private Tienda tiendaActual;
+    private ReportWindow reportWindow;
 
     private DefaultTableModel dfm;
 
@@ -151,6 +152,11 @@ public class VentanaTienda extends javax.swing.JFrame {
         jLabel3.setText("Seleccione el producto");
 
         btnReportes.setText("Reportes");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -363,6 +369,13 @@ public class VentanaTienda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Seleccione el producto a moidifcar");
         }
     }//GEN-LAST:event_btnAgregarExistenciaActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        // TODO add your handling code here:
+        this.reportWindow = new ReportWindow(this, sistema, tiendaActual);
+        this.reportWindow.setVisible(true);
+        
+    }//GEN-LAST:event_btnReportesActionPerformed
 
     public void llenarTablaProductos() {
         dfm = (DefaultTableModel) tableProducts.getModel();
