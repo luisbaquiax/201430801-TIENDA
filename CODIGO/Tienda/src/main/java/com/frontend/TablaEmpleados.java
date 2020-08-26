@@ -57,6 +57,11 @@ public class TablaEmpleados extends javax.swing.JFrame {
         btnOrdenarEmpleadosCodigo = new javax.swing.JButton();
         btnRegistroNuevoEmpleado = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        txtFiltroNOmbre = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        txtFiltroCodigo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,49 +108,84 @@ public class TablaEmpleados extends javax.swing.JFrame {
 
         jLabel2.setText("Elige al empleado");
 
+        jLabel3.setText("Todos los empleados:");
+
+        jLabel4.setText("Buscar por nombre:");
+
+        txtFiltroNOmbre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroNOmbreKeyReleased(evt);
+            }
+        });
+
+        jLabel5.setText("Buscar por código:");
+
+        txtFiltroCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFiltroCodigoKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(scrollTablaEmpleados)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(btnModificarEmpleado)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
-                        .addComponent(btnRegistroNuevoEmpleado)
-                        .addGap(85, 85, 85)
-                        .addComponent(btnOrdenarEmpleadosCodigo)))
-                .addGap(120, 120, 120)
-                .addComponent(btnRegresar)
-                .addGap(54, 54, 54))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(118, 118, 118)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(120, 120, 120))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                                    .addComponent(txtFiltroNOmbre))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                                .addComponent(btnModificarEmpleado)
+                                .addGap(34, 34, 34)
+                                .addComponent(btnRegistroNuevoEmpleado)
+                                .addGap(32, 32, 32)
+                                .addComponent(btnOrdenarEmpleadosCodigo)
+                                .addGap(18, 18, 18)))
+                        .addComponent(btnRegresar)
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(324, 324, 324)
+                        .addComponent(jLabel3)
+                        .addGap(301, 301, 301))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(32, 32, 32)
-                .addComponent(jLabel2)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnModificarEmpleado)
-                            .addComponent(btnOrdenarEmpleadosCodigo)
-                            .addComponent(btnRegresar)
-                            .addComponent(btnRegistroNuevoEmpleado))))
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOrdenarEmpleadosCodigo)
+                    .addComponent(btnRegresar)
+                    .addComponent(btnRegistroNuevoEmpleado)
+                    .addComponent(jLabel4)
+                    .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnModificarEmpleado))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -202,6 +242,18 @@ public class TablaEmpleados extends javax.swing.JFrame {
         this.dfm.setRowCount(0);
     }//GEN-LAST:event_btnRegistroNuevoEmpleadoActionPerformed
 
+    private void txtFiltroNOmbreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNOmbreKeyReleased
+        // TODO add your handling code here:
+        dfm.setRowCount(0);
+        this.sistema.getConection().buscarEmpleadoNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
+    }//GEN-LAST:event_txtFiltroNOmbreKeyReleased
+
+    private void txtFiltroCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroCodigoKeyReleased
+        // TODO add your handling code here:
+         dfm.setRowCount(0);
+        this.sistema.getConection().buscarEmpleadoCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
+    }//GEN-LAST:event_txtFiltroCodigoKeyReleased
+
     public void llenarTablaEmpleados() {
         dfm = (DefaultTableModel) tableListaEmpleados.getModel();
         for (Empleado empleado : this.sistema.getEmpleados()) {
@@ -230,8 +282,13 @@ public class TablaEmpleados extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scrollTablaEmpleados;
     private javax.swing.JTable tableListaEmpleados;
+    private javax.swing.JTextField txtFiltroCodigo;
+    private javax.swing.JTextField txtFiltroNOmbre;
     // End of variables declaration//GEN-END:variables
 }

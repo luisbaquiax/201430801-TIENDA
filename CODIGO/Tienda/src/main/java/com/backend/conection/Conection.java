@@ -9,8 +9,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -78,6 +80,92 @@ public class Conection {
             System.out.println("tienda agregado");
 
             preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Busca a las tiendas filtrando el nombre
+     *
+     * @param connection
+     * @param filtro
+     * @param dfm
+     */
+    public void buscarTiendaNombre(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM TIENDAS WHERE nombre LIKE ? ORDER BY nombre ASC";
+
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  direccion VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  telefono2 VARCHAR(8),
+//  email VARCHAR(45),
+//  horario VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(2),
+                    result.getString(3),
+                    result.getString(1),
+                    result.getString(4),
+                    result.getString(5),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * BUsca a las tiendas filgrando el codigo de la misma
+     *
+     * @param connection
+     * @param filtro
+     * @param dfm
+     */
+    public void buscarTiendaCodigo(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM TIENDAS WHERE CODIGO LIKE ? ORDER BY CODIGO ASC";
+
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  direccion VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  telefono2 VARCHAR(8),
+//  email VARCHAR(45),
+//  horario VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(2),
+                    result.getString(3),
+                    result.getString(1),
+                    result.getString(4),
+                    result.getString(5),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -158,6 +246,49 @@ public class Conection {
 
     }
 
+    public void buscarProductoCodigo(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM PRODUCTO WHERE CODIGO LIKE ? ORDER BY CODIGO ASC";
+
+//	CODIGO VARCHAR(45) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	fabricante VARCHAR(45) NOT NULL,
+//  descripcion VARCHAR(200),
+//  garantia VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(2),
+                    result.getString(3),
+                    result.getString(1),
+                    result.getString(4),
+                    result.getString(5),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Crea la existencia de un nuevo producto
+     *
+     * @param connection
+     * @param cantidad
+     * @param precio
+     * @param tiendaDondeExiste
+     * @param codgioProducto
+     */
     public void crearExistentes(Connection connection,
             String cantidad,
             String precio,
@@ -187,6 +318,80 @@ public class Conection {
             System.out.println("Error: " + e.getMessage());
         }
 
+    }
+
+    /**
+     * Modifica el precio de un producto
+     *
+     * @param connection
+     * @param precio
+     * @param codgioProducto
+     * @param codigoTienda
+     */
+    public void modificarPrecioProducto(Connection connection,
+            String precio,
+            String codgioProducto,
+            String codigoTienda) {
+
+        String query = "UPDATE EXISTENTES SET precio = ? WHERE codigo_producto = ? AND CODIGO_TIENDA_EXISTENCIA = ?";
+        String codigo_producto = codgioProducto;
+
+//  ID INT NOT NULL AUTO_INCREMENT,
+//  cantidad INT NOT NULL,
+//  precio DOUBLE NOT NULL,
+//  CODIGO_TIENDA_EXISTENCIA VARCHAR(45) NOT NULL,
+//  codigo_producto VARCHAR(45) NOT NULL,
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setDouble(1, Double.parseDouble(precio));
+            preSt.setString(2, codigo_producto);
+            preSt.setString(3, codigoTienda);
+
+            preSt.executeUpdate();
+
+            System.out.println("precio actualizado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Modificamos la cantidad de artículos de la actual tienda
+     *
+     * @param connection
+     * @param cantidad
+     * @param codgioProducto
+     * @param codigoTienda
+     */
+    public void modificarCantidadExistenciaProducto(Connection connection,
+            String cantidad,
+            String codgioProducto,
+            String codigoTienda) {
+
+        String query = "UPDATE EXISTENTES SET cantidad = ? WHERE codigo_producto = ? AND CODIGO_TIENDA_EXISTENCIA = ?";
+        String codigo_producto = codgioProducto;
+
+//  ID INT NOT NULL AUTO_INCREMENT,
+//  cantidad INT NOT NULL,
+//  precio DOUBLE NOT NULL,
+//  CODIGO_TIENDA_EXISTENCIA VARCHAR(45) NOT NULL,
+//  codigo_producto VARCHAR(45) NOT NULL,
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setDouble(1, Double.parseDouble(cantidad));
+            preSt.setString(2, codigo_producto);
+            preSt.setString(3, codigoTienda);
+
+            preSt.executeUpdate();
+
+            System.out.println("cantidad actualizado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -250,8 +455,9 @@ public class Conection {
      * @param credito
      * @param correo
      * @param direccion
+     * @param nit
      */
-    public static void modificarCliente(Connection connection,
+    public void modificarCliente(Connection connection,
             String nombre,
             String telefono,
             String dpi,
@@ -285,6 +491,85 @@ public class Conection {
             System.out.println("Cliente actualizado");
 
             preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Busca al cliente filtrando su nombre
+     *
+     * @param connection
+     * @param filtro
+     * @param dfm
+     */
+    public void buscarClienteNombre(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM CLIENTE WHERE nombre LIKE ? ORDER BY NIT ASC";
+
+//	NIT VARCHAR(13) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	telefono VARCHAR(8) NOT NULL,
+//  dpi VARCHAR(13),
+//  credito DOUBLE,
+//  email VARCHAR(45),
+//  direccion VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(2),
+                    result.getString(3),
+                    result.getString(1),
+                    result.getString(5),
+                    result.getString(4),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    public void buscarClienteNit(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM CLIENTE WHERE NIT LIKE ? ORDER BY NIT ASC";
+
+//	NIT VARCHAR(13) NOT NULL,
+//	nombre VARCHAR(45) NOT NULL,
+//	telefono VARCHAR(8) NOT NULL,
+//  dpi VARCHAR(13),
+//  credito DOUBLE,
+//  email VARCHAR(45),
+//  direccion VARCHAR(45),
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(2),
+                    result.getString(3),
+                    result.getString(1),
+                    result.getString(5),
+                    result.getString(4),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -395,6 +680,92 @@ public class Conection {
     }
 
     /**
+     * Busca el emplead por codigo
+     *
+     * @param connection
+     * @param filtro
+     * @param dfm
+     */
+    public void buscarEmpleadoCodigo(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM EMPLEADO WHERE CODIGO LIKE ? ORDER BY CODIGO ASC";
+
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  DPI VARCHAR(13) NOT NULL,
+//  NIT VARCHAR(13),
+//  EMAIL VARCHAR(45) NOT NULL,
+//  direccion VARCHAR(45) NOT NULL,
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(1),
+                    result.getString(2),
+                    result.getString(3),
+                    result.getString(5),
+                    result.getString(4),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Busca al empleado usanto el nombre como filtro
+     *
+     * @param connection
+     * @param filtro
+     * @param dfm
+     */
+    public void buscarEmpleadoNombre(Connection connection, String filtro, DefaultTableModel dfm) {
+        String query = "SELECT * FROM EMPLEADO WHERE nombre LIKE ? ORDER BY CODIGO ASC";
+
+//  CODIGO VARCHAR(45) NOT NULL,
+//  nombre VARCHAR(45) NOT NULL,
+//  telefono VARCHAR(8) NOT NULL,
+//  DPI VARCHAR(13) NOT NULL,
+//  NIT VARCHAR(13),
+//  EMAIL VARCHAR(45) NOT NULL,
+//  direccion VARCHAR(45) NOT NULL,
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, "%" + filtro + "%");
+            ResultSet result = preSt.executeQuery();
+
+            ResultSetMetaData meta = result.getMetaData();
+
+            while (result.next()) {
+
+                String[] datos = {result.getString(1),
+                    result.getString(2),
+                    result.getString(3),
+                    result.getString(5),
+                    result.getString(4),
+                    result.getString(6),
+                    result.getString(7)
+                };
+                dfm.addRow(datos);
+            }
+//            result.close();
+//            preSt.close();
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /**
      * Método parra crear un pedido y agregar a la base de datos
      *
      * @param connection
@@ -461,47 +832,4 @@ public class Conection {
     public Connection getConnection() {
         return connection;
     }
-
-    /**
-     * @return the url
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * @param url the url to set
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * @return the user
-     */
-    public String getUser() {
-        return user;
-    }
-
-    /**
-     * @param user the user to set
-     */
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 }

@@ -210,12 +210,14 @@ public class ModificadorCliente extends javax.swing.JFrame {
                     }
                 }
             }
+            //se modifica los datos del cliente
             this.cliente.setCorreoElctronico(txtCorreoElectronico.getText());
             this.cliente.setCredito(Double.parseDouble(txtCreditoCliente.getText()));
             this.cliente.setDPI(txtDPI_Cliente.getText());
             this.cliente.setDireccion(txtDireccionCliente.getText());
             this.cliente.setNombreCliente(txtNombreCliente.getText());
             this.cliente.setTelefono(txtTelefono_cliente.getText());
+            //se actualiza el cliente en la base de datos
             this.sistema.getConection().modificarCliente(sistema.getConection().getConnection(),
                     cliente.getNombreCliente(),
                     cliente.getTelefono(),

@@ -213,6 +213,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                         productoNuevo.getFabricante(),
                         productoNuevo.getDescripcion(),
                         productoNuevo.getGarantia());
+                //se crea la existencia para la tienda actual
                 this.sistema.getConection().crearExistentes(this.sistema.getConection().getConnection(),
                         productoNuevo.getCantidad() + "",
                         productoNuevo.getPrecio() + "",
