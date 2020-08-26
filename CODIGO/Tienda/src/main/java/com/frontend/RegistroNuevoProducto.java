@@ -223,6 +223,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
 
             }
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Por favor, deber verificar el tipo de dato a ingresar");
         }
 
         this.txtCantidad.setText("");
