@@ -187,6 +187,7 @@ public class TiendaDatos extends javax.swing.JFrame {
         // TODO add your handling code here:
         super.setVisible(false);
         this.verifidorTiempoEnvio.setVisible(true);
+        System.out.println(this.jLabel1.getHeight());
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

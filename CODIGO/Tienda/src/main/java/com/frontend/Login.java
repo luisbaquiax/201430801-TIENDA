@@ -5,7 +5,6 @@
  */
 package com.frontend;
 
-import com.backend.conection.Conection;
 import com.frontend.cliente.CatalogoProductos;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Empleado;
@@ -16,19 +15,15 @@ import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import jdk.nashorn.api.tree.IfTree;
 
 /**
  *
@@ -54,7 +49,7 @@ public class Login extends javax.swing.JFrame {
     //private Conection conection;
     /**
      *
-     * @param principal
+     * @throws java.sql.SQLException
      */
     public Login() throws SQLException {
         initComponents();
@@ -67,7 +62,6 @@ public class Login extends javax.swing.JFrame {
 
         this.sistema = new Sistema();
 
-        //this.conection = new Conection();
     }
 
     /**

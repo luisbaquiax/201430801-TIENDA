@@ -41,8 +41,6 @@ public class Conection {
                 System.out.println(resultSet.getString(1));
             }
             System.out.println("conexión exitosa");
-//            resultSet.close();
-//            statement.close();
         } catch (SQLException e) {
             System.out.println("Conection fallida");
             System.out.println("Error: " + e.getMessage());
