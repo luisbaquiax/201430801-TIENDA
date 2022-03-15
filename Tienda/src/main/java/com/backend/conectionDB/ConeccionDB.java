@@ -30,30 +30,14 @@ public class ConeccionDB {
 
     private static Connection CONECCION = null;
 
-//    public void probarConection(Connection connection) {
-//
-//        String query = "SELECT VERSION()";
-//
-//        try (Statement statement = connection.createStatement();
-//                ResultSet resultSet = statement.executeQuery(query)) {
-//
-//            if (resultSet.next()) {
-//                System.out.println(resultSet.getString(1));
-//            }
-//            System.out.println("conexión exitosa");
-//        } catch (SQLException e) {
-//            System.out.println("Conection fallida");
-//            System.out.println("Error: " + e.getMessage());
-//
-//        }
-//    }
+
     public ConeccionDB() throws SQLException {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
             CONECCION = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("conexion exitosa");
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
