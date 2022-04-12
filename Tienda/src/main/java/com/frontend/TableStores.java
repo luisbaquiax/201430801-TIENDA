@@ -204,7 +204,7 @@ public class TableStores extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarTiendaCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
+            this.sistema.getTiendaDB().buscarTiendaCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TableStores.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -214,7 +214,7 @@ public class TableStores extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarTiendaNombre(this.sistema.getConection().getConnection(), txtFiltroNombre.getText(), dfm);
+            this.sistema.getTiendaDB().buscarTiendaNombre(this.sistema.getConection().getConnection(), txtFiltroNombre.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TableStores.class.getName()).log(Level.SEVERE, null, ex);
         }

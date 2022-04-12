@@ -3,7 +3,15 @@
  */
 package com.backend.entidad;
 
+import com.backend.conectionDB.modelo.PedidoDB;
+import com.backend.conectionDB.modelo.TiendaDB;
+import com.backend.conectionDB.modelo.ProductoDB;
+import com.backend.conectionDB.modelo.EnvioDB;
+import com.backend.conectionDB.modelo.EmpleadoDB;
+import com.backend.conectionDB.modelo.ClienteDB;
+import com.backend.conectionDB.*;
 import com.backend.conectionDB.ConeccionDB;
+import com.backend.conectionDB.modelo.DetallePedidoDB;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +36,50 @@ public class Sistema {
 
     private ConeccionDB conection = new ConeccionDB();
 
+    private ClienteDB clienteDB;
+    private EmpleadoDB empleadoDB;
+    private EnvioDB envioDB;
+    private PedidoDB pedidoDB;
+    private ProductoDB productoDB;
+    private TiendaDB tiendaDB;
+    private DetallePedidoDB detallePedidoDB;
+
     public Sistema() throws SQLException {
+        this.clienteDB = new ClienteDB();
+        this.empleadoDB = new EmpleadoDB();
+        this.envioDB = new EnvioDB();
+        this.pedidoDB = new PedidoDB();
+        this.productoDB = new ProductoDB();
+        this.tiendaDB = new TiendaDB();
+        this.detallePedidoDB = new DetallePedidoDB();
+    }
+
+    public ClienteDB getClienteDB() {
+        return clienteDB;
+    }
+
+    public EmpleadoDB getEmpleadoDB() {
+        return empleadoDB;
+    }
+
+    public EnvioDB getEnvioDB() {
+        return envioDB;
+    }
+
+    public PedidoDB getPedidoDB() {
+        return pedidoDB;
+    }
+
+    public ProductoDB getProductoDB() {
+        return productoDB;
+    }
+
+    public TiendaDB getTiendaDB() {
+        return tiendaDB;
+    }
+
+    public DetallePedidoDB getDetallePedidoDB() {
+        return detallePedidoDB;
     }
 
     /**

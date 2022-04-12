@@ -258,7 +258,7 @@ public class TableClients extends javax.swing.JFrame {
         // TODO add your handling code here:
         dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarClienteNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
+            this.sistema.getClienteDB().buscarClienteNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TableClients.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -268,7 +268,7 @@ public class TableClients extends javax.swing.JFrame {
         // TODO add your handling code here:
         dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarClienteNit(this.sistema.getConection().getConnection(), txtFiltroNit.getText(), dfm);
+            this.sistema.getClienteDB().buscarClienteNit(this.sistema.getConection().getConnection(), txtFiltroNit.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TableClients.class.getName()).log(Level.SEVERE, null, ex);
         }

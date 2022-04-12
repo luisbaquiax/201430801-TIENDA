@@ -21,6 +21,9 @@ public class Cliente implements Comparable<Cliente> {
     private String correoElctronico;
     private String direccion;
 
+    public Cliente() {
+    }
+
     /**
      * constructor que me sirve en la carga de datos
      *
