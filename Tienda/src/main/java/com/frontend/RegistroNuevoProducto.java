@@ -5,6 +5,7 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.ProductoDB;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
     private Sistema sistema;
     private Producto productoNuevo;
     private String codigoTiendoExistencia;
+    private ProductoDB productoDB;
 
     /**
      *
@@ -28,7 +30,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
      */
     public RegistroNuevoProducto(VentanaTienda ventanaTienda, Sistema sistema, String codigoTiendoExistencia) {
         initComponents();
-
+        this.productoDB = new ProductoDB();
         this.ventanaTienda = ventanaTienda;
         this.sistema = sistema;
         this.codigoTiendoExistencia = codigoTiendoExistencia;
@@ -207,14 +209,14 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                 this.sistema.agregarProductoNuevo(productoNuevo);
 
                 //se agrega a la base de datos el nuevo producto
-                this.sistema.getConection().crearProducto(this.sistema.getConection().getConnection(),
+                this.productoDB.crearProducto(this.sistema.getConection().getConnection(),
                         productoNuevo.getCodigo(),
                         productoNuevo.getNombre(),
                         productoNuevo.getFabricante(),
                         productoNuevo.getDescripcion(),
                         productoNuevo.getGarantia());
                 //se crea la existencia para la tienda actual
-                this.sistema.getConection().crearExistentes(this.sistema.getConection().getConnection(),
+                this.productoDB.crearExistentes(this.sistema.getConection().getConnection(),
                         productoNuevo.getCantidad() + "",
                         productoNuevo.getPrecio() + "",
                         this.codigoTiendoExistencia,

@@ -5,6 +5,8 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.EnvioDB;
+import com.backend.conectionDB.modelo.TiendaDB;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
@@ -26,6 +28,8 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
     private Sistema sistema;
     private Tienda tiendaNueva;
     private TiempoDeEnvio tiempoDeEnvioNueva;
+    private TiendaDB tiendaDB;
+    private EnvioDB envioDB;
 
     /**
      *
@@ -39,6 +43,8 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.ventanaTienda = ventanaTienda;
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
+        this.tiendaDB = new TiendaDB();
+        this.envioDB = new EnvioDB();
         
         this.sistema.agregarItemsTienda(comboTiendas);
         
@@ -260,7 +266,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
             tiendaNueva.mostrarDatos();
             try {
                 //se guarda los datos de la nueva tienda en la base de datos
-                this.sistema.getConection().crearTienda(this.sistema.getConection().getConnection(),
+                this.tiendaDB.crearTienda(this.sistema.getConection().getConnection(),
                         tiendaNueva.getCodigo(),
                         tiendaNueva.getNombreTienda(),
                         tiendaNueva.getDireccion(),
@@ -307,7 +313,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                 this.sistema.agregarTiempoDeEnvio(tiempoDeEnvioNueva);
                 this.tiempoDeEnvioNueva.mostrarDatos();
                 try {
-                    this.sistema.getConection().crearTiempoDeEnvio(this.sistema.getConection().getConnection(), tiendaNueva.getCodigo(), tiendaDestino, tiempo);
+                    this.envioDB.crearTiempoDeEnvio(this.sistema.getConection().getConnection(), tiendaNueva.getCodigo(), tiendaDestino, tiempo);
                 } catch (SQLException ex) {
                     Logger.getLogger(RegistroNuevaTienda.class.getName()).log(Level.SEVERE, null, ex);
                 }

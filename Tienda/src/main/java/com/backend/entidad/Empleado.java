@@ -21,6 +21,9 @@ public class Empleado implements Comparable<Empleado> {
     private String correoElectronico;
     private String direccion;
 
+    public Empleado() {
+    }
+
     /**
      * Constructor de la clase empleado para la carga de los datos
      *

@@ -11,7 +11,7 @@ package com.backend.entidad;
  */
 public class Pedido {
 
-    private String codigoPedido;
+    private int codigoPedido;
     private String codigoTiendaORIGEN;
     private String codigoTiendaDESTINO;
     private FechaPedido fechaPedido;
@@ -20,6 +20,7 @@ public class Pedido {
     private int cantidadArticulos;
     private double totalPagar;
     private double anticipo;
+    private boolean registrado;
 
     /**
      * COnstructor del pedido en la carga de datos
@@ -34,7 +35,7 @@ public class Pedido {
      * @param totalPagar
      * @param anticipo
      */
-    public Pedido(String codigoPedido, String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido,
+    public Pedido(int codigoPedido, String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido,
             String codigoCliente, String codigoProductoPedido, String cantidadArticulos, String totalPagar, String anticipo) {
         this.codigoPedido = codigoPedido;
         this.codigoTiendaORIGEN = codigoTiendaORIGEN;
@@ -47,6 +48,50 @@ public class Pedido {
         this.anticipo = Double.parseDouble(anticipo);
     }
 
+    /**
+     * Recuperar un pedido en la base datos
+     *
+     * @param codigo
+     * @param codigoTiendaORIGEN
+     * @param codigoTiendaDESTINO
+     * @param fechaPedido
+     * @param nitDelCliente
+     * @param totalPagar
+     * @param anticipo
+     * @param registrado
+     */
+    public Pedido(int codigo, String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
+        this.codigoPedido = codigo;
+        this.codigoTiendaORIGEN = codigoTiendaORIGEN;
+        this.codigoTiendaDESTINO = codigoTiendaDESTINO;
+        this.fechaPedido = fechaPedido;
+        this.nitDelCliente = nitDelCliente;
+        this.totalPagar = totalPagar;
+        this.anticipo = anticipo;
+        this.registrado = registrado;
+    }
+
+    /**
+     * Create pedido in the DB
+     *
+     * @param codigoTiendaORIGEN
+     * @param codigoTiendaDESTINO
+     * @param fechaPedido
+     * @param nitDelCliente
+     * @param totalPagar
+     * @param anticipo
+     * @param registrado
+     */
+    public Pedido(String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
+        this.codigoTiendaORIGEN = codigoTiendaORIGEN;
+        this.codigoTiendaDESTINO = codigoTiendaDESTINO;
+        this.fechaPedido = fechaPedido;
+        this.nitDelCliente = nitDelCliente;
+        this.totalPagar = totalPagar;
+        this.anticipo = anticipo;
+        this.registrado = registrado;
+    }
+
     public void mostarDatos() {
         System.out.println("Codigo pedido: " + this.codigoPedido + " codigoTiendaORIGEN " + this.codigoTiendaORIGEN + " codigoTiendaDESTINO: " + this.codigoTiendaDESTINO
                 + " fechaPedido: " + this.fechaPedido.mostrarFECHAS() + " codigoCliente: " + this.nitDelCliente + " codigoProductoPedido: " + this.codigoProductoPedido
@@ -54,17 +99,16 @@ public class Pedido {
 
     }
 
-    /**
-     * @return the codigoPedido
-     */
-    public String getCodigoPedido() {
+    @Override
+    public String toString() {
+        return "Pedido{" + "codigoPedido=" + codigoPedido + ", codigoTiendaORIGEN=" + codigoTiendaORIGEN + ", codigoTiendaDESTINO=" + codigoTiendaDESTINO + ", fechaPedido=" + fechaPedido + ", nitDelCliente=" + nitDelCliente + ", codigoProductoPedido=" + codigoProductoPedido + ", cantidadArticulos=" + cantidadArticulos + ", totalPagar=" + totalPagar + ", anticipo=" + anticipo + '}';
+    }
+
+    public int getCodigoPedido() {
         return codigoPedido;
     }
 
-    /**
-     * @param codigoPedido the codigoPedido to set
-     */
-    public void setCodigoPedido(String codigoPedido) {
+    public void setCodigoPedido(int codigoPedido) {
         this.codigoPedido = codigoPedido;
     }
 
@@ -73,6 +117,14 @@ public class Pedido {
      */
     public String getCodigoTiendaORIGEN() {
         return codigoTiendaORIGEN;
+    }
+
+    public boolean isRegistrado() {
+        return registrado;
+    }
+
+    public void setRegistrado(boolean registrado) {
+        this.registrado = registrado;
     }
 
     /**

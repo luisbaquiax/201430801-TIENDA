@@ -384,7 +384,7 @@ public class VentanaTienda extends javax.swing.JFrame {
                     this.productoBuscado.setPrecio(precioNuevo);
                     try {
                         //se actualiza en la base de datos
-                        this.sistema.getConection().modificarPrecioProducto(this.sistema.getConection().getConnection(),
+                        this.sistema.getProductoDB().modificarPrecioProducto(this.sistema.getConection().getConnection(),
                                 productoBuscado.getPrecio() + "",
                                 productoBuscado.getCodigo(),
                                 tiendaActual.getCodigo());
@@ -462,7 +462,7 @@ public class VentanaTienda extends javax.swing.JFrame {
 
             try {
                 //modificamos la cantidad de articulos en la base de datos para esta tienda
-                this.sistema.getConection().modificarCantidadExistenciaProducto(this.sistema.getConection().getConnection(),
+                this.sistema.getProductoDB().modificarCantidadExistenciaProducto(this.sistema.getConection().getConnection(),
                         productoBuscado.getCantidad() + "",
                         productoBuscado.getCodigo(),
                         tiendaActual.getCodigo());

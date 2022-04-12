@@ -5,6 +5,7 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Sistema;
 import java.sql.SQLException;
@@ -21,7 +22,7 @@ public class RegistroNuevoCliente extends javax.swing.JFrame {
     private TableClients tableClients;
     private Sistema sistema;
     private Cliente nuevoCliente;
-
+    private ClienteDB clienteDB;
     /**
      * Creates new form RegistroNuevoCliente
      */
@@ -29,7 +30,8 @@ public class RegistroNuevoCliente extends javax.swing.JFrame {
         initComponents();
         this.tableClients = tableClients;
         this.sistema = sistema;
-
+        this.clienteDB = new ClienteDB();
+                
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
@@ -195,7 +197,7 @@ public class RegistroNuevoCliente extends javax.swing.JFrame {
             this.sistema.agregarClienteNuevo(nuevoCliente);
             try {
                 //se guarda el nuevo cliente en la base de datos
-                this.sistema.getConection().crearCliente(this.sistema.getConection().getConnection(),
+                this.clienteDB.crearCliente(this.sistema.getConection().getConnection(),
                         nuevoCliente.getNit(),
                         nuevoCliente.getNombreCliente(),
                         nuevoCliente.getTelefono(),

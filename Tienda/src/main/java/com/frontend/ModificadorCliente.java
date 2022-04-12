@@ -5,6 +5,7 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Sistema;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ public class ModificadorCliente extends javax.swing.JFrame {
     private TableClients tableClients;
     private Cliente cliente;
     private Sistema sistema;
+    private ClienteDB clienteDB;
 
     /**
      * Para modificar los datos de un cliente
@@ -30,6 +32,7 @@ public class ModificadorCliente extends javax.swing.JFrame {
      */
     public ModificadorCliente(TableClients tableClients, Cliente cliente, Sistema sistema) {
         initComponents();
+        this.clienteDB = new ClienteDB();
         this.tableClients = tableClients;
         this.cliente = cliente;
         this.sistema = sistema;
@@ -222,7 +225,7 @@ public class ModificadorCliente extends javax.swing.JFrame {
             this.cliente.setTelefono(txtTelefono_cliente.getText());
             try {
                 //se actualiza el cliente en la base de datos
-                this.sistema.getConection().modificarCliente(sistema.getConection().getConnection(),
+                this.clienteDB.modificarCliente(sistema.getConection().getConnection(),
                         cliente.getNombreCliente(),
                         cliente.getTelefono(),
                         cliente.getDPI(),

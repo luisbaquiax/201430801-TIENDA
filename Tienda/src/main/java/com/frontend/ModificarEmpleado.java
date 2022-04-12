@@ -5,6 +5,7 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
     private TablaEmpleados tablaEmpleados;
     private Empleado empleado;
     private Sistema sistema;
+    private EmpleadoDB empleadoDB;
 
     /**
      * Creates new form RegistroNuevoCliente
@@ -30,7 +32,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
         this.tablaEmpleados = tablaEmpleados;
         this.empleado = empleado;
         this.sistema = sistema;
-
+        this.empleadoDB = new EmpleadoDB();
         this.txtCodigoEmplead.setText(empleado.getCodigo());
         this.txtNombreEmpleado.setText(empleado.getNomgre());
         this.txtTelefonoEmpleado.setText(empleado.getTelefono());
@@ -210,7 +212,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
             this.empleado.setNomgre(txtNombreEmpleado.getText());
             this.empleado.setTelefono(txtTelefonoEmpleado.getText());
             try {
-                this.sistema.getConection().modificarEmpleado(sistema.getConection().getConnection(),
+                this.empleadoDB.modificarEmpleado(sistema.getConection().getConnection(),
                         empleado.getCodigo(),
                         empleado.getNomgre(),
                         empleado.getTelefono(),

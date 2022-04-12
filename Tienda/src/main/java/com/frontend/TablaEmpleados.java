@@ -255,7 +255,7 @@ public class TablaEmpleados extends javax.swing.JFrame {
         // TODO add your handling code here:
         dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarEmpleadoNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
+            this.sistema.getEmpleadoDB().buscarEmpleadoNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TablaEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -265,7 +265,7 @@ public class TablaEmpleados extends javax.swing.JFrame {
         // TODO add your handling code here:
          dfm.setRowCount(0);
         try {
-            this.sistema.getConection().buscarEmpleadoCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
+            this.sistema.getEmpleadoDB().buscarEmpleadoCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
         } catch (SQLException ex) {
             Logger.getLogger(TablaEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
