@@ -5,9 +5,13 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
+import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
+import com.tienda.utiles.Utiles;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,7 +22,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author luis
  */
-public class TablaEmpleados extends javax.swing.JFrame {
+public final class TablaEmpleados extends javax.swing.JFrame {
 
     private VentanaEmpleado ventanaEmpleado;
     private Sistema sistema;
@@ -26,24 +30,29 @@ public class TablaEmpleados extends javax.swing.JFrame {
 
     private ModificarEmpleado modificarEmpleado;
     private RegistroNuevoEmpleado registroNuevoEmpleado;
+    private List<Empleado> empleados;
 
     private DefaultTableModel dfm;
 
     /**
      * Creates new form TablaEmpleados
+     *
+     * @param ventanaEmpleado
+     * @param sistema
      */
     public TablaEmpleados(VentanaEmpleado ventanaEmpleado, Sistema sistema) {
-        try {
-             initComponents();
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-        }
-       
+        initComponents();
+        setLocationRelativeTo(null);
+        setTitle("Empleados");
+        int tam = 25;
+        Utiles.ponerIconoButton(btnOut, "iconos/outRed.jpeg");
+        Utiles.ponerIconoButton(btnListEmployee, "iconos/lis.png", tam);
+        Utiles.ponerIconoButton(btnRegistroNuevoEmpleado, "iconos/addGreen.png", tam);
+        Utiles.ponerIconoButton(btnBack, "iconos/cancel.png", tam);
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
-
-        llenarTablaEmpleados();
+        this.empleados = this.sistema.getEmpleadoDB().getEmpleados();
+        llenarTablaEmpleados(this.empleados);
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -60,65 +69,57 @@ public class TablaEmpleados extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         scrollTablaEmpleados = new javax.swing.JScrollPane();
         tableListaEmpleados = new javax.swing.JTable();
-        btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnModificarEmpleado = new javax.swing.JButton();
-        btnOrdenarEmpleadosCodigo = new javax.swing.JButton();
         btnRegistroNuevoEmpleado = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         txtFiltroNOmbre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtFiltroCodigo = new javax.swing.JTextField();
+        btnListEmployee = new javax.swing.JButton();
+        btnBack = new javax.swing.JButton();
+        btnOut = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
         tableListaEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Nombre", "Teléfono", "NIT", "DPI", "E-mail", "Direción"
+                "Código", "Nombre", "Teléfono", "NIT", "DPI", "E-mail", "Direción", "Editar"
             }
         ));
+        tableListaEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableListaEmpleadosMouseClicked(evt);
+            }
+        });
         scrollTablaEmpleados.setViewportView(tableListaEmpleados);
 
-        btnRegresar.setText("Regresar a la ventana anterior");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
-            }
-        });
-
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Listado de empleados");
 
-        btnModificarEmpleado.setText("MODIFICAR EMPLEADO");
-        btnModificarEmpleado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarEmpleadoActionPerformed(evt);
-            }
-        });
-
-        btnOrdenarEmpleadosCodigo.setText("Ordenar  por código");
-        btnOrdenarEmpleadosCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOrdenarEmpleadosCodigoActionPerformed(evt);
-            }
-        });
-
-        btnRegistroNuevoEmpleado.setText("REGISTRAR NUEVO EMPLEADO");
+        btnRegistroNuevoEmpleado.setBackground(new java.awt.Color(0, 0, 255));
+        btnRegistroNuevoEmpleado.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnRegistroNuevoEmpleado.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistroNuevoEmpleado.setText("Nuevo Empleado");
         btnRegistroNuevoEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistroNuevoEmpleadoActionPerformed(evt);
             }
         });
 
-        jLabel2.setText("Elige al empleado");
-
-        jLabel3.setText("Todos los empleados:");
-
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Buscar por nombre:");
 
         txtFiltroNOmbre.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -127,6 +128,7 @@ public class TablaEmpleados extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Buscar por código:");
 
         txtFiltroCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -135,67 +137,102 @@ public class TablaEmpleados extends javax.swing.JFrame {
             }
         });
 
+        btnListEmployee.setBackground(new java.awt.Color(255, 204, 51));
+        btnListEmployee.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnListEmployee.setForeground(new java.awt.Color(0, 0, 0));
+        btnListEmployee.setText("Ver todos");
+        btnListEmployee.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListEmployeeActionPerformed(evt);
+            }
+        });
+
+        btnBack.setBackground(new java.awt.Color(255, 0, 0));
+        btnBack.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnBack.setForeground(new java.awt.Color(255, 255, 255));
+        btnBack.setText("Regresar");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        btnOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutActionPerformed(evt);
+            }
+        });
+
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
+        jButton1.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Reiniciar búsqueda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTablaEmpleados)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistroNuevoEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
+                        .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnListEmployee, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                            .addComponent(txtFiltroNOmbre))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addComponent(btnModificarEmpleado)
-                        .addGap(34, 34, 34)
-                        .addComponent(btnRegistroNuevoEmpleado)
-                        .addGap(32, 32, 32)
-                        .addComponent(btnOrdenarEmpleadosCodigo)
-                        .addGap(18, 18, 18))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(120, 120, 120))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(324, 324, 324)
-                                .addComponent(jLabel3)
-                                .addGap(33, 33, 33)))))
-                .addComponent(btnRegresar)
-                .addGap(54, 54, 54))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(536, 536, 536)
+                        .addComponent(btnBack, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollTablaEmpleados))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnOut, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRegistroNuevoEmpleado)
+                        .addComponent(btnListEmployee))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnBack)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(62, 62, 62)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
-                .addGap(60, 60, 60)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnOrdenarEmpleadosCodigo)
-                    .addComponent(btnRegresar)
-                    .addComponent(btnRegistroNuevoEmpleado)
                     .addComponent(jLabel4)
                     .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificarEmpleado))
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtFiltroCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
-                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -206,42 +243,14 @@ public class TablaEmpleados extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnModificarEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarEmpleadoActionPerformed
-        // TODO add your handling code here:
-
-        //obtener la fila
-        int fila = this.tableListaEmpleados.getSelectedRow();
-        if (fila >= 0) {
-            System.out.println(fila);
-            String codigo = String.valueOf(this.dfm.getValueAt(fila, 0));
-
-            this.empleadoModificando = this.sistema.buscarEmpleado(codigo);
-
-            this.modificarEmpleado = new ModificarEmpleado(this, this.empleadoModificando,this.sistema);
-            this.modificarEmpleado.setVisible(true);
-            super.setVisible(false);
-            this.dfm.setRowCount(0);
-        }
-    }//GEN-LAST:event_btnModificarEmpleadoActionPerformed
-
-    private void btnOrdenarEmpleadosCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenarEmpleadosCodigoActionPerformed
-        // TODO add your handling code here:
-        dfm.setRowCount(0);
-        this.sistema.ordenarEmpleadosPorCodigo();
-        llenarTablaEmpleados();
-    }//GEN-LAST:event_btnOrdenarEmpleadosCodigoActionPerformed
-
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
-        super.setVisible(false);
-        this.ventanaEmpleado.setVisible(true);
-    }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnRegistroNuevoEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroNuevoEmpleadoActionPerformed
         // TODO add your handling code here:
@@ -255,7 +264,8 @@ public class TablaEmpleados extends javax.swing.JFrame {
         // TODO add your handling code here:
         dfm.setRowCount(0);
         try {
-            this.sistema.getEmpleadoDB().buscarEmpleadoNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
+            this.empleados = this.sistema.getEmpleadoDB().mostrarEmpleadosConFiltro(ConeccionDB.getConnection(), txtFiltroNOmbre.getText(), EmpleadoDB.FILTRO_NAME);
+            llenarTablaEmpleados(this.empleados);
         } catch (SQLException ex) {
             Logger.getLogger(TablaEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -263,17 +273,59 @@ public class TablaEmpleados extends javax.swing.JFrame {
 
     private void txtFiltroCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroCodigoKeyReleased
         // TODO add your handling code here:
-         dfm.setRowCount(0);
+        dfm.setRowCount(0);
         try {
-            this.sistema.getEmpleadoDB().buscarEmpleadoCodigo(this.sistema.getConection().getConnection(), txtFiltroCodigo.getText(), dfm);
+            this.empleados = this.sistema.getEmpleadoDB().mostrarEmpleadosConFiltro(ConeccionDB.getConnection(), txtFiltroCodigo.getText(), EmpleadoDB.FILTRO_CODE);
+            llenarTablaEmpleados(this.empleados);
         } catch (SQLException ex) {
             Logger.getLogger(TablaEmpleados.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_txtFiltroCodigoKeyReleased
 
-    public void llenarTablaEmpleados() {
+    private void btnListEmployeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListEmployeeActionPerformed
+        // TODO add your handling code here:
+        this.empleados = this.sistema.getEmpleadoDB().getEmpleados();
+        llenarTablaEmpleados(this.empleados);
+    }//GEN-LAST:event_btnListEmployeeActionPerformed
+
+    private void btnOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutActionPerformed
+        // TODO add your handling code here:
+        System.exit(DO_NOTHING_ON_CLOSE);
+    }//GEN-LAST:event_btnOutActionPerformed
+
+    private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBackActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.ventanaEmpleado.setVisible(true);
+    }//GEN-LAST:event_btnBackActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.ventanaEmpleado.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void tableListaEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListaEmpleadosMouseClicked
+        // TODO add your handling code here:
+        int fila = this.tableListaEmpleados.getSelectedRow();
+        int columna = this.tableListaEmpleados.getSelectedColumn();
+        if (columna == 7) {
+            ModificarEmpleado m = new ModificarEmpleado(this, empleados.get(fila), sistema);
+            m.setVisible(true);
+            setVisible(false);
+        }
+    }//GEN-LAST:event_tableListaEmpleadosMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.txtFiltroCodigo.setText("");
+        this.txtFiltroNOmbre.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    public void llenarTablaEmpleados(List<Empleado> empleados) {
         dfm = (DefaultTableModel) tableListaEmpleados.getModel();
-        for (Empleado empleado : this.sistema.getEmpleados()) {
+        dfm.setRowCount(0);
+        for (Empleado empleado : empleados) {
 
             String[] datos = {empleado.getCodigo(),
                 empleado.getNomgre(),
@@ -281,7 +333,8 @@ public class TablaEmpleados extends javax.swing.JFrame {
                 empleado.getNit(),
                 empleado.getDpi(),
                 empleado.getCorreoElectronico(),
-                empleado.getDireccion()
+                empleado.getDireccion(),
+                "Editar"
             };
             dfm.addRow(datos);
         }
@@ -293,13 +346,12 @@ public class TablaEmpleados extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModificarEmpleado;
-    private javax.swing.JButton btnOrdenarEmpleadosCodigo;
+    private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnListEmployee;
+    private javax.swing.JButton btnOut;
     private javax.swing.JButton btnRegistroNuevoEmpleado;
-    private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;

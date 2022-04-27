@@ -5,9 +5,12 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.ProductoDB;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,12 +33,15 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
      */
     public RegistroNuevoProducto(VentanaTienda ventanaTienda, Sistema sistema, String codigoTiendoExistencia) {
         initComponents();
+        setIconImage(new ImageIcon("iconos/iconos/store.pn").getImage());
+        setTitle("Nuevo producto");
         this.productoDB = new ProductoDB();
         this.ventanaTienda = ventanaTienda;
         this.sistema = sistema;
         this.codigoTiendoExistencia = codigoTiendoExistencia;
 
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -67,6 +73,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setText("Registro de nuevo producto");
@@ -106,39 +113,35 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel8))
-                                .addGap(22, 22, 22)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
-                                    .addComponent(txtPrecioProducto, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCantidad, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtCodigoProducto, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFabricante, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtGarantíaProducto)))
-                            .addComponent(jLabel1)))
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(187, 187, 187)
-                        .addComponent(btnGuardarProducto)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel9)
-                .addGap(85, 85, 85)
-                .addComponent(btnRegresar)
-                .addGap(67, 67, 67))
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnGuardarProducto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtDescripcion)
+                            .addComponent(txtPrecioProducto)
+                            .addComponent(txtCantidad)
+                            .addComponent(txtCodigoProducto)
+                            .addComponent(txtFabricante)
+                            .addComponent(txtGarantíaProducto, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNombreProducto))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +182,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                     .addComponent(txtGarantíaProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnGuardarProducto)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -209,14 +212,16 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                 this.sistema.agregarProductoNuevo(productoNuevo);
 
                 //se agrega a la base de datos el nuevo producto
-                this.productoDB.crearProducto(this.sistema.getConection().getConnection(),
+                this.productoDB.crearProducto(
+                        ConeccionDB.getConnection(),
                         productoNuevo.getCodigo(),
                         productoNuevo.getNombre(),
                         productoNuevo.getFabricante(),
                         productoNuevo.getDescripcion(),
                         productoNuevo.getGarantia());
                 //se crea la existencia para la tienda actual
-                this.productoDB.crearExistentes(this.sistema.getConection().getConnection(),
+                this.productoDB.crearExistentes(
+                        ConeccionDB.getConnection(),
                         productoNuevo.getCantidad() + "",
                         productoNuevo.getPrecio() + "",
                         this.codigoTiendoExistencia,
@@ -240,9 +245,9 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
-        this.ventanaTienda.setVisible(true);
         super.setVisible(false);
-        this.ventanaTienda.llenarTablaProductos();
+        this.ventanaTienda.setVisible(true);
+
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

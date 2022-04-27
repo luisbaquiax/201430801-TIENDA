@@ -9,9 +9,9 @@ import com.backend.conectionDB.modelo.ProductoDB;
 import com.backend.conectionDB.modelo.EnvioDB;
 import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.conectionDB.modelo.ClienteDB;
-import com.backend.conectionDB.*;
 import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.DetallePedidoDB;
+import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +43,7 @@ public class Sistema {
     private ProductoDB productoDB;
     private TiendaDB tiendaDB;
     private DetallePedidoDB detallePedidoDB;
+    private ProductoExistenciaDB productoExistenciaDB;
 
     public Sistema() throws SQLException {
         this.clienteDB = new ClienteDB();
@@ -52,6 +53,11 @@ public class Sistema {
         this.productoDB = new ProductoDB();
         this.tiendaDB = new TiendaDB();
         this.detallePedidoDB = new DetallePedidoDB();
+        this.productoExistenciaDB = new ProductoExistenciaDB();
+    }
+
+    public ProductoExistenciaDB getProductoExistenciaDB() {
+        return productoExistenciaDB;
     }
 
     public ClienteDB getClienteDB() {
@@ -113,7 +119,7 @@ public class Sistema {
      * @param comboTiendas
      */
     public void agregarItemsTienda(JComboBox comboTiendas) {
-        for (Tienda tienda : getTiendas()) {
+        for (Tienda tienda : tiendaDB.getTiendas(TiendaDB.SELECT_TIENDAS)) {
             comboTiendas.addItem(tienda.getCodigo());
         }
     }
@@ -132,13 +138,6 @@ public class Sistema {
      */
     public void agregarTiempoDeEnvio(TiempoDeEnvio tiempoDeEnvioNueva) {
         this.getTiemposDeEnvio().add(tiempoDeEnvioNueva);
-    }
-
-    /**
-     * Metodo para ordenar los tiempos de envio de menor a mayor
-     */
-    public void ordenarTiempoDeEnvio() {
-        Collections.sort(this.getTiemposDeEnvio());
     }
 
     /**
@@ -326,7 +325,7 @@ public class Sistema {
      * @return
      */
     public Tienda buscarTienda(String codigoTienda) {
-        for (Tienda tienda : getTiendas()) {
+        for (Tienda tienda : getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS)) {
             if (tienda.getCodigo().equals(codigoTienda)) {
                 return tienda;
             }

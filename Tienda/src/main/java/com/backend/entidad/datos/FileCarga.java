@@ -71,7 +71,6 @@ public class FileCarga {
 
                 }
                 String[] lineas = datos.split("\n");
-
                 for (int i = 0; i < lineas.length; i++) {
 
                     String[] infLinea = lineas[i].split(",");
@@ -115,6 +114,7 @@ public class FileCarga {
                                         infLinea[5],
                                         infLinea[6]);
                                 this.sistema.getProductos().add(producto);
+                                this.producto.setVendido(false);
                                 //se agrega la existencia a la base de datos
                                 this.sistema.getProductoDB().crearExistentes(
                                         ConeccionDB.getConnection(),
@@ -132,15 +132,18 @@ public class FileCarga {
                                         infLinea[5],
                                         infLinea[6]);
                                 this.sistema.getProductos().add(producto);
+                                this.producto.setVendido(false);
                                 //se agrega el produtcto a la base de datos
-                                this.sistema.getProductoDB().crearProducto(this.sistema.getConection().getConnection(),
+                                this.sistema.getProductoDB().crearProducto(
+                                        ConeccionDB.getConnection(),
                                         producto.getCodigo(),
                                         producto.getNombre(),
                                         producto.getFabricante(),
                                         producto.getDescripcion(),
                                         producto.getGarantia());
                                 //se agrega la existencia a la base de datos
-                                this.sistema.getProductoDB().crearExistentes(this.sistema.getConection().getConnection(),
+                                this.sistema.getProductoDB().crearExistentes(
+                                        ConeccionDB.getConnection(),
                                         producto.getCantidad() + "",
                                         producto.getPrecio() + "",
                                         producto.getTiendaDondeExiste(),
@@ -179,7 +182,6 @@ public class FileCarga {
                                         String.valueOf(cliente.getCredito()),
                                         cliente.getCorreoElctronico(),
                                         cliente.getDireccion());
-                                //
                                 this.sistema.getCodigosExistentes().add(infLinea[2]);
                             }
 
@@ -208,12 +210,13 @@ public class FileCarga {
                                     infLinea[9]);
                             this.sistema.getPedidos().add(this.pedido);
                             //se agrega el pedido a la base de datos
-                            this.sistema.getPedidoDB().crearPedidoConID(ConeccionDB.getConnection(), this.pedido);
+                            this.sistema.getPedidoDB().crearPedidoConID(
+                                    ConeccionDB.getConnection(), this.pedido);
                             this.sistema.getDetallePedidoDB().crearPedido(
                                     ConeccionDB.getConnection(),
                                     new DetallePedido(
                                             Integer.parseInt(infLinea[7]),
-                                            pedido.getTotalPagar(),
+                                            getProductoDetalle(pedido.getCodigoProductoPedido()).getPrecio() * pedido.getCantidadArticulos(),
                                             pedido.getCodigoProductoPedido(),
                                             Integer.parseInt(infLinea[1])));
                         } else {
@@ -223,7 +226,7 @@ public class FileCarga {
                     }
                 }
             } catch (IOException ex) {
-
+                System.out.println(ex.getLocalizedMessage());
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -241,6 +244,15 @@ public class FileCarga {
         this.sistema.mostrarTiemposDeEnvio();
         this.sistema.mostrarDatosErroneos();
 
+    }
+
+    private Producto getProductoDetalle(String codigo) {
+        for (int i = 0; i < sistema.getProductos().size(); i++) {
+            if (codigo.equalsIgnoreCase(sistema.getProductos().get(i).getCodigo())) {
+                return sistema.getProductos().get(i);
+            }
+        }
+        return null;
     }
 
 }

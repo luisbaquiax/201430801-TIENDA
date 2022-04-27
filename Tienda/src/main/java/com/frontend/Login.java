@@ -5,21 +5,11 @@
  */
 package com.frontend;
 
-import com.backend.conectionDB.ConeccionDB;
-import com.frontend.cliente.CatalogoProductos;
 import com.backend.entidad.*;
 import com.tienda.utiles.Utiles;
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /**
@@ -41,9 +31,6 @@ public class Login extends javax.swing.JFrame {
         Utiles.ponerIconoLabel(labelEmpleado, "iconos/empleado.png");
         Utiles.ponerIconoLabel(labelClientes, "iconos/clientes.jpeg");
         setTitle(" INICIAR SESIÓN ");
-        //BORDE DE COMPONENTES
-        Border borde = BorderFactory.createLineBorder(Color.BLACK);
-
         this.sistema = new Sistema();
 
     }
@@ -66,6 +53,7 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

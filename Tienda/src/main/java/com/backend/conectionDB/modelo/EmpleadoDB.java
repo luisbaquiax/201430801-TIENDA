@@ -18,6 +18,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class EmpleadoDB {
 
+    public static final String FILTRO_CODE = "SELECT * FROM empleado WHERE codigo LIKE ? ORDER BY codigo ASC";
+    public static final String FILTRO_NAME = "SELECT * FROM empleado WHERE nombre LIKE ? ORDER BY codigo ASC";
+
     public EmpleadoDB() {
     }
 
@@ -77,6 +80,7 @@ public class EmpleadoDB {
      * @param nit
      * @param email
      * @param direccion
+     * @throws java.sql.SQLException
      */
     public void modificarEmpleado(Connection connection,
             String codigo,
@@ -85,95 +89,45 @@ public class EmpleadoDB {
             String dpi,
             String nit,
             String email,
-            String direccion) {
+            String direccion) throws SQLException {
 
-        String query = "UPDATE EMPLEADO SET nombre = ?, telefono = ?, dpi = ?, nit = ?, email = ?, direccion = ? WHERE codigo = ?";
+        String query = "UPDATE empleado SET nombre = ?, telefono = ?, dpi = ?, nit = ?, email = ?, direccion = ? WHERE codigo = ?";
 
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
+        PreparedStatement preSt = connection.prepareStatement(query);
 
-            preSt.setString(1, nombre);
-            preSt.setString(2, telefono);
-            preSt.setString(3, dpi);
-            preSt.setString(4, nit);
-            preSt.setString(5, email);
-            preSt.setString(6, direccion);
-            preSt.setString(7, codigo);
+        preSt.setString(1, nombre);
+        preSt.setString(2, telefono);
+        preSt.setString(3, dpi);
+        preSt.setString(4, nit);
+        preSt.setString(5, email);
+        preSt.setString(6, direccion);
+        preSt.setString(7, codigo);
 
-            preSt.executeUpdate();
-
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        preSt.executeUpdate();
 
     }
 
     /**
-     * Busca el emplead por codigo
      *
      * @param connection
      * @param filtro
-     * @param dfm
+     * @param query
+     * @return
      */
-    public void buscarEmpleadoCodigo(Connection connection, String filtro, DefaultTableModel dfm) {
-        String query = "SELECT * FROM empleado WHERE codigo LIKE ? ORDER BY codigo ASC";
-
+    public List<Empleado> mostrarEmpleadosConFiltro(Connection connection, String filtro, String query) {
+        List<Empleado> empleados = new ArrayList<>();
         try ( PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, "%" + filtro + "%");
             ResultSet result = preSt.executeQuery();
 
-            ResultSetMetaData meta = result.getMetaData();
-
             while (result.next()) {
-
-                String[] datos = {result.getString(1),
-                    result.getString(2),
-                    result.getString(3),
-                    result.getString(5),
-                    result.getString(4),
-                    result.getString(6),
-                    result.getString(7)
-                };
-                dfm.addRow(datos);
+                empleados.add(getEmpleado(result));
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
-    }
-
-    /**
-     * Busca al empleado usanto el nombre como filtro
-     *
-     * @param connection
-     * @param filtro
-     * @param dfm
-     */
-    public void buscarEmpleadoNombre(Connection connection, String filtro, DefaultTableModel dfm) {
-        String query = "SELECT * FROM empleado WHERE nombre LIKE ? ORDER BY codigo ASC";
-
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
-
-            preSt.setString(1, "%" + filtro + "%");
-            ResultSet result = preSt.executeQuery();
-
-            ResultSetMetaData meta = result.getMetaData();
-
-            while (result.next()) {
-
-                String[] datos = {
-                    result.getString(1),
-                    result.getString(2),
-                    result.getString(3),
-                    result.getString(5),
-                    result.getString(4),
-                    result.getString(6),
-                    result.getString(7)
-                };
-                dfm.addRow(datos);
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        return empleados;
     }
 
     public Empleado buscarEmpleado(String codigo) {
@@ -191,14 +145,7 @@ public class EmpleadoDB {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                empleado = new Empleado(
-                        resultSet.getString("nombre"),
-                        resultSet.getString("codigo"),
-                        resultSet.getString("telefono"),
-                        resultSet.getString("dpi"),
-                        resultSet.getString("nit"),
-                        resultSet.getString("email"),
-                        resultSet.getString("direccion"));
+                empleado = getEmpleado(resultSet);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -220,18 +167,22 @@ public class EmpleadoDB {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                empleado = new Empleado(
-                        resultSet.getString("nombre"),
-                        resultSet.getString("codigo"),
-                        resultSet.getString("telefono"),
-                        resultSet.getString("dpi"),
-                        resultSet.getString("nit"),
-                        resultSet.getString("email"),
-                        resultSet.getString("direccion"));
+                empleado = getEmpleado(resultSet);
                 empleados.add(empleado);
             }
         } catch (SQLException e) {
         }
         return empleados;
+    }
+
+    private Empleado getEmpleado(ResultSet resultSet) throws SQLException {
+        return new Empleado(
+                resultSet.getString("nombre"),
+                resultSet.getString("codigo"),
+                resultSet.getString("telefono"),
+                resultSet.getString("dpi"),
+                resultSet.getString("nit"),
+                resultSet.getString("email"),
+                resultSet.getString("direccion"));
     }
 }

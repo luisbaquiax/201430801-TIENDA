@@ -5,23 +5,30 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.EnvioDB;
 import com.backend.conectionDB.modelo.TiendaDB;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
+import com.tienda.utiles.Utiles;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.plaf.SpinnerUI;
 
 /**
  *
  * @author luis
  */
 public class RegistroNuevaTienda extends javax.swing.JFrame {
-    
+
     private VentanaTienda ventanaTienda;
     private VentanaEmpleado ventanaEmpleado;
     private VerificadorTiempoEnvio vrEnvio;
@@ -30,6 +37,9 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
     private TiempoDeEnvio tiempoDeEnvioNueva;
     private TiendaDB tiendaDB;
     private EnvioDB envioDB;
+
+    private List<Tienda> tiendas;
+    private List<TiempoDeEnvio> envios;
 
     /**
      *
@@ -40,16 +50,29 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
      */
     public RegistroNuevaTienda(VentanaTienda ventanaTienda, VentanaEmpleado ventanaEmpleado, VerificadorTiempoEnvio vrEnvio, Sistema sistema) {
         initComponents();
+        int tam = 25;
+        Utiles.ponerIconoButton(btnCrearTienda, "iconos/addGreen.png", tam);
+        Utiles.ponerIconoButton(jButton1, "iconos/reset.jpeg", tam);
+        Utiles.ponerIconoButton(btnSaveChanges, "iconos/saveBlue.jpeg", tam);
+        Utiles.ponerIconoButton(btnCancel, "iconos/cancel.png", tam);
+        Utiles.ponerIconoButton(btnRegresarCancelar, "iconos/backBlueScreen.png", tam);
+        Utiles.ponerIconoButton(btnRegresarTienda, "iconos/backBlueScreen.png", tam);
+        Utiles.ponerIconoButton(btnAgregarTiempo, "iconos/add2.png", tam);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.jTabbedPane1.setSelectedIndex(1);
         this.ventanaTienda = ventanaTienda;
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
         this.tiendaDB = new TiendaDB();
         this.envioDB = new EnvioDB();
-        
-        this.sistema.agregarItemsTienda(comboTiendas);
-        
-        super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        String cadena = "";
+
+        this.tiendas = sistema.getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS);
+        for (Tienda tienda : tiendas) {
+            this.comoTiendas.addItem(tienda.getCodigo());
+        }
+        this.envios = new ArrayList<>();
+        establecerFocus();
     }
 
     /**
@@ -61,212 +84,392 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        comoTiendas = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        spinerTiempo = new javax.swing.JSpinner();
+        btnSaveChanges = new javax.swing.JButton();
+        btnRegresarTienda = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
+        btnAgregarTiempo = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         txtNombreTienda = new javax.swing.JTextField();
         txtDireccionTienda = new javax.swing.JTextField();
-        txtCodigoTienda = new javax.swing.JTextField();
+        btnRegresarCancelar = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        txtTelefono2 = new javax.swing.JTextField();
         txtCorreoElectronico = new javax.swing.JTextField();
+        txtTelefono2 = new javax.swing.JTextField();
         txtHORARIO = new javax.swing.JTextField();
-        btnGuardarDatosTienda = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
-        btnRegresar = new javax.swing.JButton();
-        comboTiendas = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        btnAgregarTiempo = new javax.swing.JButton();
-        spinerTiempoEnvío = new javax.swing.JSpinner();
+        txtCodigoTienda = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        btnCrearTienda = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel1.setText("Registro de nueva tienda");
-
-        jLabel2.setText("Nombre: *");
-
-        jLabel3.setText("Dirección: *");
-
-        jLabel4.setText("Código: *");
-
-        jLabel5.setText("Teléfono 1: *");
-
-        jLabel6.setText("Correo Electónico:");
-
-        jLabel7.setText("Teléfono 2: ");
-
-        jLabel8.setText("Horario:");
-
-        btnGuardarDatosTienda.setText("Guardar cambios");
-        btnGuardarDatosTienda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarDatosTiendaActionPerformed(evt);
+        setBackground(new java.awt.Color(0, 0, 0));
+        setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
             }
         });
 
-        jLabel9.setText("*campos obligatorios");
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
 
-        btnRegresar.setText("REGRESAR");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+        jTabbedPane1.setBackground(new java.awt.Color(0, 0, 0));
+        jTabbedPane1.setEnabled(false);
+
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Tienda destino:");
+
+        jLabel11.setFont(new java.awt.Font("sansserif", 1, 36)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Agregando tienda destino y tiempo de envío");
+
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Tiempo de envío:");
+
+        spinerTiempo.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
+        btnSaveChanges.setBackground(new java.awt.Color(0, 51, 255));
+        btnSaveChanges.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnSaveChanges.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveChanges.setText("Guardar cambios");
+        btnSaveChanges.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
+                btnSaveChangesActionPerformed(evt);
             }
         });
 
-        comboTiendas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lista tiendas (código)" }));
+        btnRegresarTienda.setBackground(new java.awt.Color(255, 204, 0));
+        btnRegresarTienda.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnRegresarTienda.setForeground(new java.awt.Color(0, 0, 0));
+        btnRegresarTienda.setText("Regresar a la tienda");
+        btnRegresarTienda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarTiendaActionPerformed(evt);
+            }
+        });
 
-        jLabel10.setText("Tieda destino");
+        btnCancel.setBackground(new java.awt.Color(255, 0, 0));
+        btnCancel.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
-        btnAgregarTiempo.setText("Agregar tiempo de envío");
+        btnAgregarTiempo.setBackground(new java.awt.Color(255, 153, 0));
+        btnAgregarTiempo.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnAgregarTiempo.setForeground(new java.awt.Color(0, 0, 0));
+        btnAgregarTiempo.setText("Agregar tiempo");
         btnAgregarTiempo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarTiempoActionPerformed(evt);
             }
         });
 
-        spinerTiempoEnvío.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel2))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(67, 67, 67)
-                        .addComponent(jLabel1)
-                        .addGap(152, 152, 152))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtCodigoTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jLabel5)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(txtNombreTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(txtDireccionTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel9)
-                                            .addGap(360, 360, 360)
-                                            .addComponent(btnRegresar)))
-                                    .addComponent(txtHORARIO, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33)
-                                .addComponent(btnAgregarTiempo)
-                                .addGap(46, 46, 46)
-                                .addComponent(btnGuardarDatosTienda)
-                                .addGap(51, 51, 51))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(54, 54, 54)
-                                        .addComponent(jLabel10))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(57, 57, 57)
-                                        .addComponent(spinerTiempoEnvío, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 0, Short.MAX_VALUE))))))
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 925, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(btnSaveChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(101, 101, 101)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregarTiempo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinerTiempo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comoTiendas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81)
+                .addComponent(btnRegresarTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel10)
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregarTiempo)
-                    .addComponent(btnGuardarDatosTienda))
-                .addGap(20, 20, 20)
-                .addComponent(spinerTiempoEnvío, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
-            .addGroup(layout.createSequentialGroup()
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11)
+                .addGap(85, 85, 85)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(comoTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(spinerTiempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(48, 48, 48)
+                .addComponent(btnAgregarTiempo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSaveChanges)
+                    .addComponent(btnCancel)
+                    .addComponent(btnRegresarTienda))
+                .addGap(35, 35, 35))
+        );
+
+        jTabbedPane1.addTab("", jPanel2);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Nombre: *");
+
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("*campos obligatorios");
+
+        btnRegresarCancelar.setBackground(new java.awt.Color(204, 0, 0));
+        btnRegresarCancelar.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnRegresarCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresarCancelar.setText("Cancelar");
+        btnRegresarCancelar.setPreferredSize(new java.awt.Dimension(63, 27));
+        btnRegresarCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarCancelarActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Dirección: *");
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Teléfono 1: *");
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Código: *");
+
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Teléfono 2: ");
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Horario:");
+
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("Correo Electónico:");
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Registro de nueva tienda");
+
+        jButton1.setBackground(new java.awt.Color(0, 0, 204));
+        jButton1.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Nueva tienda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnCrearTienda.setBackground(new java.awt.Color(255, 153, 0));
+        btnCrearTienda.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnCrearTienda.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearTienda.setText("Crear tienda");
+        btnCrearTienda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearTiendaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(85, 85, 85)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(208, 208, 208)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel2))
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtHORARIO, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtNombreTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel3))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtCodigoTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel5))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jLabel6)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDireccionTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCrearTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRegresarCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(88, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(btnRegresar))
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegresarCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1)
+                    .addComponent(btnCrearTienda))
+                .addGap(38, 38, 38)
+                .addComponent(jLabel9)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtNombreTienda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(txtDireccionTienda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtCodigoTienda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelefono2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(txtHORARIO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 181, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("", jPanel1);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 925, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPane1)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnGuardarDatosTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarDatosTiendaActionPerformed
+    private void btnRegresarCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarCancelarActionPerformed
         // TODO add your handling code here:
-        if (txtNombreTienda.getText().isEmpty() || (txtDireccionTienda.getText().isEmpty())
-                || (txtCodigoTienda.getText().isEmpty()) || (txtTelefono.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Llene los campos obligatorios");
+        setVisible(false);
+        this.ventanaTienda.setVisible(true);
+
+    }//GEN-LAST:event_btnRegresarCancelarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.ventanaTienda.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void btnCrearTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearTiendaActionPerformed
+        // TODO add your handling code here:
+        if (txtCodigoTienda.getText().isBlank() || txtNombreTienda.getText().isBlank() || txtDireccionTienda.getText().isBlank() || txtTelefono.getText().isBlank()) {
+            JOptionPane.showMessageDialog(this, "Llene los campos obligatorios", "Campos obligatorios *", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            if (txtTelefono2.getText().isEmpty()) {
-                this.txtTelefono2.setText("");
-                if (txtCorreoElectronico.getText().isEmpty()) {
-                    this.txtCorreoElectronico.setText("No hay correo");
-                    if (txtHORARIO.getText().isEmpty()) {
-                        this.txtHORARIO.setText("");
-                    }
-                }
-            }
-            //se crea una instancia de la clase tienda y se agrega al sistema como nueva tienda
-            this.tiendaNueva = new Tienda(txtNombreTienda.getText(), txtDireccionTienda.getText(), txtCodigoTienda.getText(), txtTelefono.getText(), txtTelefono2.getText(),
-                    txtCorreoElectronico.getText(), txtHORARIO.getText());
-            this.sistema.agregarTiendaNueva(tiendaNueva);
-            this.ventanaEmpleado.getComboTiendas().addItem(tiendaNueva.getCodigo());
-            tiendaNueva.mostrarDatos();
+            this.tiendaNueva = new Tienda(
+                    txtNombreTienda.getText(),
+                    txtDireccionTienda.getText(),
+                    txtCodigoTienda.getText(),
+                    txtTelefono.getText(),
+                    txtTelefono2.getText(),
+                    txtCorreoElectronico.getText(),
+                    txtHORARIO.getText());
+            this.jTabbedPane1.setSelectedIndex(0);
+        }
+    }//GEN-LAST:event_btnCrearTiendaActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        // TODO add your handling code here:
+        this.jTabbedPane1.setSelectedIndex(1);
+        reinicar();
+    }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void btnAgregarTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTiempoActionPerformed
+        // TODO add your handling code here:
+        if (!tiendas.isEmpty()) {
+            String codigoDestino = comoTiendas.getSelectedItem().toString();
+            this.envios.add(new TiempoDeEnvio(this.tiendaNueva.getCodigo(), codigoDestino, String.valueOf(spinerTiempo.getValue())));
+            this.tiendas.remove(comoTiendas.getSelectedIndex());
+        }
+        agregarTienda();
+
+    }//GEN-LAST:event_btnAgregarTiempoActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        limpiar();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnSaveChangesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChangesActionPerformed
+        // TODO add your handling code here:
+        if (tiendas.isEmpty()) {
             try {
-                //se guarda los datos de la nueva tienda en la base de datos
-                this.tiendaDB.crearTienda(this.sistema.getConection().getConnection(),
+                this.sistema.getTiendaDB().crearTienda(
+                        ConeccionDB.getConnection(),
                         tiendaNueva.getCodigo(),
                         tiendaNueva.getNombreTienda(),
                         tiendaNueva.getDireccion(),
@@ -274,11 +477,36 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                         tiendaNueva.getTelefono2(),
                         tiendaNueva.getCorreoElectronico(),
                         tiendaNueva.getHorario());
+                for (TiempoDeEnvio envio : envios) {
+                    this.sistema.getEnvioDB().crearTiempoDeEnvio(
+                            ConeccionDB.getConnection(),
+                            envio.getCodigoTIENDA1(),
+                            envio.getCodigoTIENDA2(),
+                            String.valueOf(envio.getTiempoEnvio()));
+                }
+                JOptionPane.showMessageDialog(this, "Cambios guardados exitosamente,", "Información guardada", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException ex) {
-                Logger.getLogger(RegistroNuevaTienda.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "No se pudo guardar la información.", "Falló en el servidor.", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(null, "Tienda registrada");
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes agregar el tiempo de envío al resto de tiendas", "Tiempo de envío a otras tiendas", JOptionPane.INFORMATION_MESSAGE);
         }
+    }//GEN-LAST:event_btnSaveChangesActionPerformed
+
+    private void btnRegresarTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarTiendaActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.ventanaTienda.setVisible(true);
+    }//GEN-LAST:event_btnRegresarTiendaActionPerformed
+
+    private void reinicar() {
+        limpiar();
+        this.tiendas = sistema.getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS);
+        this.envios = new ArrayList<>();
+
+    }
+
+    private void limpiar() {
         this.txtCodigoTienda.setText("");
         this.txtCorreoElectronico.setText("");
         this.txtDireccionTienda.setText("");
@@ -286,50 +514,68 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
         this.txtNombreTienda.setText("");
         this.txtTelefono.setText("");
         this.txtTelefono2.setText("");
-        
+    }
 
-    }//GEN-LAST:event_btnGuardarDatosTiendaActionPerformed
-
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
-        super.setVisible(false);
-        //this.vrEnvio.getDfm().setRowCount(0);
-        this.ventanaTienda.setVisible(true);
-        //this.vrEnvio.llenarTablaTiempos();
-
-    }//GEN-LAST:event_btnRegresarActionPerformed
-
-    private void btnAgregarTiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarTiempoActionPerformed
-        // TODO add your handling code here:
-        String tiendaDestino = comboTiendas.getSelectedItem().toString();
-        int tiempoDeEnvio = (int) spinerTiempoEnvío.getValue();
-        String tiempo = String.valueOf(tiempoDeEnvio);
-        if (tiendaDestino.equalsIgnoreCase("Lista tiendas (código)")) {
-            JOptionPane.showMessageDialog(null, "Selecione la tienda destino", "SELECCIONAR DESTINO", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            if (this.tiendaNueva != null) {
-                String codigoNuevaTienda = tiendaNueva.getCodigo();
-                this.tiempoDeEnvioNueva = new TiempoDeEnvio(codigoNuevaTienda, tiendaDestino, tiempo);
-                this.sistema.agregarTiempoDeEnvio(tiempoDeEnvioNueva);
-                this.tiempoDeEnvioNueva.mostrarDatos();
-                try {
-                    this.envioDB.crearTiempoDeEnvio(this.sistema.getConection().getConnection(), tiendaNueva.getCodigo(), tiendaDestino, tiempo);
-                } catch (SQLException ex) {
-                    Logger.getLogger(RegistroNuevaTienda.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Guarde los cambios", "GUARDE DATOS", JOptionPane.INFORMATION_MESSAGE);
-            }
+    private void agregarTienda() {
+        this.comoTiendas.removeAllItems();
+        for (int i = 0; i < tiendas.size(); i++) {
+            this.comoTiendas.addItem(tiendas.get(i).getCodigo());
         }
-    }//GEN-LAST:event_btnAgregarTiempoActionPerformed
+    }
 
+    private void establecerFocus() {
+        KeyListener txtEnfoque = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == 10) {
+                    if (e.getComponent().equals(txtNombreTienda)) {
+                        txtCodigoTienda.requestFocus();
+                    } else if (e.getComponent().equals(txtCodigoTienda)) {
+                        txtDireccionTienda.requestFocus();
+                    } else if (e.getComponent().equals(txtDireccionTienda)) {
+                        txtTelefono.requestFocus();
+                    } else if (e.getComponent().equals(txtTelefono)) {
+                        txtTelefono2.requestFocus();
+                    } else if (e.getComponent().equals(txtTelefono2)) {
+                        txtCorreoElectronico.requestFocus();
+                    } else if (e.getComponent().equals(txtCorreoElectronico)) {
+                        txtHORARIO.requestFocus();
+                    } else if (e.getComponent().equals(txtHORARIO)) {
+                        btnCrearTienda.requestFocus();
+                    }
+                }
+            }
+        };
+        this.txtNombreTienda.addKeyListener(txtEnfoque);
+        this.txtCodigoTienda.addKeyListener(txtEnfoque);
+        this.txtDireccionTienda.addKeyListener(txtEnfoque);
+        this.txtTelefono.addKeyListener(txtEnfoque);
+        this.txtTelefono2.addKeyListener(txtEnfoque);
+        this.txtCorreoElectronico.addKeyListener(txtEnfoque);
+        this.txtHORARIO.addKeyListener(txtEnfoque);
+        this.btnCrearTienda.addKeyListener(txtEnfoque);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarTiempo;
-    private javax.swing.JButton btnGuardarDatosTienda;
-    private javax.swing.JButton btnRegresar;
-    private javax.swing.JComboBox<String> comboTiendas;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnCrearTienda;
+    private javax.swing.JButton btnRegresarCancelar;
+    private javax.swing.JButton btnRegresarTienda;
+    private javax.swing.JButton btnSaveChanges;
+    private javax.swing.JComboBox<String> comoTiendas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -338,7 +584,11 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JSpinner spinerTiempoEnvío;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JSpinner spinerTiempo;
     private javax.swing.JTextField txtCodigoTienda;
     private javax.swing.JTextField txtCorreoElectronico;
     private javax.swing.JTextField txtDireccionTienda;

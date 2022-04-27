@@ -22,6 +22,11 @@ public class Pedido {
     private double anticipo;
     private boolean registrado;
 
+    private String fecha;
+
+    public Pedido() {
+    }
+
     /**
      * COnstructor del pedido en la carga de datos
      *
@@ -60,11 +65,11 @@ public class Pedido {
      * @param anticipo
      * @param registrado
      */
-    public Pedido(int codigo, String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
+    public Pedido(int codigo, String codigoTiendaORIGEN, String codigoTiendaDESTINO, String fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
         this.codigoPedido = codigo;
         this.codigoTiendaORIGEN = codigoTiendaORIGEN;
         this.codigoTiendaDESTINO = codigoTiendaDESTINO;
-        this.fechaPedido = fechaPedido;
+        this.fecha = fechaPedido;
         this.nitDelCliente = nitDelCliente;
         this.totalPagar = totalPagar;
         this.anticipo = anticipo;
@@ -101,7 +106,15 @@ public class Pedido {
 
     @Override
     public String toString() {
-        return "Pedido{" + "codigoPedido=" + codigoPedido + ", codigoTiendaORIGEN=" + codigoTiendaORIGEN + ", codigoTiendaDESTINO=" + codigoTiendaDESTINO + ", fechaPedido=" + fechaPedido + ", nitDelCliente=" + nitDelCliente + ", codigoProductoPedido=" + codigoProductoPedido + ", cantidadArticulos=" + cantidadArticulos + ", totalPagar=" + totalPagar + ", anticipo=" + anticipo + '}';
+        return "Pedido{" + "codigoPedido=" + codigoPedido + ", codigoTiendaORIGEN=" + codigoTiendaORIGEN + ", codigoTiendaDESTINO=" + codigoTiendaDESTINO + ", nitDelCliente=" + nitDelCliente + ", codigoProductoPedido=" + codigoProductoPedido + ", cantidadArticulos=" + cantidadArticulos + ", totalPagar=" + totalPagar + ", anticipo=" + anticipo + ", registrado=" + registrado + ", fecha=" + fecha + '}';
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 
     public int getCodigoPedido() {

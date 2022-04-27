@@ -5,7 +5,12 @@
  */
 package com.frontend;
 
+import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
+import com.tienda.utiles.Utiles;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,26 +23,29 @@ public class VentanaEmpleado extends javax.swing.JFrame {
 
     private Sistema sistema;
     private Login login;
-
+    private Empleado empleado;
     private VentanaTienda ventanaTienda;
 
     private TablaEmpleados tablaEmpleados;
     private TableClients tableClients;
 
     /**
+     * s
      *
      * @param login
      * @param sistema
+     * @param empleado
      */
-    public VentanaEmpleado(Login login, Sistema sistema) {
+    public VentanaEmpleado(Login login, Sistema sistema, Empleado empleado) {
         initComponents();
-
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         this.login = login;
         this.sistema = sistema;
-        
-        super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
+        this.empleado = empleado;
         this.sistema.agregarItemsTienda(comboTiendas);
+        Utiles.ponerIconoButton(btnSalir, "iconos/backBlueScreen.png");
+        Utiles.ponerIconoButton(btnOutoff, "iconos/outRed.jpeg");
 
     }
 
@@ -51,15 +59,28 @@ public class VentanaEmpleado extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         comboTiendas = new javax.swing.JComboBox<>();
         btnEntrarAunaTienda = new javax.swing.JButton();
-        btnVerEmpleados = new javax.swing.JButton();
-        btnVerClientes = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         btnSalir = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        btnVerEmpleados = new javax.swing.JButton();
+        btnOutoff = new javax.swing.JButton();
+        btnVerClientes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ELIJA UNA ACCIÓN A REALIZAR");
+
+        jLabel2.setText("Se lista el codigo de las tiendas");
 
         comboTiendas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Listado de tiendas" }));
 
@@ -70,10 +91,24 @@ public class VentanaEmpleado extends javax.swing.JFrame {
             }
         });
 
+        btnSalir.setBackground(new java.awt.Color(255, 255, 255));
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
+
         btnVerEmpleados.setText("Ver empleados");
         btnVerEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnVerEmpleadosActionPerformed(evt);
+            }
+        });
+
+        btnOutoff.setBackground(new java.awt.Color(255, 0, 0));
+        btnOutoff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutoffActionPerformed(evt);
             }
         });
 
@@ -84,68 +119,80 @@ public class VentanaEmpleado extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
-        jLabel1.setText("ELIJA UNA ACCIÓN A REALIZAR");
-
-        btnSalir.setText("Salir");
-        btnSalir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSalirActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Se lista el codigo de las tiendas");
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 605, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addComponent(btnEntrarAunaTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnOutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnVerEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnVerClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEntrarAunaTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnOutoff, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(btnVerEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnVerClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(btnVerEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnVerClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addComponent(btnEntrarAunaTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(11, 11, 11)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(comboTiendas, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEntrarAunaTienda, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(btnVerEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnVerClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -159,20 +206,13 @@ public class VentanaEmpleado extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnVerEmpleadosActionPerformed
 
-    private void btnVerClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerClientesActionPerformed
-        // TODO add your handling code here:
-        this.tableClients = new TableClients(this, sistema);
-        this.tableClients.setVisible(true);
-        super.setVisible(false);
-    }//GEN-LAST:event_btnVerClientesActionPerformed
-
     private void btnEntrarAunaTiendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarAunaTiendaActionPerformed
         // TODO add your handling code here:
         String tiendaSeleccionada = this.comboTiendas.getSelectedItem().toString();
         if (tiendaSeleccionada.equalsIgnoreCase("listado de tiendas")) {
             JOptionPane.showMessageDialog(null, "Seleccione un tienda en la lista de tiendas", "SELECCIONAR TIENDA", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            this.ventanaTienda = new VentanaTienda(this, this.sistema, tiendaSeleccionada);
+            this.ventanaTienda = new VentanaTienda(this, this.sistema, tiendaSeleccionada, this.empleado);
             this.ventanaTienda.setVisible(true);
             this.setVisible(false);
         }
@@ -185,6 +225,28 @@ public class VentanaEmpleado extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnSalirActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        super.setVisible(false);
+        this.login.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void btnOutoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutoffActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnOutoffActionPerformed
+
+    private void btnVerClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerClientesActionPerformed
+        try {
+            // TODO add your handling code here:
+            tableClients = new TableClients(this, sistema);
+            tableClients.setVisible(true);
+            setVisible(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaEmpleado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnVerClientesActionPerformed
+
     public JComboBox<String> getComboTiendas() {
         return comboTiendas;
     }
@@ -192,6 +254,7 @@ public class VentanaEmpleado extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEntrarAunaTienda;
+    private javax.swing.JButton btnOutoff;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnVerClientes;
     private javax.swing.JButton btnVerEmpleados;
@@ -199,5 +262,6 @@ public class VentanaEmpleado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

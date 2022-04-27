@@ -13,6 +13,9 @@ import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
 import com.backend.entidad.datos.FileCarga;
 import com.tienda.utiles.Utiles;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.plaf.IconUIResource;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -43,11 +46,14 @@ public class CargaDatos extends javax.swing.JFrame {
         initComponents();
         setLocationRelativeTo(null);
         setTitle("Carga masiva de datos");
-        Utiles.ponerIconoLabel(labelElegirArchivo, "iconos/file.jpg", 17);
         this.fileCarga = new FileCarga(sistema, login);
         this.sistema = sistema;
         this.login = login;
         llenarTablas();
+        int tam = 35;
+        Utiles.ponerIconoLabel(jLabel1, "iconos/file.jpg", tam);
+        Utiles.ponerIconoLabel(jLabel2, "iconos/up.png", tam);
+        Utiles.ponerIconoLabel(jLabel3, "iconos/exit.png", tam);
     }
 
     /**
@@ -63,8 +69,6 @@ public class CargaDatos extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        btnSubir = new javax.swing.JButton();
-        labelElegirArchivo = new javax.swing.JLabel();
         tableHojas = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableTienda = new javax.swing.JTable();
@@ -80,7 +84,10 @@ public class CargaDatos extends javax.swing.JFrame {
         tablePedidos = new javax.swing.JTable();
         jScrollPane8 = new javax.swing.JScrollPane();
         tableErrores = new javax.swing.JTable();
-        btnRegresar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         jRadioButton1.setText("jRadioButton1");
 
@@ -98,21 +105,6 @@ public class CargaDatos extends javax.swing.JFrame {
         jScrollPane4.setViewportView(jTable4);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnSubir.setText("Subir datos");
-        btnSubir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubirActionPerformed(evt);
-            }
-        });
-
-        labelElegirArchivo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelElegirArchivo.setText("Elegir archivo");
-        labelElegirArchivo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                labelElegirArchivoMouseClicked(evt);
-            }
-        });
 
         tableTienda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -198,39 +190,63 @@ public class CargaDatos extends javax.swing.JFrame {
 
         tableHojas.addTab("Errores", jScrollPane8);
 
-        btnRegresar.setText("REGRESAR");
-        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegresarActionPerformed(evt);
+        jLabel2.setText("Subir datos");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
             }
         });
+
+        jLabel3.setText("Salir");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+
+        jLabel1.setText("Elegir archivo");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tableHojas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1461, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(labelElegirArchivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSubir, javax.swing.GroupLayout.DEFAULT_SIZE, 1175, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(tableHojas, javax.swing.GroupLayout.DEFAULT_SIZE, 1461, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(labelElegirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSubir))
-                    .addComponent(btnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(30, 30, 30)
-                .addComponent(tableHojas, javax.swing.GroupLayout.DEFAULT_SIZE, 586, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tableHojas, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -247,24 +263,35 @@ public class CargaDatos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void labelElegirArchivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelElegirArchivoMouseClicked
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
+        cargar();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        // TODO add your handling code here:
+        salir();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void cargar() {
         this.fileCarga.cargarDatos();
         llenarTablas();
-    }//GEN-LAST:event_labelElegirArchivoMouseClicked
 
-    private void btnSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirActionPerformed
-        // TODO add your handling code here:
+    }
 
-    }//GEN-LAST:event_btnSubirActionPerformed
-
-    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
+    private void salir() {
         setVisible(false);
         this.login.setVisible(true);
-    }//GEN-LAST:event_btnRegresarActionPerformed
+
+    }
 
     private void llenarTablas() {
+
         model = (DefaultTableModel) tableTienda.getModel();
 
         for (Tienda tienda : sistema.getTiendas()) {
@@ -346,9 +373,11 @@ public class CargaDatos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton btnSubir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -359,7 +388,6 @@ public class CargaDatos extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable jTable4;
-    private javax.swing.JLabel labelElegirArchivo;
     private javax.swing.JTable tabelEnvio;
     private javax.swing.JTable tableCustomers;
     private javax.swing.JTable tableEmployees;
