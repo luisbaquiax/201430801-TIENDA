@@ -5,21 +5,11 @@
  */
 package com.frontend;
 
-import com.backend.conectionDB.ConeccionDB;
-import com.frontend.cliente.CatalogoProductos;
 import com.backend.entidad.*;
 import com.tienda.utiles.Utiles;
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 
 /**
@@ -41,9 +31,6 @@ public class Login extends javax.swing.JFrame {
         Utiles.ponerIconoLabel(labelEmpleado, "iconos/empleado.png");
         Utiles.ponerIconoLabel(labelClientes, "iconos/clientes.jpeg");
         setTitle(" INICIAR SESIÓN ");
-        //BORDE DE COMPONENTES
-        Border borde = BorderFactory.createLineBorder(Color.BLACK);
-
         this.sistema = new Sistema();
 
     }
@@ -66,18 +53,27 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(102, 102, 102));
+        setResizable(false);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Iniciar Sesión");
 
+        btnaCancelar.setBackground(new java.awt.Color(51, 51, 255));
+        btnaCancelar.setForeground(new java.awt.Color(255, 255, 255));
         btnaCancelar.setText("Cancelar");
+        btnaCancelar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         btnaCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnaCancelarActionPerformed(evt);
             }
         });
 
+        labelClientes.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         labelClientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelClientesMouseClicked(evt);
@@ -85,15 +81,18 @@ public class Login extends javax.swing.JFrame {
         });
 
         labelEmpleado.setToolTipText("");
+        labelEmpleado.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         labelEmpleado.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelEmpleadoMouseClicked(evt);
             }
         });
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("EMPLEADO");
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("CLIENTE");
 

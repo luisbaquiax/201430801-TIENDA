@@ -8,12 +8,15 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
  * @author luis
  */
 public class Utiles {
+
+    public static final int TAM = 25;
 
     /**
      * Pone una imagen/icono a un JLabel
@@ -49,5 +52,40 @@ public class Utiles {
         ImageIcon icono1 = new ImageIcon(ruta);
         button.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
                 button.getSize().width, button.getSize().height, Image.SCALE_SMOOTH)));
+    }
+
+    /**
+     *
+     * @param button
+     * @param ruta
+     * @param tam
+     */
+    public static void ponerIconoButton(JButton button, String ruta, int tam) {
+        ImageIcon icono1 = new ImageIcon(ruta);
+        button.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
+                tam, tam, Image.SCALE_SMOOTH)));
+    }
+
+    public static ImageIcon getIcon(String ruta, int tam) {
+        ImageIcon icono1 = new ImageIcon(ruta);
+        return new ImageIcon(icono1.getImage().getScaledInstance(
+                tam, tam, Image.SCALE_SMOOTH));
+
+    }
+
+    public static void reinicarCampos(JTextField... txts) {
+        for (JTextField txt : txts) {
+            txt.setText("");
+        }
+    }
+
+    public static boolean esDecimal(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 }

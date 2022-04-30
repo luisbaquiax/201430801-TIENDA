@@ -75,6 +75,11 @@ public class Empleado implements Comparable<Empleado> {
         return this.getCodigo().compareTo(empleado.getCodigo());
     }
 
+    @Override
+    public String toString() {
+        return "Empleado{" + "nomgre=" + nomgre + ", codigo=" + codigo + ", telefono=" + telefono + ", dpi=" + dpi + ", nit=" + nit + ", correoElectronico=" + correoElectronico + ", direccion=" + direccion + '}';
+    }
+
     /**
      * @return the nomgre
      */

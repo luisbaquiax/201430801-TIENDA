@@ -70,6 +70,11 @@ public class Tienda implements Comparable<Tienda> {
         return this.nombreTienda.compareTo(t.getNombreTienda());
     }
 
+    @Override
+    public String toString() {
+        return "Tienda [" + "nombreTienda=" + nombreTienda + ", direccion=" + direccion + ", codigo=" + codigo + ", telefono=" + telefono + ", telefono2=" + telefono2 + ", correoElectronico=" + correoElectronico + ", horario=" + horario + ']';
+    }
+
     /**
      * @return the nombreTienda
      */

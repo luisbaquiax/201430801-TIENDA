@@ -5,12 +5,13 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -25,10 +26,14 @@ public class ModificarEmpleado extends javax.swing.JFrame {
     private EmpleadoDB empleadoDB;
 
     /**
-     * Creates new form RegistroNuevoCliente
+     *
+     * @param tablaEmpleados
+     * @param empleado
+     * @param sistema
      */
     public ModificarEmpleado(TablaEmpleados tablaEmpleados, Empleado empleado, Sistema sistema) {
         initComponents();
+        setLocationRelativeTo(null);
         this.tablaEmpleados = tablaEmpleados;
         this.empleado = empleado;
         this.sistema = sistema;
@@ -40,7 +45,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
         this.txtDPIempleado.setText(empleado.getDpi());
         this.txtCorreoElectronicoEmpleado.setText(empleado.getCorreoElectronico());
         this.txtDireccionEmpleado.setText(empleado.getDireccion());
-
+        establecerFocus();
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
     }
@@ -103,7 +108,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
 
         jLabel9.setText("*campos obligatorios");
 
-        btnSalir.setText("Salir");
+        btnSalir.setText("Cancelar");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -197,51 +202,86 @@ public class ModificarEmpleado extends javax.swing.JFrame {
 
     private void btnGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCambiosActionPerformed
         // TODO add your handling code here:
-        if (txtNombreEmpleado.getText().isEmpty() || (txtTelefonoEmpleado.getText().isEmpty()) || (txtDPIempleado.getText().isEmpty())
-                || (txtCorreoElectronicoEmpleado.getText().isEmpty()) || (txtDireccionEmpleado.getText().isEmpty())) {
-            JOptionPane.showMessageDialog(null, "Debe llenar los campos obligatorios", "CAMPOS OBLIGATORIOS", JOptionPane.INFORMATION_MESSAGE);
+        if (txtNombreEmpleado.getText().isBlank() || (txtTelefonoEmpleado.getText().isBlank()) || (txtDPIempleado.getText().isBlank())
+                || (txtCorreoElectronicoEmpleado.getText().isBlank()) || (txtDireccionEmpleado.getText().isBlank())) {
+            JOptionPane.showMessageDialog(this, "Debe llenar los campos obligatorios", "CAMPOS OBLIGATORIOS", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            if (txtNITempleado.getText().isEmpty()) {
-                this.txtNITempleado.setText("");
+            if (txtDPIempleado.getText().length() > 13 || txtDPIempleado.getText().length() > 13) {
+                JOptionPane.showMessageDialog(this, "Verifique el NIT o el DPI tenga no mas de 13 caracteres.", "TAMAÑO DE INFORMACIÓN", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                this.empleado.setCorreoElectronico(txtCorreoElectronicoEmpleado.getText());
+                this.empleado.setDireccion(txtDireccionEmpleado.getText());
+                this.empleado.setDpi(txtDPIempleado.getText());
+                this.empleado.setNit(txtNITempleado.getText());
+                this.empleado.setNomgre(txtNombreEmpleado.getText());
+                this.empleado.setTelefono(txtTelefonoEmpleado.getText());
+                try {
+                    this.empleadoDB.modificarEmpleado(
+                            ConeccionDB.getConnection(),
+                            empleado.getCodigo(),
+                            empleado.getNomgre(),
+                            empleado.getTelefono(),
+                            empleado.getDpi(),
+                            empleado.getNit(),
+                            empleado.getCorreoElectronico(),
+                            empleado.getDireccion());
+                    JOptionPane.showMessageDialog(this, "Empleado actualizado");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "No se pudo actualizar los datos del empleado.");
+                }
+                setVisible(false);
+                this.tablaEmpleados.setVisible(true);
+                this.tablaEmpleados.llenarTablaEmpleados(sistema.getEmpleadoDB().getEmpleados());
             }
-            this.empleado.setCodigo(txtCodigoEmplead.getText());
-            this.empleado.setCorreoElectronico(txtCorreoElectronicoEmpleado.getText());
-            this.empleado.setDireccion(txtDireccionEmpleado.getText());
-            this.empleado.setDpi(txtDPIempleado.getText());
-            this.empleado.setNit(txtNITempleado.getText());
-            this.empleado.setNomgre(txtNombreEmpleado.getText());
-            this.empleado.setTelefono(txtTelefonoEmpleado.getText());
-            try {
-                this.empleadoDB.modificarEmpleado(sistema.getConection().getConnection(),
-                        empleado.getCodigo(),
-                        empleado.getNomgre(),
-                        empleado.getTelefono(),
-                        empleado.getDpi(),
-                        empleado.getNit(),
-                        empleado.getCorreoElectronico(),
-                        empleado.getDireccion());
-            } catch (SQLException ex) {
-                Logger.getLogger(ModificarEmpleado.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            JOptionPane.showMessageDialog(null, "Empleado actualizado");
         }
-        this.txtCorreoElectronicoEmpleado.setText("");
-        this.txtDPIempleado.setText("");
-        this.txtDireccionEmpleado.setText("");
-        this.txtNITempleado.setText("");
-        this.txtNombreEmpleado.setText("");
-        this.txtTelefonoEmpleado.setText("");
 
-        this.tablaEmpleados.repaint();
-        this.tablaEmpleados.revalidate();
+
     }//GEN-LAST:event_btnGuardarCambiosActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
+        setVisible(false);
         this.tablaEmpleados.setVisible(true);
-        super.setVisible(false);
-        this.tablaEmpleados.llenarTablaEmpleados();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void establecerFocus() {
+
+        KeyListener focus = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == 10) {
+                    if (e.getComponent().equals(txtNombreEmpleado)) {
+                        txtTelefonoEmpleado.requestFocus();
+                    } else if (e.getComponent().equals(txtTelefonoEmpleado)) {
+                        txtNITempleado.requestFocus();
+                    } else if (e.getComponent().equals(txtNITempleado)) {
+                        txtDPIempleado.requestFocus();
+                    } else if (e.getComponent().equals(txtDPIempleado)) {
+                        txtCorreoElectronicoEmpleado.requestFocus();
+                    } else if (e.getComponent().equals(txtCorreoElectronicoEmpleado)) {
+                        txtDireccionEmpleado.requestFocus();
+                    } else if (e.getComponent().equals(txtDireccionEmpleado)) {
+                        btnGuardarCambios.requestFocus();
+                    }
+                }
+            }
+        };
+        this.txtNombreEmpleado.addKeyListener(focus);
+        this.txtTelefonoEmpleado.addKeyListener(focus);
+        this.txtNITempleado.addKeyListener(focus);
+        this.txtDPIempleado.addKeyListener(focus);
+        this.txtCorreoElectronicoEmpleado.addKeyListener(focus);
+        this.txtDireccionEmpleado.addKeyListener(focus);
+        this.btnGuardarCambios.addKeyListener(focus);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarCambios;

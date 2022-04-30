@@ -9,7 +9,7 @@ package com.backend.entidad;
  *
  * @author luis
  */
-public class Producto implements Comparable<Producto> {
+public class Producto implements Comparable<Producto>, Cloneable {
 
     private String nombre;
     private String fabricante;
@@ -20,6 +20,12 @@ public class Producto implements Comparable<Producto> {
 
     private String descripcion;
     private String garantia;
+
+    private boolean vendido;
+    private int id;
+
+    public Producto() {
+    }
 
     /**
      * COnstructor de la clase producto, servirá en la carga de datos, además
@@ -66,10 +72,79 @@ public class Producto implements Comparable<Producto> {
         this.garantia = garantia;
     }
 
+    /**
+     *
+     * @param nombre
+     * @param fabricante
+     * @param codigo
+     * @param descripcion
+     * @param garantia
+     * @param vendido
+     */
+    public Producto(String nombre, String fabricante, String codigo, String descripcion, String garantia, boolean vendido) {
+        this.nombre = nombre;
+        this.fabricante = fabricante;
+        this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.garantia = garantia;
+        this.vendido = vendido;
+    }
+
     public void mostrarDatos() {
         System.out.println("Nombre: " + this.nombre + " fabricante: " + this.fabricante + "codigo producto:" + this.codigo + " cantidad: " + this.cantidad
                 + " precio c/u: " + this.precio + " tienda de existencia: " + this.tiendaDondeExiste);
 
+    }
+
+    /**
+     * Producto - existencia
+     *
+     * @param nombre
+     * @param fabricante
+     * @param codigo
+     * @param cantidad
+     * @param precio
+     * @param tiendaDondeExiste
+     * @param descripcion
+     * @param garantia
+     * @param vendido
+     * @param id
+     */
+    public Producto(String nombre, String fabricante, String codigo, int cantidad, double precio, String tiendaDondeExiste, String descripcion, String garantia, boolean vendido, int id) {
+        this.nombre = nombre;
+        this.fabricante = fabricante;
+        this.codigo = codigo;
+        this.cantidad = cantidad;
+        this.precio = precio;
+        this.tiendaDondeExiste = tiendaDondeExiste;
+        this.descripcion = descripcion;
+        this.garantia = garantia;
+        this.vendido = vendido;
+        this.id = id;
+    }
+
+    @Override
+    public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println(" no se puede duplicar");
+        }
+        return obj;
+    }
+
+    public String getInfo() {
+        return "Producto{" + "nombre=" + nombre + ", fabricante=" + fabricante + ", codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", tiendaDondeExiste=" + tiendaDondeExiste + ", descripcion=" + descripcion + ", garantia=" + garantia + ", vendido=" + vendido + ", id=" + id + '}';
+    }
+
+    public String getInfoVenta() {
+        return "Nombre: " + nombre + ", cantidad: " + cantidad + ", precio:" + precio;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" + "nombre=" + nombre + ", fabricante=" + fabricante + ", codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", tiendaDondeExiste=" + tiendaDondeExiste + ", descripcion=" + descripcion + ", garantia=" + garantia + ", vendido=" + vendido + '}';
     }
 
     @Override
@@ -77,7 +152,14 @@ public class Producto implements Comparable<Producto> {
         return this.codigo.compareTo(producto.getCodigo());
     }
 
-    
+    public boolean isVendido() {
+        return vendido;
+    }
+
+    public void setVendido(boolean vendido) {
+        this.vendido = vendido;
+    }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -176,6 +258,20 @@ public class Producto implements Comparable<Producto> {
      */
     public void setTiendaEXISTENCIA(String tiendaEXISTENCIA) {
         this.tiendaDondeExiste = tiendaEXISTENCIA;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

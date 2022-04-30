@@ -5,18 +5,23 @@
  */
 package com.backend.conectionDB.modelo;
 
+import com.backend.entidad.Cliente;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author luis
  */
 public class ClienteDB {
+
+    public static final String FILTRO_NIT = "SELECT * FROM cliente WHERE nit LIKE ? ORDER BY nit ASC";
+    public static final String FILTRO_NAME = "SELECT * FROM cliente WHERE nombre LIKE ? ORDER BY nit ASC";
+    public static final String SELECT_ALL_CLIENTES = "SELECT * FROM cliente";
 
     public ClienteDB() {
     }
@@ -110,63 +115,63 @@ public class ClienteDB {
     }
 
     /**
-     * Busca al cliente filtrando su nombre
      *
      * @param connection
      * @param filtro
-     * @param dfm
+     * @param query
+     * @return
      */
-    public void buscarClienteNombre(Connection connection, String filtro, DefaultTableModel dfm) {
-        String query = "SELECT * FROM cliente WHERE nombre LIKE ? ORDER BY nit ASC";
-
+    public List<Cliente> getClientesWhitFilter(Connection connection, String filtro, String query) {
+        List<Cliente> clientes = new ArrayList<>();
         try ( PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, "%" + filtro + "%");
             ResultSet result = preSt.executeQuery();
 
-            ResultSetMetaData meta = result.getMetaData();
-
             while (result.next()) {
-
-                String[] datos = {result.getString(2),
-                    result.getString(3),
-                    result.getString(1),
-                    result.getString(5),
-                    result.getString(4),
-                    result.getString(6),
-                    result.getString(7)
-                };
-                dfm.addRow(datos);
+                clientes.add(getCliente(result));
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+        return clientes;
     }
 
-    public void buscarClienteNit(Connection connection, String filtro, DefaultTableModel dfm) {
-        String query = "SELECT * FROM cliente WHERE nit LIKE ? ORDER BY nit ASC";
-
+    /**
+     *
+     * @param connection
+     * @param query
+     * @return
+     */
+    public List<Cliente> getClientesAllClientes(Connection connection, String query) {
+        List<Cliente> clientes = new ArrayList<>();
         try ( PreparedStatement preSt = connection.prepareStatement(query)) {
 
-            preSt.setString(1, "%" + filtro + "%");
             ResultSet result = preSt.executeQuery();
 
-            ResultSetMetaData meta = result.getMetaData();
-
             while (result.next()) {
-
-                String[] datos = {result.getString(2),
-                    result.getString(3),
-                    result.getString(1),
-                    result.getString(5),
-                    result.getString(4),
-                    result.getString(6),
-                    result.getString(7)
-                };
-                dfm.addRow(datos);
+                clientes.add(getCliente(result));
             }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+        return clientes;
+    }
+
+    /**
+     *
+     * @param resultSet
+     * @return
+     * @throws SQLException
+     */
+    private Cliente getCliente(ResultSet resultSet) throws SQLException {
+        return new Cliente(
+                resultSet.getString("nombre"),
+                resultSet.getString("nit"),
+                resultSet.getString("telefono"),
+                resultSet.getString("credito"),
+                resultSet.getString("dpi"),
+                resultSet.getString("email"),
+                resultSet.getString("direccion"));
     }
 }

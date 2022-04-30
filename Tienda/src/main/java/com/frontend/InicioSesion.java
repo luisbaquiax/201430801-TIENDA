@@ -4,6 +4,7 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.modelo.TiendaDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
@@ -53,6 +54,7 @@ public class InicioSesion extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         labelIngresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
@@ -150,13 +152,13 @@ public class InicioSesion extends javax.swing.JFrame {
             if (empleado == null) {
                 JOptionPane.showMessageDialog(this, "Codigo incorrecto", "Codigo de empleado", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                if (sistema.getTiendaDB().getTiendas().isEmpty()) {
+                if (sistema.getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS).isEmpty()) {
                     setVisible(false);
                     CargaDatos c = new CargaDatos(sistema, login);
                     c.setVisible(true);
                 } else {
                     setVisible(false);
-                    new VentanaEmpleado(login, sistema).setVisible(true);
+                    new VentanaEmpleado(login, sistema, empleado).setVisible(true);
                 }
             }
         } else if (entidad instanceof Cliente) {

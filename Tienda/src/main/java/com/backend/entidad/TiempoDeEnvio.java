@@ -9,11 +9,29 @@ package com.backend.entidad;
  *
  * @author luis
  */
-public class TiempoDeEnvio implements Comparable<TiempoDeEnvio> {
+public class TiempoDeEnvio {
 
+    private int id;
     private String codigoTiendaOrigen;
     private String codigoTeindaDestino;
     private int tiempoEnvio;
+
+    public TiempoDeEnvio() {
+    }
+
+    /**
+     *
+     * @param id
+     * @param codigoTiendaOrigen
+     * @param codigoTeindaDestino
+     * @param tiempoEnvio
+     */
+    public TiempoDeEnvio(int id, String codigoTiendaOrigen, String codigoTeindaDestino, int tiempoEnvio) {
+        this.id = id;
+        this.codigoTiendaOrigen = codigoTiendaOrigen;
+        this.codigoTeindaDestino = codigoTeindaDestino;
+        this.tiempoEnvio = tiempoEnvio;
+    }
 
     /**
      * Constructor que recibe los la tineda origen, tienda destino, y el tiempo
@@ -34,10 +52,8 @@ public class TiempoDeEnvio implements Comparable<TiempoDeEnvio> {
     }
 
     @Override
-    public int compareTo(TiempoDeEnvio tiempEnvio) {
-        String tiempo = String.valueOf(this.tiempoEnvio);
-        String tiempo2 = String.valueOf(tiempEnvio.getTiempoEnvio());
-        return tiempo.compareTo(tiempo2);
+    public String toString() {
+        return "TiempoDeEnvio{" + "id=" + id + ", codigoTiendaOrigen=" + codigoTiendaOrigen + ", codigoTeindaDestino=" + codigoTeindaDestino + ", tiempoEnvio=" + tiempoEnvio + '}';
     }
 
     /**
@@ -84,6 +100,20 @@ public class TiempoDeEnvio implements Comparable<TiempoDeEnvio> {
      */
     public void setTiempoEnvio(int tiempoEnvio) {
         this.tiempoEnvio = tiempoEnvio;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

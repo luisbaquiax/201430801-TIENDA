@@ -5,13 +5,15 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
+import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
-import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
+import com.tienda.utiles.Utiles;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author luis
  */
-public class TableClients extends javax.swing.JFrame {
+public final class TableClients extends javax.swing.JFrame {
 
     private VentanaEmpleado ventanaEmpleado;
     private Sistema sistema;
@@ -30,15 +32,26 @@ public class TableClients extends javax.swing.JFrame {
 
     private DefaultTableModel dfm;
 
+    private List<Cliente> clientes;
+
     /**
-     * Creates new form TablaEmpleados
+     *
+     * @param ventanaEmpleado
+     * @param sistema
+     * @throws java.sql.SQLException
      */
-    public TableClients(VentanaEmpleado ventanaEmpleado, Sistema sistema) {
+    public TableClients(VentanaEmpleado ventanaEmpleado, Sistema sistema) throws SQLException {
         initComponents();
+        setLocationRelativeTo(null);
+        int tam = 25;
+        Utiles.ponerIconoButton(btnCreateCustomer, "iconos/addGreen.png", tam);
+        Utiles.ponerIconoButton(btnRegresar, "iconos/backBlueScreen.png", tam);
+        Utiles.ponerIconoButton(btnVerTodos, "iconos/lis.png", tam);
+        Utiles.ponerIconoButton(btnOutoff, "iconos/outRed.jpeg");
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
-
-        llenarTableClients();
+        this.clientes = this.sistema.getClienteDB().getClientesAllClientes(ConeccionDB.getConnection(), ClienteDB.SELECT_ALL_CLIENTES);
+        llenarTableClients(clientes);
 
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
@@ -57,29 +70,52 @@ public class TableClients extends javax.swing.JFrame {
         tableListClients = new javax.swing.JTable();
         btnRegresar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnModificaCliente = new javax.swing.JButton();
-        btnOrdenarClientePorNit = new javax.swing.JButton();
-        btnRegistroNuevoCliente = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtFiltroNOmbre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtFiltroNit = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        btnCreateCustomer = new javax.swing.JButton();
+        btnVerTodos = new javax.swing.JButton();
+        btnOutoff = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
+        jPanel1.setBackground(new java.awt.Color(0, 0, 51));
+
+        tableListClients.setForeground(new java.awt.Color(0, 0, 0));
         tableListClients.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Nombre", "Teléfono", "NIT", "DPI", "Crédito de compra", "E-mail", "Direción"
+                "Nombre", "Teléfono", "NIT", "DPI", "Crédito de compra", "E-mail", "Direción", "Editar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableListClients.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableListClientsMouseClicked(evt);
+            }
+        });
         scrollTablaEmpleados.setViewportView(tableListClients);
 
-        btnRegresar.setText("Regresar a la ventana anterior");
+        btnRegresar.setBackground(new java.awt.Color(51, 102, 255));
+        btnRegresar.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegresar.setText("Regresar");
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegresarActionPerformed(evt);
@@ -87,31 +123,11 @@ public class TableClients extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Listado de clientes");
 
-        btnModificaCliente.setText("MODIFICAR CLIENTE");
-        btnModificaCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificaClienteActionPerformed(evt);
-            }
-        });
-
-        btnOrdenarClientePorNit.setText("Ordenar  por NIT");
-        btnOrdenarClientePorNit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnOrdenarClientePorNitActionPerformed(evt);
-            }
-        });
-
-        btnRegistroNuevoCliente.setText("REGISTRAR NUEVO CLIENTE");
-        btnRegistroNuevoCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistroNuevoClienteActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Todos los clientes:");
-
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Buscar por nombre:");
 
         txtFiltroNOmbre.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -120,6 +136,7 @@ public class TableClients extends javax.swing.JFrame {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Buscar por NIT:");
 
         txtFiltroNit.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -128,76 +145,98 @@ public class TableClients extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Selecione el cliente:");
+        jButton1.setBackground(new java.awt.Color(0, 102, 102));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Reinicar búsqueda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        btnCreateCustomer.setBackground(new java.awt.Color(0, 0, 255));
+        btnCreateCustomer.setForeground(new java.awt.Color(255, 255, 255));
+        btnCreateCustomer.setText("Nuevo cliente");
+        btnCreateCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateCustomerActionPerformed(evt);
+            }
+        });
+
+        btnVerTodos.setBackground(new java.awt.Color(0, 102, 102));
+        btnVerTodos.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerTodos.setText("Ver todos");
+        btnVerTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerTodosActionPerformed(evt);
+            }
+        });
+
+        btnOutoff.setBackground(new java.awt.Color(255, 51, 102));
+        btnOutoff.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOutoffActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrollTablaEmpleados)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtFiltroNOmbre)
-                    .addComponent(txtFiltroNit, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnVerTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCreateCustomer, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(btnOrdenarClientePorNit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                        .addComponent(btnRegistroNuevoCliente)
-                        .addGap(49, 49, 49)
-                        .addComponent(btnModificaCliente)
-                        .addGap(81, 81, 81))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addGap(34, 34, 34)
+                        .addComponent(txtFiltroNit, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(347, 347, 347))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(108, 108, 108)))
-                .addComponent(btnRegresar)
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnOutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(16, 16, 16))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1)
+                    .addComponent(scrollTablaEmpleados))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(434, 434, 434))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(txtFiltroNit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnCreateCustomer)
                     .addComponent(btnRegresar)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnOrdenarClientePorNit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnRegistroNuevoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnModificaCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOutoff, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnVerTodos)
+                    .addComponent(jLabel4)
+                    .addComponent(txtFiltroNit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtFiltroNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrollTablaEmpleados, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -215,50 +254,17 @@ public class TableClients extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnModificaClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificaClienteActionPerformed
-        // TODO add your handling code here:
-        //obtener la fila
-        int fila = this.tableListClients.getSelectedRow();
-        if (fila >= 0) {
-            //System.out.println(fila);
-            //obtenemso el valor de la columna 2, es decir el NIT del clientey en base a eso se procede a buscar al clienteElegido
-            String nit = String.valueOf(this.dfm.getValueAt(fila, 2));
-            this.clienteElegido = this.sistema.buscarCliente(nit);
-            this.modificadorCliente = new ModificadorCliente(this, clienteElegido, this.sistema);
-            this.modificadorCliente.setVisible(true);
-            super.setVisible(false);
-            dfm.setRowCount(0);
-        }
-
-    }//GEN-LAST:event_btnModificaClienteActionPerformed
-
-    private void btnOrdenarClientePorNitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenarClientePorNitActionPerformed
-        // TODO add your handling code here:
-        dfm.setRowCount(0);
-        this.sistema.ordenarClientes();
-        llenarTableClients();
-    }//GEN-LAST:event_btnOrdenarClientePorNitActionPerformed
-
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
         super.setVisible(false);
         this.ventanaEmpleado.setVisible(true);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
-    private void btnRegistroNuevoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroNuevoClienteActionPerformed
-        // TODO add your handling code here:
-        this.registroNuevoCliente = new RegistroNuevoCliente(this, sistema);
-        this.registroNuevoCliente.setVisible(true);
-        dfm.setRowCount(0);
-        super.setVisible(false);
-
-    }//GEN-LAST:event_btnRegistroNuevoClienteActionPerformed
-
     private void txtFiltroNOmbreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNOmbreKeyReleased
         // TODO add your handling code here:
-        dfm.setRowCount(0);
         try {
-            this.sistema.getClienteDB().buscarClienteNombre(this.sistema.getConection().getConnection(), txtFiltroNOmbre.getText(), dfm);
+            this.clientes = this.sistema.getClienteDB().getClientesWhitFilter(ConeccionDB.getConnection(), txtFiltroNOmbre.getText(), ClienteDB.FILTRO_NAME);
+            llenarTableClients(clientes);
         } catch (SQLException ex) {
             Logger.getLogger(TableClients.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -266,17 +272,62 @@ public class TableClients extends javax.swing.JFrame {
 
     private void txtFiltroNitKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFiltroNitKeyReleased
         // TODO add your handling code here:
-        dfm.setRowCount(0);
         try {
-            this.sistema.getClienteDB().buscarClienteNit(this.sistema.getConection().getConnection(), txtFiltroNit.getText(), dfm);
+            this.clientes = this.sistema.getClienteDB().getClientesWhitFilter(ConeccionDB.getConnection(), txtFiltroNit.getText(), ClienteDB.FILTRO_NIT);
+            llenarTableClients(clientes);
         } catch (SQLException ex) {
             Logger.getLogger(TableClients.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_txtFiltroNitKeyReleased
 
-    public void llenarTableClients() {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.txtFiltroNOmbre.setText("");
+        this.txtFiltroNit.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.ventanaEmpleado.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void btnVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosActionPerformed
+        try {
+            // TODO add your handling code here:
+            llenarTableClients(this.sistema.getClienteDB().getClientesAllClientes(ConeccionDB.getConnection(), ClienteDB.SELECT_ALL_CLIENTES));
+        } catch (SQLException ex) {
+            Logger.getLogger(TableClients.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnVerTodosActionPerformed
+
+    private void btnOutoffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOutoffActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnOutoffActionPerformed
+
+    private void tableListClientsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListClientsMouseClicked
+        // TODO add your handling code here:
+        int fila = this.tableListClients.getSelectedRow();
+        int columna = this.tableListClients.getSelectedColumn();
+        if (columna == 7) {
+            setVisible(false);
+            this.modificadorCliente = new ModificadorCliente(this, clientes.get(fila), sistema);
+            this.modificadorCliente.setVisible(true);
+        }
+    }//GEN-LAST:event_tableListClientsMouseClicked
+
+    private void btnCreateCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateCustomerActionPerformed
+        // TODO add your handling code here:
+        setVisible(false);
+        this.registroNuevoCliente = new RegistroNuevoCliente(this, sistema);
+        this.registroNuevoCliente.setVisible(true);
+    }//GEN-LAST:event_btnCreateCustomerActionPerformed
+
+    public void llenarTableClients(List<Cliente> clientes) {
         dfm = (DefaultTableModel) tableListClients.getModel();
-        for (Cliente cliente : this.sistema.getClientes()) {
+        dfm.setRowCount(0);
+        for (Cliente cliente : clientes) {
 
             String[] datos = {cliente.getNombreCliente(),
                 cliente.getTelefono(),
@@ -284,7 +335,8 @@ public class TableClients extends javax.swing.JFrame {
                 cliente.getDPI(),
                 cliente.getCredito() + "",
                 cliente.getCorreoElctronico(),
-                cliente.getDireccion()
+                cliente.getDireccion(),
+                "Editar"
             };
             dfm.addRow(datos);
         }
@@ -296,16 +348,16 @@ public class TableClients extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnModificaCliente;
-    private javax.swing.JButton btnOrdenarClientePorNit;
-    private javax.swing.JButton btnRegistroNuevoCliente;
+    private javax.swing.JButton btnCreateCustomer;
+    private javax.swing.JButton btnOutoff;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton btnVerTodos;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane scrollTablaEmpleados;
     private javax.swing.JTable tableListClients;
     private javax.swing.JTextField txtFiltroNOmbre;

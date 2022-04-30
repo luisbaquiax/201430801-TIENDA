@@ -17,6 +17,7 @@ public class DetallePedido {
     private int idPedido;
 
     /**
+     * Recuperar detalle-pedido
      *
      * @param id
      * @param cantidadArticulos
@@ -45,6 +46,11 @@ public class DetallePedido {
         this.suboTotal = suboTotal;
         this.codigoProduco = codigoProduco;
         this.idPedido = idPedido;
+    }
+
+    @Override
+    public String toString() {
+        return "DetallePedido{" + "id=" + id + ", cantidadArticulos=" + cantidadArticulos + ", suboTotal=" + suboTotal + ", codigoProduco=" + codigoProduco + ", idPedido=" + idPedido + '}';
     }
 
     /**
