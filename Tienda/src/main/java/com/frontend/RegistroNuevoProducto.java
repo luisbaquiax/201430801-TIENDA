@@ -9,7 +9,9 @@ import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.ProductoDB;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
+import java.awt.HeadlessException;
 import java.awt.Image;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -91,6 +93,18 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         jLabel7.setText("Precio: *");
 
         jLabel8.setText("Garantía:");
+
+        txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
+            }
+        });
+
+        txtPrecioProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioProductoKeyTyped(evt);
+            }
+        });
 
         btnGuardarProducto.setText("Guardar cambios");
         btnGuardarProducto.addActionListener(new java.awt.event.ActionListener() {
@@ -229,7 +243,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Producto guardado");
 
             }
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Por favor, deber verificar el tipo de dato a ingresar");
         }
 
@@ -249,6 +263,18 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
         this.ventanaTienda.setVisible(true);
 
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        // TODO add your handling code here:
+        if(!Character.isDigit(evt.getKeyChar())){
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
+
+    private void txtPrecioProductoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioProductoKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtPrecioProductoKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardarProducto;

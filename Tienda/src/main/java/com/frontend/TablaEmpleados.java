@@ -96,7 +96,15 @@ public final class TablaEmpleados extends javax.swing.JFrame {
             new String [] {
                 "Código", "Nombre", "Teléfono", "NIT", "DPI", "E-mail", "Direción", "Editar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableListaEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableListaEmpleadosMouseClicked(evt);

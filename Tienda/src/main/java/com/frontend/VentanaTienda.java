@@ -7,8 +7,12 @@ package com.frontend;
 
 import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.*;
+import com.frontend.venta.VentaForm;
 import com.tienda.utiles.Utiles;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -47,8 +51,8 @@ public final class VentanaTienda extends javax.swing.JFrame {
         labelPerfil.setFocusable(true);
         Utiles.ponerIconoButton(btnRegitroTienda, "iconos/store.png", tam);
         Utiles.ponerIconoButton(btnAllProducts, "iconos/newProducto.jpeg", tam);
-        Utiles.ponerIconoButton(btnNewProduct, "iconos/newProducto.jpeg", tam);
-        Utiles.ponerIconoButton(btnProducts, "iconos/newProducto.jpeg", tam);
+        Utiles.ponerIconoButton(btnNewProduct, "iconos/addGreen.png", tam);
+        Utiles.ponerIconoButton(btnProducts, "iconos/lis.png", tam);
         Utiles.ponerIconoButton(btnTablaTiendas, "iconos/lis.png", tam);
         Utiles.ponerIconoButton(btnReportes, "iconos/report.png", tam);
         Utiles.ponerIconoButton(btnVentas, "iconos/ventas.png", tam);
@@ -538,7 +542,14 @@ public final class VentanaTienda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnNewProductActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            VentaForm ventaForm = new VentaForm(this, tiendaActual, sistema);
+            setVisible(false);
+            ventaForm.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaTienda.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void btnProductsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductsActionPerformed

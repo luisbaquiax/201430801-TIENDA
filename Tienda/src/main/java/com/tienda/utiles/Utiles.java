@@ -16,6 +16,8 @@ import javax.swing.JTextField;
  */
 public class Utiles {
 
+    public static final int TAM = 25;
+
     /**
      * Pone una imagen/icono a un JLabel
      *
@@ -70,9 +72,20 @@ public class Utiles {
                 tam, tam, Image.SCALE_SMOOTH));
 
     }
-    public static void reinicarCampos(JTextField ... txts){
+
+    public static void reinicarCampos(JTextField... txts) {
         for (JTextField txt : txts) {
             txt.setText("");
         }
+    }
+
+    public static boolean esDecimal(String cadena) {
+        try {
+            Double.parseDouble(cadena);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
     }
 }

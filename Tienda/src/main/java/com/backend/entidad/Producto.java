@@ -9,7 +9,7 @@ package com.backend.entidad;
  *
  * @author luis
  */
-public class Producto implements Comparable<Producto> {
+public class Producto implements Comparable<Producto>, Cloneable {
 
     private String nombre;
     private String fabricante;
@@ -123,8 +123,23 @@ public class Producto implements Comparable<Producto> {
         this.id = id;
     }
 
+    @Override
+    public Object clone() {
+        Object obj = null;
+        try {
+            obj = super.clone();
+        } catch (CloneNotSupportedException ex) {
+            System.out.println(" no se puede duplicar");
+        }
+        return obj;
+    }
+
     public String getInfo() {
         return "Producto{" + "nombre=" + nombre + ", fabricante=" + fabricante + ", codigo=" + codigo + ", cantidad=" + cantidad + ", precio=" + precio + ", tiendaDondeExiste=" + tiendaDondeExiste + ", descripcion=" + descripcion + ", garantia=" + garantia + ", vendido=" + vendido + ", id=" + id + '}';
+    }
+
+    public String getInfoVenta() {
+        return "Nombre: " + nombre + ", cantidad: " + cantidad + ", precio:" + precio;
     }
 
     @Override

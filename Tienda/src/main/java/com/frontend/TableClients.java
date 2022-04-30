@@ -97,7 +97,15 @@ public final class TableClients extends javax.swing.JFrame {
             new String [] {
                 "Nombre", "Teléfono", "NIT", "DPI", "Crédito de compra", "E-mail", "Direción", "Editar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableListClients.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableListClientsMouseClicked(evt);

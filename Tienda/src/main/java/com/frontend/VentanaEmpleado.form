@@ -81,9 +81,9 @@
                                       <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                                       <Component id="btnEntrarAunaTienda" min="-2" pref="110" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                                      <Component id="btnSalir" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="btnSalir" min="-2" pref="36" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="btnOutoff" min="-2" pref="43" max="-2" attributes="0"/>
+                                      <Component id="btnOutoff" min="-2" pref="36" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="btnVerEmpleados" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
                                   <Component id="btnVerClientes" alignment="0" min="-2" pref="197" max="-2" attributes="0"/>
@@ -103,13 +103,15 @@
                       <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnSalir" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="comboTiendas" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
                               <Component id="btnEntrarAunaTienda" alignment="3" min="-2" pref="42" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btnOutoff" alignment="1" max="32767" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="btnSalir" alignment="0" pref="36" max="32767" attributes="0"/>
+                              <Component id="btnOutoff" alignment="0" pref="36" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                       <Component id="btnVerEmpleados" min="-2" pref="35" max="-2" attributes="0"/>
