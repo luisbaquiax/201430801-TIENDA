@@ -23,10 +23,6 @@ public class ConeccionDB {
 
     private static Connection CONECCION = null;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> versionOld
     public ConeccionDB() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
