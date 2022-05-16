@@ -21,6 +21,7 @@ public class Pedido {
     private double totalPagar;
     private double anticipo;
     private boolean registrado;
+    private boolean atrasado;
 
     private String fecha;
 
@@ -64,8 +65,10 @@ public class Pedido {
      * @param totalPagar
      * @param anticipo
      * @param registrado
+     * @param atrasado
      */
-    public Pedido(int codigo, String codigoTiendaORIGEN, String codigoTiendaDESTINO, String fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
+    public Pedido(int codigo, String codigoTiendaORIGEN, String codigoTiendaDESTINO, String fechaPedido, String nitDelCliente,
+            double totalPagar, double anticipo, boolean registrado, boolean atrasado) {
         this.codigoPedido = codigo;
         this.codigoTiendaORIGEN = codigoTiendaORIGEN;
         this.codigoTiendaDESTINO = codigoTiendaDESTINO;
@@ -74,27 +77,31 @@ public class Pedido {
         this.totalPagar = totalPagar;
         this.anticipo = anticipo;
         this.registrado = registrado;
+        this.atrasado = atrasado;
     }
 
     /**
-     * Create pedido in the DB
+     * Registrar nuevo pedido
      *
      * @param codigoTiendaORIGEN
      * @param codigoTiendaDESTINO
-     * @param fechaPedido
      * @param nitDelCliente
      * @param totalPagar
      * @param anticipo
      * @param registrado
+     * @param fecha
+     * @param atrasado
      */
-    public Pedido(String codigoTiendaORIGEN, String codigoTiendaDESTINO, FechaPedido fechaPedido, String nitDelCliente, double totalPagar, double anticipo, boolean registrado) {
+    public Pedido(String codigoTiendaORIGEN, String codigoTiendaDESTINO, String nitDelCliente, double totalPagar,
+            double anticipo, boolean registrado, String fecha, boolean atrasado) {
         this.codigoTiendaORIGEN = codigoTiendaORIGEN;
         this.codigoTiendaDESTINO = codigoTiendaDESTINO;
-        this.fechaPedido = fechaPedido;
         this.nitDelCliente = nitDelCliente;
         this.totalPagar = totalPagar;
         this.anticipo = anticipo;
         this.registrado = registrado;
+        this.fecha = fecha;
+        this.atrasado = atrasado;
     }
 
     public void mostarDatos() {
@@ -243,6 +250,20 @@ public class Pedido {
      */
     public void setAnticipo(double anticipo) {
         this.anticipo = anticipo;
+    }
+
+    /**
+     * @return the atrasado
+     */
+    public boolean isAtrasado() {
+        return atrasado;
+    }
+
+    /**
+     * @param atrasado the atrasado to set
+     */
+    public void setAtrasado(boolean atrasado) {
+        this.atrasado = atrasado;
     }
 
 }

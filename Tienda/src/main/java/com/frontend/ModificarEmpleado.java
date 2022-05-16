@@ -9,6 +9,7 @@ import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -33,6 +34,7 @@ public class ModificarEmpleado extends javax.swing.JFrame {
      */
     public ModificarEmpleado(TablaEmpleados tablaEmpleados, Empleado empleado, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         this.tablaEmpleados = tablaEmpleados;
         this.empleado = empleado;

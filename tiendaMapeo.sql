@@ -1,3 +1,16 @@
+SHOW VARIABLES LIKE 'validate_password%';
+
+SET GLOBAL validate_password.LENGTH = 4;
+SET GLOBAL validate_password.policy = 0;
+SET GLOBAL validate_password.mixed_case_count = 0;
+SET GLOBAL validate_password.number_count = 0;
+SET GLOBAL validate_password.special_char_count = 0;
+SET GLOBAL validate_password.check_user_name = 0;
+
+CREATE USER 'tienda'@'localhost' IDENTIFIED BY 'tienda1234';
+
+GRANT ALL PRIVILEGES ON TIENDA.* TO 'tienda'@'localhost' WITH GRANT OPTION;
+
 CREATE SCHEMA IF NOT EXISTS TIENDA;
 
 USE TIENDA;
@@ -51,6 +64,7 @@ CREATE TABLE IF NOT EXISTS pedido(
     total DOUBLE NOT NULL,
     anticipo DOUBLE NOT NULL,
     registrado BOOLEAN NOT NULL,
+    atrasado BOOLEAN,
     tienda_origen VARCHAR(45) NOT NULL,
     tienda_destino VARCHAR(45) NOT NULL,
     nit_cliente VARCHAR(13) NOT NULL,
@@ -95,6 +109,7 @@ CREATE TABLE IF NOT EXISTS envio(
 CREATE TABLE IF NOT EXISTS compra(
     id INT NOT NULL AUTO_INCREMENT,
     fecha DATE NOT NULL,
+    total DOUBLE NOT NULL,
     nit_cliente VARCHAR(13) NOT NULL,
     codigo_tienda VARCHAR(45) NOT NULL,
     PRIMARY KEY(id),
@@ -116,11 +131,14 @@ USE TIENDA;
 INSERT INTO empleado(codigo, nombre, telefono, dpi, nit, email, direccion) 
 VALUES('empleado1234', 'Luis Baquiax', '48324640', '87987879','nit-emplead1', 'luis.baquiax@gmail.com','Chuatroj, totonicapan');
 
+INSERT INTO empleado(codigo, nombre, telefono, dpi, nit, email, direccion) 
+VALUES('a', 'Luis', '12324267', '87987879','nit-emplead2', 'luis.sic@gmail.com','Chuatroj, totonicapan');
+
 UPDATE pedido set fecha = '2022-02-15' where id >0;
 
-INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda) VALUES(1, '2022-02-15', 'E-5924', 'ABC-1');
-INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda) VALUES(2, '2022-02-15', 'G-9924', 'ABC-1');
-INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda) VALUES(3, '2022-02-15', 'E-5924', 'ABC-2');
+INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda, total) VALUES(1, '2022-02-15', 'E-5924', 'ABC-1', 1500);
+INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda, total) VALUES(2, '2022-02-15', 'G-9924', 'ABC-1', 1500);
+INSERT INTO compra (id, fecha, nit_cliente, codigo_tienda, total) VALUES(3, '2022-02-15', 'E-5924', 'ABC-2', 2000);
 INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VALUES(1, 25, 1, 'CKL-4392');
 INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VALUES(2, 25, 1, 'CKL-4392');
 INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VALUES(3, 25, 2, 'HSN-3802');

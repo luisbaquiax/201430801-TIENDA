@@ -9,6 +9,7 @@ import com.backend.conectionDB.ConeccionDB;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.Tienda;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -36,6 +37,7 @@ public class EditProduct extends javax.swing.JFrame {
      */
     public EditProduct(Sistema sistema, VentanaTienda ventanaTienda, Producto producto, Tienda tienda) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -51,6 +53,7 @@ public class EditProduct extends javax.swing.JFrame {
         this.txtGarantia.setText(producto.getGarantia());
         this.spinerCantidad.setValue(producto.getCantidad());
         this.spinerPrecio.setValue(producto.getPrecio());
+        establecerFocus();
     }
 
     /**
@@ -243,7 +246,8 @@ public class EditProduct extends javax.swing.JFrame {
                     ConeccionDB.getConnection(),
                     String.valueOf(producto.getCantidad()),
                     producto.getCodigo(),
-                    producto.getTiendaDondeExiste());
+                    producto.getTiendaDondeExiste(),
+                    producto.isVendido());
 
             setVisible(false);
             this.ventanaTienda.setVisible(true);

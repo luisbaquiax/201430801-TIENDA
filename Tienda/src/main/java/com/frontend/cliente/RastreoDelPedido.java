@@ -5,6 +5,8 @@
  */
 package com.frontend.cliente;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author luis
@@ -17,6 +19,7 @@ public class RastreoDelPedido extends javax.swing.JFrame {
      */
     public RastreoDelPedido() {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
     }
 
     /**

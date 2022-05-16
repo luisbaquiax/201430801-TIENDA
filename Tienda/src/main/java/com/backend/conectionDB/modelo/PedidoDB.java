@@ -10,6 +10,8 @@ import com.backend.entidad.Pedido;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,18 +22,43 @@ public class PedidoDB {
     private static final String PEDIDO_POR_CLIENTE_FECHA = "SELECT * FROM pedido WHERE nit_cliente = ? AND fecha BETWEEN ? AND ?";
     private static final String PEDIDO_POR_CLIENTE_SIN_FECHA = "SELECT * FROM pedido WHERE nit_cliente = ?";
     private static final String PEDIDO_QUE_LLEGARAN_A_LA_TIENDA = "SELECT * FROM pedido WHERE tienda_destino = ? AND registrado = 0 AND fecha BETWEEN ? AND ?";
-    private static final String PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA
+    public static final String PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA
             = "SELECT * FROM pedido WHERE tienda_destino = ? AND registrado = 0";
+    public static final String PEDIDOS_ATRASADOS = "SELECT * FROM pedido WHERE tienda_destino = ? AND atrasado = 1";
     private static final String PEDIDO_QUE_SALIERON_DE_LA_TIENDA = "SELECT * FROM pedido WHERE tienda_origen = ? AND registrado = 0 AND fecha BETWEEN ? AND ?";
     private static final String PEDIDO_QUE_SALIERON_DE_LA_TIENDA_SIN_FECHA
             = "SELECT * FROM pedido WHERE tienda_origen = ? AND registrado = 0";
 
-    private static final String TIEMPO_DE_PEDIDO = "SELECT TIMESTAMPDIFF(DAY, now(), (select fecha from pedido where id = ? and registrado = 0)) AS dias";
+    private static final String TIEMPO_DE_PEDIDO = "SELECT TIMESTAMPDIFF(DAY, (select fecha from pedido where id = ? and registrado = 0), now()) AS dias";
+    private static final String ULTIMO_PEDIDO = "SELECT MAX(id) AS ultimo FROM pedido";
+    private static final String UPDATE = "UPDATE pedido SET fecha = ?, total = ?, anticipo = ?, registrado = ?, atrasado = ?, tienda_origen = ?, tienda_destino = ?, nit_cliente = ? WHERE id = ?";
+
+    private Connection conn;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
 
     public PedidoDB() {
     }
 
-    
+    /**
+     * get the latest ID of latest pedido
+     *
+     * @return
+     */
+    public int getUltimo() {
+        int ultimo = 0;
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(ULTIMO_PEDIDO);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ultimo = resultSet.getInt("ultimo");
+            }
+        } catch (SQLException e) {
+        }
+        return ultimo;
+    }
+
     /**
      * Método parra crear un pedido y agregar a la base de datos
      *
@@ -73,8 +100,8 @@ public class PedidoDB {
      */
     public void crearPedido(Connection connection, Pedido pedido) {
         String query = "INSERT INTO pedido "
-                + "(fecha, total, anticipo, registrado, tienda_origen, tienda_destino, nit_cliente) "
-                + "VALUES (?,?,?,?,?,?,?)";
+                + "(fecha, total, anticipo, registrado, atrasado, tienda_origen, tienda_destino, nit_cliente) "
+                + "VALUES (?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
@@ -82,9 +109,10 @@ public class PedidoDB {
             preSt.setDouble(2, pedido.getTotalPagar());
             preSt.setDouble(3, pedido.getAnticipo());
             preSt.setBoolean(4, pedido.isRegistrado());
-            preSt.setString(5, pedido.getCodigoTiendaORIGEN());
-            preSt.setString(6, pedido.getCodigoTiendaDESTINO());
-            preSt.setString(7, pedido.getNitCliente());
+            preSt.setBoolean(5, pedido.isAtrasado());
+            preSt.setString(6, pedido.getCodigoTiendaORIGEN());
+            preSt.setString(7, pedido.getCodigoTiendaDESTINO());
+            preSt.setString(8, pedido.getNitCliente());
 
             preSt.executeUpdate();
 
@@ -92,7 +120,67 @@ public class PedidoDB {
 
             preSt.close();
         } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Error en pedido: " + e.getMessage());
+        }
+    }
+
+    /**
+     *
+     * @param pedido
+     * @return
+     */
+    public boolean actualizar(Pedido pedido) {
+
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(UPDATE);
+            statement.setString(1, pedido.getFecha());
+            statement.setDouble(2, pedido.getTotalPagar());
+            statement.setDouble(3, pedido.getAnticipo());
+            statement.setBoolean(4, pedido.isRegistrado());
+            statement.setBoolean(5, pedido.isAtrasado());
+            statement.setString(6, pedido.getCodigoTiendaORIGEN());
+            statement.setString(7, pedido.getCodigoTiendaDESTINO());
+            statement.setString(8, pedido.getNitCliente());
+            statement.setInt(9, pedido.getCodigoPedido());
+
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Ingresa un pedido al sistema
+     *
+     * @param connection
+     * @param pedido
+     */
+    public void insert(Connection connection, Pedido pedido) {
+        String query = "INSERT INTO pedido "
+                + "(fecha, total, anticipo, registrado, atrasado, tienda_origen, tienda_destino, nit_cliente) "
+                + "VALUES (?,?,?,?,?,?,?,?)";
+
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
+
+            preSt.setString(1, pedido.getFecha());
+            preSt.setDouble(2, pedido.getTotalPagar());
+            preSt.setDouble(3, pedido.getAnticipo());
+            preSt.setBoolean(4, pedido.isRegistrado());
+            preSt.setBoolean(5, pedido.isAtrasado());
+            preSt.setString(6, pedido.getCodigoTiendaORIGEN());
+            preSt.setString(7, pedido.getCodigoTiendaDESTINO());
+            preSt.setString(8, pedido.getNitCliente());
+
+            preSt.executeUpdate();
+
+            System.out.println("pedido agregado");
+
+            preSt.close();
+        } catch (SQLException e) {
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -106,9 +194,6 @@ public class PedidoDB {
      */
     public List<Pedido> getPedidosPorTienda(String codigoTienda, String fecha1, String fecah2) {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
@@ -124,7 +209,7 @@ public class PedidoDB {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return pedidos;
     }
@@ -135,18 +220,16 @@ public class PedidoDB {
      * pedido WHERE tienda_destino = ? AND registrado = 0"
      *
      * @param codigoTienda
+     * @param query
      * @return
      */
-    public List<Pedido> getPedidosPorTienda(String codigoTienda) {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Pedido> getPedidosPorTienda(String codigoTienda, String query) {
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
+
             conn = ConeccionDB.getConnection();
-            statement = conn.prepareStatement(PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA);
+            statement = conn.prepareStatement(query);
             statement.setString(1, codigoTienda);
             resultSet = statement.executeQuery();
 
@@ -154,39 +237,12 @@ public class PedidoDB {
                 pedido = getPedido(resultSet);
                 pedidos.add(pedido);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, ex);
         }
         return pedidos;
-    }
 
-   
-    /**
-     *
-     * @param codigoTienda
-     * @return
-     */
-    public List<Pedido> getPedidosPorTiendaSinRegistrar(String codigoTienda) {
-
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        Pedido pedido = null;
-        List<Pedido> pedidos = new ArrayList<>();
-        try {
-            conn = ConeccionDB.getConnection();
-            statement = conn.prepareStatement(PEDIDO_QUE_SALIERON_DE_LA_TIENDA_SIN_FECHA);
-            statement.setString(1, codigoTienda);
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                pedido = getPedido(resultSet);
-                pedidos.add(pedido);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return pedidos;
     }
 
     /**
@@ -198,9 +254,6 @@ public class PedidoDB {
      */
     public List<Pedido> getPedidosSalenDeTienda(String codigoTienda, String fecha1, String fecha2) {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
@@ -216,7 +269,7 @@ public class PedidoDB {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return pedidos;
     }
@@ -228,9 +281,6 @@ public class PedidoDB {
      */
     public List<Pedido> getPedidosSalenDeTienda(String codigoTienda) {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
@@ -244,15 +294,18 @@ public class PedidoDB {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return pedidos;
     }
-     public List<Pedido> getPedidosEnCursoPorCliente(String nitCliente) {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    /**
+     *
+     * @param nitCliente
+     * @return
+     */
+    public List<Pedido> getPedidosEnCursoPorCliente(String nitCliente) {
+
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
@@ -266,16 +319,13 @@ public class PedidoDB {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return pedidos;
     }
-    
+
     public List<Pedido> getPedidosEnCursoPorCliente(String nitCliente, String fecha1, String fecha2) {
 
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
@@ -291,7 +341,7 @@ public class PedidoDB {
                 pedidos.add(pedido);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return pedidos;
     }
@@ -305,11 +355,6 @@ public class PedidoDB {
      */
     public int getTiempoPedido(Pedido p) {
         int t = -1;
-        Connection conn = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        Pedido pedido = null;
-        List<Pedido> pedidos = new ArrayList<>();
         try {
             conn = ConeccionDB.getConnection();
             statement = conn.prepareStatement(TIEMPO_DE_PEDIDO);
@@ -320,7 +365,7 @@ public class PedidoDB {
                 t = resultSet.getInt("dias");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return t;
     }
@@ -340,6 +385,7 @@ public class PedidoDB {
                 resultSet.getString("nit_cliente"),
                 resultSet.getDouble("total"),
                 resultSet.getDouble("anticipo"),
-                resultSet.getBoolean("registrado"));
+                resultSet.getBoolean("registrado"),
+                resultSet.getBoolean("atrasado"));
     }
 }

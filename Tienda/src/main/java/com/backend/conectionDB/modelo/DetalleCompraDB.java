@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class DetalleCompraDB {
 
     private static final String DETALLE_COMPRA = "SELECT * FROM detalleCompra WHERE id_compra = ?";
-    private static final String CREATE_DETALLE_COMPRA = "INSERT INTO detalleCompra() VALUES";
+    private static final String CREATE_DETALLE_COMPRA = "INSERT INTO detalleCompra(cantidad_articulos, id_compra, codigo_producto) VALUES(?,?,?)";
 
     private Connection conn;
     private PreparedStatement statement;
@@ -31,6 +31,29 @@ public class DetalleCompraDB {
 
     public DetalleCompraDB() {
         this.productoDB = new ProductoDB();
+    }
+
+    /**
+     * query: CREATE_DETALLE_COMPRA = INSERT INTO
+     * detalleCompra(cantidad_articulos, id_compra, codigo_producto)
+     * VALUES(?,?,?)
+     *
+     * @param detalleCompra
+     */
+    public void insert(DetalleCompra detalleCompra) {
+        try {
+            for (Producto producto : detalleCompra.getProductos()) {
+                conn = ConeccionDB.getConnection();
+                statement = conn.prepareStatement(CREATE_DETALLE_COMPRA);
+                statement.setInt(1, producto.getCantidad());
+                statement.setInt(2, detalleCompra.getIdCompra());
+                statement.setString(3, producto.getCodigo());
+
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public DetalleCompra getCompraByIDCompra(int idCompra) {

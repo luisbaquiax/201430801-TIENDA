@@ -16,6 +16,9 @@ public class DetallePedido {
     private String codigoProduco;
     private int idPedido;
 
+    public DetallePedido() {
+    }
+
     /**
      * Recuperar detalle-pedido
      *

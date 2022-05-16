@@ -16,7 +16,10 @@ import javax.swing.JTextField;
  */
 public class Utiles {
 
-    public static final int TAM = 25;
+    public static final int TAM_25 = 25;
+
+    public Utiles() {
+    }
 
     /**
      * Pone una imagen/icono a un JLabel
@@ -24,8 +27,8 @@ public class Utiles {
      * @param label
      * @param ruta
      */
-    public static void ponerIconoLabel(JLabel label, String ruta) {
-        ImageIcon icono1 = new ImageIcon(ruta);
+    public void ponerIconoLabel(JLabel label, String ruta) {
+        ImageIcon icono1 = new ImageIcon(getClass().getResource(ruta));
         label.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
                 label.getSize().width, label.getSize().height, Image.SCALE_SMOOTH)));
     }
@@ -36,8 +39,8 @@ public class Utiles {
      * @param ruta
      * @param tam
      */
-    public static void ponerIconoLabel(JLabel label, String ruta, int tam) {
-        ImageIcon icono1 = new ImageIcon(ruta);
+    public void ponerIconoLabel(JLabel label, String ruta, int tam) {
+        ImageIcon icono1 = new ImageIcon(getClass().getResource(ruta));
         label.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
                 tam, tam, Image.SCALE_SMOOTH)));
     }
@@ -48,8 +51,8 @@ public class Utiles {
      * @param button
      * @param ruta
      */
-    public static void ponerIconoButton(JButton button, String ruta) {
-        ImageIcon icono1 = new ImageIcon(ruta);
+    public void ponerIconoButton(JButton button, String ruta) {
+        ImageIcon icono1 = new ImageIcon(getClass().getResource(ruta));
         button.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
                 button.getSize().width, button.getSize().height, Image.SCALE_SMOOTH)));
     }
@@ -60,8 +63,8 @@ public class Utiles {
      * @param ruta
      * @param tam
      */
-    public static void ponerIconoButton(JButton button, String ruta, int tam) {
-        ImageIcon icono1 = new ImageIcon(ruta);
+    public void ponerIconoButton(JButton button, String ruta, int tam) {
+        ImageIcon icono1 = new ImageIcon(getClass().getResource(ruta));
         button.setIcon(new ImageIcon(icono1.getImage().getScaledInstance(
                 tam, tam, Image.SCALE_SMOOTH)));
     }

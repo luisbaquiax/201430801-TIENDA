@@ -72,7 +72,7 @@ public class Cliente implements Comparable<Cliente> {
     }
 
     public String getInfoVenta() {
-        return "NIT: " + nit + ", Nombre: " + nombreCliente;
+        return "NIT: " + nit + ", \tNombre: " + nombreCliente;
     }
 
     @Override

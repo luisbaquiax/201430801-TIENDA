@@ -11,6 +11,7 @@ import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -35,6 +36,7 @@ public class RegistroNuevoProducto extends javax.swing.JFrame {
      */
     public RegistroNuevoProducto(VentanaTienda ventanaTienda, Sistema sistema, String codigoTiendoExistencia) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setIconImage(new ImageIcon("iconos/iconos/store.pn").getImage());
         setTitle("Nuevo producto");
         this.productoDB = new ProductoDB();

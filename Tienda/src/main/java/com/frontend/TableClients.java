@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Sistema;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -42,12 +43,14 @@ public final class TableClients extends javax.swing.JFrame {
      */
     public TableClients(VentanaEmpleado ventanaEmpleado, Sistema sistema) throws SQLException {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         int tam = 25;
-        Utiles.ponerIconoButton(btnCreateCustomer, "iconos/addGreen.png", tam);
-        Utiles.ponerIconoButton(btnRegresar, "iconos/backBlueScreen.png", tam);
-        Utiles.ponerIconoButton(btnVerTodos, "iconos/lis.png", tam);
-        Utiles.ponerIconoButton(btnOutoff, "iconos/outRed.jpeg");
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnCreateCustomer, "/iconos/addGreen.png", tam);
+        utiles.ponerIconoButton(btnRegresar, "/iconos/previousBlue.png", tam);
+        utiles.ponerIconoButton(btnVerTodos, "/iconos/lis.png", tam);
+        utiles.ponerIconoButton(btnOutoff, "/iconos/outRed.jpeg");
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
         this.clientes = this.sistema.getClienteDB().getClientesAllClientes(ConeccionDB.getConnection(), ClienteDB.SELECT_ALL_CLIENTES);
@@ -145,8 +148,8 @@ public final class TableClients extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 102));
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setBackground(new java.awt.Color(255, 204, 0));
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
         jButton1.setText("Reinicar búsqueda");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,8 +166,8 @@ public final class TableClients extends javax.swing.JFrame {
             }
         });
 
-        btnVerTodos.setBackground(new java.awt.Color(0, 102, 102));
-        btnVerTodos.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerTodos.setBackground(new java.awt.Color(0, 204, 204));
+        btnVerTodos.setForeground(new java.awt.Color(0, 0, 0));
         btnVerTodos.setText("Ver todos");
         btnVerTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -172,7 +175,7 @@ public final class TableClients extends javax.swing.JFrame {
             }
         });
 
-        btnOutoff.setBackground(new java.awt.Color(255, 51, 102));
+        btnOutoff.setBackground(new java.awt.Color(0, 0, 51));
         btnOutoff.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOutoffActionPerformed(evt);

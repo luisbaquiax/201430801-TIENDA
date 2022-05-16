@@ -9,7 +9,9 @@ import com.backend.entidad.Cliente;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
 import com.frontend.cliente.CatalogoProductos;
-import com.mysql.cj.xdevapi.Client;
+import com.tienda.utiles.Utiles;
+import java.awt.Color;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,11 +33,15 @@ public class InicioSesion extends javax.swing.JFrame {
      */
     public InicioSesion(Object entidad, Sistema sistema, Login login) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         this.sistema = sistema;
         this.login = login;
         this.entidad = entidad;
         validarEntidad(entidad);
+        Utiles u = new Utiles();
+        u.ponerIconoLabel(jLabel2, "/iconos/door-key.png");
+
     }
 
     /**
@@ -52,60 +58,88 @@ public class InicioSesion extends javax.swing.JFrame {
         btnIgresar = new javax.swing.JButton();
         txtPassword = new javax.swing.JPasswordField();
         btnCancelar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         setResizable(false);
 
-        labelIngresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnIgresar.setBackground(new java.awt.Color(51, 255, 0));
+        labelIngresar.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        labelIngresar.setForeground(new java.awt.Color(0, 0, 0));
+        labelIngresar.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel1.add(labelIngresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 41, 430, 29));
+
+        btnIgresar.setBackground(new java.awt.Color(0, 204, 153));
         btnIgresar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        btnIgresar.setForeground(new java.awt.Color(0, 0, 0));
         btnIgresar.setText("Ingresar");
-        btnIgresar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnIgresar.setBorder(null);
+        btnIgresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnIgresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIgresarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnIgresar, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 168, 223, -1));
 
         txtPassword.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        txtPassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPasswordKeyReleased(evt);
+            }
+        });
+        jPanel1.add(txtPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 118, 223, -1));
 
         btnCancelar.setBackground(new java.awt.Color(255, 102, 51));
         btnCancelar.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         btnCancelar.setText("Cancelar");
-        btnCancelar.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnCancelar.setBorder(null);
+        btnCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 216, 223, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelIngresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(99, 99, 99)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                    .addComponent(btnIgresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(87, Short.MAX_VALUE))
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel1.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("X");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel1MouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnIgresar)
-                .addGap(18, 18, 18)
-                .addComponent(btnCancelar)
-                .addContainerGap(32, Short.MAX_VALUE))
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(397, 0, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, 30, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -115,9 +149,7 @@ public class InicioSesion extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -138,6 +170,30 @@ public class InicioSesion extends javax.swing.JFrame {
         setVisible(false);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void txtPasswordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPasswordKeyReleased
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == 10) {
+            validarSesion(entidad);
+        }
+    }//GEN-LAST:event_txtPasswordKeyReleased
+
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+        // TODO add your handling code here:
+        jPanel2.setBackground(Color.red);
+        jLabel1.setForeground(Color.WHITE);
+    }//GEN-LAST:event_jLabel1MouseEntered
+
+    private void jLabel1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseExited
+        // TODO add your handling code here:
+        jPanel2.setBackground(Color.WHITE);
+        jLabel1.setForeground(Color.BLACK);
+    }//GEN-LAST:event_jLabel1MouseExited
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_jLabel1MouseClicked
+
     private void validarEntidad(Object entidad) {
         if (entidad instanceof Empleado) {
             this.labelIngresar.setText("Ingrese su codigo:");
@@ -148,9 +204,13 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void validarSesion(Object entidad) {
         if (entidad instanceof Empleado) {
-            Empleado empleado = this.sistema.getEmpleadoDB().buscarEmpleado(txtPassword.getText());
+            Empleado empleado = this.sistema.getEmpleadoDB().buscarEmpleado(String.valueOf(txtPassword.getPassword()));
             if (empleado == null) {
-                JOptionPane.showMessageDialog(this, "Codigo incorrecto", "Codigo de empleado", JOptionPane.INFORMATION_MESSAGE);
+                if (!txtPassword.getText().isBlank()) {
+                    this.txtPassword.requestFocus();
+                    this.txtPassword.setText("");
+                    JOptionPane.showMessageDialog(this, "Codigo incorrecto", "Codigo de empleado", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
                 if (sistema.getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS).isEmpty()) {
                     setVisible(false);
@@ -164,7 +224,11 @@ public class InicioSesion extends javax.swing.JFrame {
         } else if (entidad instanceof Cliente) {
             Cliente cliente = null;
             if (cliente == null) {
-                JOptionPane.showMessageDialog(this, "NIT incorrecto", "NIT de cliente", JOptionPane.INFORMATION_MESSAGE);
+                if (!txtPassword.getText().isBlank()) {
+                    this.txtPassword.requestFocus();
+                    this.txtPassword.setText("");
+                    JOptionPane.showMessageDialog(this, "NIT incorrecto", "NIT de cliente", JOptionPane.INFORMATION_MESSAGE);
+                }
             } else {
                 CatalogoProductos catalogoProductos = new CatalogoProductos(login, sistema, cliente);
                 catalogoProductos.setVisible(true);
@@ -176,7 +240,10 @@ public class InicioSesion extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnIgresar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel labelIngresar;
     private javax.swing.JPasswordField txtPassword;
     // End of variables declaration//GEN-END:variables

@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.EnvioDB;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ public final class ModificadorTiempoEnvio extends javax.swing.JFrame {
      */
     public ModificadorTiempoEnvio(Sistema sistema, TiempoDeEnvio envio, VerificadorTiempoEnvio verificadorTiempoEnvio, Tienda tienda) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         this.sistema = sistema;

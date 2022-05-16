@@ -10,6 +10,7 @@ import com.backend.entidad.Pedido;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
 import com.frontend.Login;
+import java.awt.Toolkit;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +32,7 @@ public class CatalogoProductos extends javax.swing.JFrame {
      */
     public CatalogoProductos(Login login, Sistema sistema, Cliente clienteActual) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         this.sistema = sistema;
         this.login = login;
         this.clienteActual = clienteActual;

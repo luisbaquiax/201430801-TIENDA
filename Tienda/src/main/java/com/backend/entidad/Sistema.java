@@ -10,6 +10,8 @@ import com.backend.conectionDB.modelo.EnvioDB;
 import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.conectionDB.ConeccionDB;
+import com.backend.conectionDB.modelo.CompraDB;
+import com.backend.conectionDB.modelo.DetalleCompraDB;
 import com.backend.conectionDB.modelo.DetallePedidoDB;
 import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import java.sql.SQLException;
@@ -44,6 +46,8 @@ public class Sistema {
     private TiendaDB tiendaDB;
     private DetallePedidoDB detallePedidoDB;
     private ProductoExistenciaDB productoExistenciaDB;
+    private CompraDB compraDB;
+    private DetalleCompraDB detalleCompraDB;
 
     public Sistema() throws SQLException {
         this.clienteDB = new ClienteDB();
@@ -54,6 +58,19 @@ public class Sistema {
         this.tiendaDB = new TiendaDB();
         this.detallePedidoDB = new DetallePedidoDB();
         this.productoExistenciaDB = new ProductoExistenciaDB();
+        this.compraDB = new CompraDB();
+        this.detalleCompraDB = new DetalleCompraDB();
+    }
+
+    /**
+     * @return the detalleCompraDB
+     */
+    public DetalleCompraDB getDetalleCompraDB() {
+        return detalleCompraDB;
+    }
+
+    public CompraDB getCompraDB() {
+        return compraDB;
     }
 
     public ProductoExistenciaDB getProductoExistenciaDB() {
@@ -527,4 +544,5 @@ public class Sistema {
             return false;
         }
     }
+
 }

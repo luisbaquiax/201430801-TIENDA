@@ -9,6 +9,7 @@ import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.*;
 import com.frontend.venta.VentaForm;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -46,29 +47,36 @@ public final class VentanaTienda extends javax.swing.JFrame {
      */
     public VentanaTienda(VentanaEmpleado ventanaEmpleado, Sistema sistema, String tiendaSeleccionada, Empleado empleado) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         this.jTabbedPane1.setSelectedIndex(1);
+        Utiles utiles = new Utiles();
         int tam = 35;
         labelPerfil.setFocusable(true);
-        Utiles.ponerIconoButton(btnRegitroTienda, "iconos/store.png", tam);
-        Utiles.ponerIconoButton(btnAllProducts, "iconos/newProducto.jpeg", tam);
-        Utiles.ponerIconoButton(btnNewProduct, "iconos/addGreen.png", tam);
-        Utiles.ponerIconoButton(btnProducts, "iconos/lis.png", tam);
-        Utiles.ponerIconoButton(btnTablaTiendas, "iconos/lis.png", tam);
-        Utiles.ponerIconoButton(btnReportes, "iconos/report.png", tam);
-        Utiles.ponerIconoButton(btnVentas, "iconos/ventas.png", tam);
-        Utiles.ponerIconoButton(btnVERtiempoEnvio, "iconos/time.png", tam);
-        Utiles.ponerIconoLabel(labelPerfil, "iconos/user.jpeg");
+        utiles.ponerIconoButton(btnRegitroTienda, "/iconos/store.png", tam);
+        utiles.ponerIconoButton(btnAllProducts, "/iconos/newProducto.jpeg", tam);
+        utiles.ponerIconoButton(btnNewProduct, "/iconos/addGreen.png", tam);
+        utiles.ponerIconoButton(btnProducts, "/iconos/lis.png", tam);
+        utiles.ponerIconoButton(btnTablaTiendas, "/iconos/lis.png", tam);
+        utiles.ponerIconoButton(btnReportes, "/iconos/report.png", tam);
+        utiles.ponerIconoButton(btnVentas, "/iconos/ventas.png", tam);
+        utiles.ponerIconoButton(btnVERtiempoEnvio, "/iconos/time.png", tam);
+        utiles.ponerIconoLabel(labelPerfil, "/iconos/user.jpeg");
+        utiles.ponerIconoLabel(labelEntregaPedidos, "/iconos/hacer-un-pedido.png");
         this.labelNameUser.setText("Usuario: " + empleado.getCodigo());
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
         this.tiendaSeleccionada = tiendaSeleccionada;
-        this.tiendaActual = this.sistema.buscarTienda(tiendaSeleccionada);
+        this.tiendaActual = this.sistema.getTiendaDB().getTiendaByCodigo(tiendaSeleccionada);
         this.empleado = empleado;
         llenarTableProductosTienda(sistema.getProductoExistenciaDB().getAllProductosByTienda(tiendaSeleccionada));
 
         super.setTitle("                 TIENDA: " + tiendaActual.getNombreTienda());
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        this.txtFiltroNOMBRE.setToolTipText("Búsqueda por nombre");
+        this.txtFiltroCodigo.setToolTipText("Búsqueda por código");
+        this.txtFiltroTIenda.setToolTipText("Búsqueda por código de tienda");
+        this.btnMostrarTodosProductos.setToolTipText("Pulse el botón para ver todos los productos");
     }
 
     /**
@@ -111,6 +119,9 @@ public final class VentanaTienda extends javax.swing.JFrame {
         btnNewProduct = new javax.swing.JButton();
         btnProducts = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox<>();
+        panelEntregaPedidos = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        labelEntregaPedidos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -136,6 +147,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Filtrar nombre: ");
 
+        txtFiltroNOMBRE.setToolTipText("");
         txtFiltroNOMBRE.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtFiltroNOMBREKeyReleased(evt);
@@ -174,7 +186,15 @@ public final class VentanaTienda extends javax.swing.JFrame {
             new String [] {
                 "CODIGO", "NOMBRE", "TIENDA (codigo)", "FABRICANTE", "CANTIDAD", "PRECIO", "DESCRIPCIÓN", "GARANTÍA"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableProducts);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -222,8 +242,8 @@ public final class VentanaTienda extends javax.swing.JFrame {
                         .addComponent(btnMostrarTodosProductos))
                     .addComponent(txtFechaSistema, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
-                .addGap(12, 12, 12))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("", jPanel3);
@@ -275,7 +295,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -289,10 +309,9 @@ public final class VentanaTienda extends javax.swing.JFrame {
         );
         panelTiendaLayout.setVerticalGroup(
             panelTiendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTiendaLayout.createSequentialGroup()
+            .addGroup(panelTiendaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
@@ -384,6 +403,37 @@ public final class VentanaTienda extends javax.swing.JFrame {
             }
         });
 
+        panelEntregaPedidos.setBackground(new java.awt.Color(0, 0, 255));
+        panelEntregaPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelEntregaPedidosMouseClicked(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Entrega de pedidos");
+
+        javax.swing.GroupLayout panelEntregaPedidosLayout = new javax.swing.GroupLayout(panelEntregaPedidos);
+        panelEntregaPedidos.setLayout(panelEntregaPedidosLayout);
+        panelEntregaPedidosLayout.setHorizontalGroup(
+            panelEntregaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEntregaPedidosLayout.createSequentialGroup()
+                .addGap(58, 58, 58)
+                .addComponent(labelEntregaPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelEntregaPedidosLayout.setVerticalGroup(
+            panelEntregaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEntregaPedidosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelEntregaPedidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(labelEntregaPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -401,6 +451,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
                 .addGap(95, 95, 95)
                 .addComponent(labelPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelEntregaPedidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
@@ -426,9 +477,11 @@ public final class VentanaTienda extends javax.swing.JFrame {
                 .addComponent(btnVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelEntregaPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -489,9 +542,13 @@ public final class VentanaTienda extends javax.swing.JFrame {
     }//GEN-LAST:event_btnVERtiempoEnvioActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
-        this.reportWindow = new ReportWindow(this, sistema, tiendaActual);
-        this.reportWindow.setVisible(true);
+        try {
+            setVisible(false);
+            this.reportWindow = new ReportWindow(this, sistema, tiendaActual);
+            this.reportWindow.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(VentanaTienda.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_btnReportesActionPerformed
 
@@ -595,6 +652,11 @@ public final class VentanaTienda extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tableTiendaEnCuestionMouseClicked
 
+    private void panelEntregaPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelEntregaPedidosMouseClicked
+        // TODO add your handling code here:
+        System.out.println("hola");
+    }//GEN-LAST:event_panelEntregaPedidosMouseClicked
+
     public void llenarTablaProductos(List<Producto> productos) {
         dfm = (DefaultTableModel) tableProducts.getModel();
         for (Producto producto : productos) {
@@ -655,6 +717,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -665,8 +728,10 @@ public final class VentanaTienda extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel labelEntregaPedidos;
     private javax.swing.JLabel labelNameUser;
     private javax.swing.JLabel labelPerfil;
+    private javax.swing.JPanel panelEntregaPedidos;
     private javax.swing.JPanel panelTienda;
     private javax.swing.JTable tableProducts;
     private javax.swing.JTable tableTiendaEnCuestion;

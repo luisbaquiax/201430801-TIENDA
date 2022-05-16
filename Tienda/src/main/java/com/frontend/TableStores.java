@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.TiendaDB;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.Tienda;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,7 +36,9 @@ public final class TableStores extends javax.swing.JFrame {
      */
     public TableStores(VentanaTienda ventanaTienda, Sistema sistema) {
         initComponents();
-        Utiles.ponerIconoButton(btnRegresar, "iconos/back.png");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnRegresar, "/iconos/back.png");
         this.ventanaTienda = ventanaTienda;
         this.sistema = sistema;
 

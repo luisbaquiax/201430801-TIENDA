@@ -6,6 +6,7 @@
 package com.frontend;
 
 import com.backend.entidad.Sistema;
+import java.awt.Toolkit;
 
 /**
  *
@@ -24,6 +25,7 @@ public class DatoErroneo extends javax.swing.JFrame {
         this.sistema = sistema;
 
         super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
     }
 
     /**
