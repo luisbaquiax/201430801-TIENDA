@@ -5,42 +5,59 @@
  */
 package com.frontend.cliente;
 
+import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.Cliente;
-import com.backend.entidad.Pedido;
 import com.backend.entidad.Producto;
 import com.backend.entidad.Sistema;
-import com.frontend.Login;
+import com.tienda.utiles.Utiles;
 import java.awt.Toolkit;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author luis
  */
-public class CatalogoProductos extends javax.swing.JFrame {
+public final class CatalogoProductos extends javax.swing.JFrame {
 
-    private Login login;
+    private Menu menu;
     private Sistema sistema;
     private Cliente clienteActual;
     private DefaultTableModel dfm;
+    private List<Producto> productos;
+    private String filtro;
 
     /**
      * Crea una nueva ventana para el cliente
      *
-     * @param login
+     * @param menu
      * @param sistema
+     * @param clienteActual
      */
-    public CatalogoProductos(Login login, Sistema sistema, Cliente clienteActual) {
+    public CatalogoProductos(Menu menu, Sistema sistema, Cliente clienteActual) {
         initComponents();
+        setLocationRelativeTo(null);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
-        this.sistema = sistema;
-        this.login = login;
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnSalir, "/iconos/previousBlue.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAscendenteCodigo, "/iconos/up-arrow.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnDescendenteCodigo, "/iconos/down.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAscendenteCantidad, "/iconos/up-arrow.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnDescendenteCantidad, "/iconos/down.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAscendenteFabricante, "/iconos/up-arrow.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnDescendenteFabricante, "/iconos/down.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAscendenteName, "/iconos/up-arrow.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnDescendenteName, "/iconos/down.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAscendentePrecio, "/iconos/up-arrow.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnDescendentePrecio, "/iconos/down.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnAll, "/iconos/listGreen.png", Utiles.TAM_25);
+        this.menu = menu;
         this.clienteActual = clienteActual;
-        llenarTablaProductos();
-                
-        //llenarTablaProdcutosPedidos();
-
-        super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.sistema = sistema;
+        this.productos = this.sistema.getProductoExistenciaDB().getAllProductos();
+        llenarTablaProductos(this.productos);
     }
 
     /**
@@ -52,9 +69,11 @@ public class CatalogoProductos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProducts = new javax.swing.JTable();
-        txtBuscarPorCodigo = new javax.swing.JTextField();
+        btnDescendenteCodigo = new javax.swing.JButton();
+        btnAscendenteCodigo = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtBuscarPorNOmbre = new javax.swing.JTextField();
@@ -62,11 +81,27 @@ public class CatalogoProductos extends javax.swing.JFrame {
         txtBuscarPorFabricante = new javax.swing.JTextField();
         btnSalir = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        btnAscendente = new javax.swing.JButton();
-        btnDescendente = new javax.swing.JButton();
+        txtBuscarPorCodigo = new javax.swing.JTextField();
+        btnAscendenteName = new javax.swing.JButton();
+        btnDescendenteName = new javax.swing.JButton();
+        btnDescendenteFabricante = new javax.swing.JButton();
+        btnAscendenteFabricante = new javax.swing.JButton();
+        btnDescendenteCantidad = new javax.swing.JButton();
+        btnAscendenteCantidad = new javax.swing.JButton();
+        btnAscendentePrecio = new javax.swing.JButton();
+        btnDescendentePrecio = new javax.swing.JButton();
+        btnAll = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setFont(new java.awt.Font("aakar", 0, 18)); // NOI18N
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         tableProducts.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -78,14 +113,43 @@ public class CatalogoProductos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tableProducts);
 
+        btnDescendenteCodigo.setText("Por código DESC");
+        btnDescendenteCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescendenteCodigoActionPerformed(evt);
+            }
+        });
+
+        btnAscendenteCodigo.setText("Por código ASC");
+        btnAscendenteCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAscendenteCodigoActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Buscar producto por código:");
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar producto por nombre:");
 
+        txtBuscarPorNOmbre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarPorNOmbreKeyReleased(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Buscar producto por fabricante:");
 
+        txtBuscarPorFabricante.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarPorFabricanteKeyReleased(evt);
+            }
+        });
+
+        btnSalir.setBackground(new java.awt.Color(51, 102, 255));
         btnSalir.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSalirActionPerformed(evt);
@@ -93,69 +157,188 @@ public class CatalogoProductos extends javax.swing.JFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("CÁTALOGO DE PRODUCTOS");
 
-        btnAscendente.setText("Ordenar Ascendentemente");
+        txtBuscarPorCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarPorCodigoKeyReleased(evt);
+            }
+        });
 
-        btnDescendente.setText("Ordenar descendentemente");
+        btnAscendenteName.setText("Por nombre ASC");
+        btnAscendenteName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAscendenteNameActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addGap(377, 377, 377))
-            .addGroup(layout.createSequentialGroup()
+        btnDescendenteName.setText("Por nombre DESC");
+        btnDescendenteName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescendenteNameActionPerformed(evt);
+            }
+        });
+
+        btnDescendenteFabricante.setText("Por fabricante DESC");
+        btnDescendenteFabricante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescendenteFabricanteActionPerformed(evt);
+            }
+        });
+
+        btnAscendenteFabricante.setText("Por fabricante ASC");
+        btnAscendenteFabricante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAscendenteFabricanteActionPerformed(evt);
+            }
+        });
+
+        btnDescendenteCantidad.setText("Por cantidad DESC");
+        btnDescendenteCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescendenteCantidadActionPerformed(evt);
+            }
+        });
+
+        btnAscendenteCantidad.setText("Por cantidad ASC");
+        btnAscendenteCantidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAscendenteCantidadActionPerformed(evt);
+            }
+        });
+
+        btnAscendentePrecio.setText("Por precio ASC");
+        btnAscendentePrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAscendentePrecioActionPerformed(evt);
+            }
+        });
+
+        btnDescendentePrecio.setText("Por precio DESC");
+        btnDescendentePrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDescendentePrecioActionPerformed(evt);
+            }
+        });
+
+        btnAll.setText("Mostrar todos");
+        btnAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAllActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtBuscarPorCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnDescendente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAscendente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtBuscarPorCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtBuscarPorNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarPorFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13)))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBuscarPorFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAscendenteCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDescendenteCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAscendenteName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDescendenteName, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnDescendenteFabricante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAscendenteFabricante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAscendenteCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnDescendenteCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDescendentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnAscendentePrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnAll, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 150, Short.MAX_VALUE)
+                .addComponent(btnSalir)
                 .addContainerGap())
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1261, Short.MAX_VALUE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 1261, Short.MAX_VALUE))
+                    .addContainerGap()))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(86, 86, 86)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(txtBuscarPorCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtBuscarPorNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(txtBuscarPorFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnAscendenteCodigo)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDescendenteCodigo))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnAscendenteFabricante)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnDescendenteFabricante))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(btnAscendenteName)
+                            .addGap(18, 18, 18)
+                            .addComponent(btnDescendenteName)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAscendenteCantidad)
+                            .addComponent(btnAscendentePrecio)
+                            .addComponent(btnAll))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnDescendenteCantidad)
+                            .addComponent(btnDescendentePrecio))))
+                .addContainerGap(426, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jLabel4)
+                    .addGap(186, 186, 186)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(8, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4)
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel1)
-                            .addComponent(txtBuscarPorCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtBuscarPorNOmbre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtBuscarPorFabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnAscendente)))
-                .addGap(18, 18, 18)
-                .addComponent(btnDescendente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -163,14 +346,147 @@ public class CatalogoProductos extends javax.swing.JFrame {
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
-        this.login.setVisible(true);
+        this.menu.setVisible(true);
         super.setVisible(false);
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    public void llenarTablaProductos() {
-        dfm = (DefaultTableModel) tableProducts.getModel();
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        setVisible(false);
+        this.menu.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
-        for (Producto producto : this.sistema.getProductos()) {
+    private void txtBuscarPorCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarPorCodigoKeyReleased
+        // TODO add your handling code here:
+        filtro = txtBuscarPorCodigo.getText();
+        this.productos = this.sistema.getProductoExistenciaDB().getAllProductosWhitFilter(txtBuscarPorCodigo.getText(), ProductoExistenciaDB.ALL_PRODUCTO_EXISTENCIA_FILTER_CODIGO);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_txtBuscarPorCodigoKeyReleased
+
+    private void btnAscendenteCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscendenteCodigoActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto t, Producto t1) {
+                return (t.getCodigo().compareTo(t1.getCodigo()));
+            }
+        });
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnAscendenteCodigoActionPerformed
+
+    private void btnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAllActionPerformed
+        this.productos = this.sistema.getProductoExistenciaDB().getAllProductos();
+        llenarTablaProductos(productos);
+        this.txtBuscarPorCodigo.setText("");
+        this.txtBuscarPorFabricante.setText("");
+        this.txtBuscarPorNOmbre.setText("");
+    }//GEN-LAST:event_btnAllActionPerformed
+
+    private void txtBuscarPorNOmbreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarPorNOmbreKeyReleased
+        // TODO add your handling code here:
+        filtro = txtBuscarPorNOmbre.getText();
+        this.productos = this.sistema.getProductoExistenciaDB()
+                .getAllProductosWhitFilter(filtro, ProductoExistenciaDB.ALL_PRODUCTO_EXISTENCIA_FILTER_NOMBRE);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_txtBuscarPorNOmbreKeyReleased
+
+    private void txtBuscarPorFabricanteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarPorFabricanteKeyReleased
+        // TODO add your handling code here:
+        filtro = txtBuscarPorFabricante.getText();
+        this.productos = this.sistema.getProductoExistenciaDB()
+                .getAllProductosWhitFilter(filtro, ProductoExistenciaDB.ALL_PRODUCTO_EXISTENCIA_FILTER_FABRICANTE_ASC);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_txtBuscarPorFabricanteKeyReleased
+
+    private void btnDescendenteCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescendenteCodigoActionPerformed
+        // TODO add your handling code here:
+        Collections.reverse(productos);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnDescendenteCodigoActionPerformed
+
+    private void btnAscendenteNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscendenteNameActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto t, Producto t1) {
+                return (t.getNombre().compareTo(t1.getNombre()));
+            }
+        });
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnAscendenteNameActionPerformed
+
+    private void btnDescendenteNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescendenteNameActionPerformed
+        // TODO add your handling code here:
+        Collections.reverse(productos);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnDescendenteNameActionPerformed
+
+    private void btnAscendenteFabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscendenteFabricanteActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto t, Producto t1) {
+                return (t.getFabricante().compareTo(t1.getFabricante()));
+            }
+        });
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnAscendenteFabricanteActionPerformed
+
+    private void btnDescendenteFabricanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescendenteFabricanteActionPerformed
+        // TODO add your handling code here:
+        Collections.reverse(productos);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnDescendenteFabricanteActionPerformed
+
+    private void btnAscendenteCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscendenteCantidadActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto t, Producto t1) {
+                if (t.getCantidad() > t1.getCantidad()) {
+                    return 1;
+                } else if (t.getCantidad() < t1.getCantidad()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnAscendenteCantidadActionPerformed
+
+    private void btnDescendenteCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescendenteCantidadActionPerformed
+        // TODO add your handling code here:
+        Collections.reverse(productos);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnDescendenteCantidadActionPerformed
+
+    private void btnAscendentePrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAscendentePrecioActionPerformed
+        // TODO add your handling code here:
+        Collections.sort(productos, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto t, Producto t1) {
+                if (t.getPrecio() > t1.getPrecio()) {
+                    return 1;
+                } else if (t.getPrecio() < t1.getPrecio()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnAscendentePrecioActionPerformed
+
+    private void btnDescendentePrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescendentePrecioActionPerformed
+        // TODO add your handling code here:
+        Collections.reverse(productos);
+        llenarTablaProductos(productos);
+    }//GEN-LAST:event_btnDescendentePrecioActionPerformed
+
+    public void llenarTablaProductos(List<Producto> productos) {
+        dfm = (DefaultTableModel) tableProducts.getModel();
+        dfm.setRowCount(0);
+        for (Producto producto : productos) {
             String[] datos = {
                 producto.getNombre(),
                 producto.getFabricante(),
@@ -183,37 +499,25 @@ public class CatalogoProductos extends javax.swing.JFrame {
         }
     }
 
-    public void llenarTablaProdcutosPedidos() {
-        dfm = (DefaultTableModel) tableProducts.getModel();
-        for (Pedido pedido : this.sistema.getPedidos()) {
-            if (pedido.getNitCliente().equals(this.clienteActual.getNit())) {
-                for (Producto producto : this.sistema.getProductos()) {
-                    if (pedido.getCodigoTiendaDESTINO().equalsIgnoreCase(producto.getTiendaDondeExiste())) {
-                        String[] datos = {
-                            producto.getNombre(),
-                            producto.getFabricante(),
-                            producto.getCodigo(),
-                            producto.getCantidad() + "",
-                            producto.getPrecio() + "",
-                            producto.getTiendaDondeExiste()
-                        };
-                        dfm.addRow(datos);
-                    }
-                }
-
-            }
-        }
-
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAscendente;
-    private javax.swing.JButton btnDescendente;
+    private javax.swing.JButton btnAll;
+    private javax.swing.JButton btnAscendenteCantidad;
+    private javax.swing.JButton btnAscendenteCodigo;
+    private javax.swing.JButton btnAscendenteFabricante;
+    private javax.swing.JButton btnAscendenteName;
+    private javax.swing.JButton btnAscendentePrecio;
+    private javax.swing.JButton btnDescendenteCantidad;
+    private javax.swing.JButton btnDescendenteCodigo;
+    private javax.swing.JButton btnDescendenteFabricante;
+    private javax.swing.JButton btnDescendenteName;
+    private javax.swing.JButton btnDescendentePrecio;
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableProducts;
     private javax.swing.JTextField txtBuscarPorCodigo;

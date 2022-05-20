@@ -861,7 +861,7 @@ public class VentaForm extends javax.swing.JFrame {
                 anticipo,
                 false,
                 LocalDate.now().toString(),
-                false);
+                false, false);
         this.sistema.getPedidoDB().insert(ConeccionDB.getConnection(), pedido);
         int idPedido = this.sistema.getPedidoDB().getUltimo();
         for (Producto productosAuxiPedido1 : productosAuxiPedido) {

@@ -208,6 +208,9 @@ public class FileCarga {
                                     infLinea[7],
                                     infLinea[8],
                                     infLinea[9]);
+                            this.pedido.setEntregado(false);
+                            this.pedido.setAtrasado(false);
+                            this.pedido.setRegistrado(false);
                             this.sistema.getPedidos().add(this.pedido);
                             //se agrega el pedido a la base de datos
                             this.sistema.getPedidoDB().crearPedidoConID(

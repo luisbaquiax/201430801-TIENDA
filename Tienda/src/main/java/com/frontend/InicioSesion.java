@@ -4,14 +4,19 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
 import com.backend.conectionDB.modelo.TiendaDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
 import com.frontend.cliente.CatalogoProductos;
+import com.frontend.cliente.Menu;
 import com.tienda.utiles.Utiles;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -222,17 +227,21 @@ public class InicioSesion extends javax.swing.JFrame {
                 }
             }
         } else if (entidad instanceof Cliente) {
-            Cliente cliente = null;
-            if (cliente == null) {
-                if (!txtPassword.getText().isBlank()) {
-                    this.txtPassword.requestFocus();
-                    this.txtPassword.setText("");
-                    JOptionPane.showMessageDialog(this, "NIT incorrecto", "NIT de cliente", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                Cliente cliente = this.sistema.getClienteDB().getClienteByNit(ConeccionDB.getConnection(), String.valueOf(txtPassword.getPassword()));
+                if (cliente == null) {
+                    if (!txtPassword.getText().isBlank()) {
+                        this.txtPassword.requestFocus();
+                        this.txtPassword.setText("");
+                        JOptionPane.showMessageDialog(this, "NIT incorrecto", "NIT de cliente", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    Menu m = new Menu(login, sistema, cliente);
+                    m.setVisible(true);
+                    setVisible(false);
                 }
-            } else {
-                CatalogoProductos catalogoProductos = new CatalogoProductos(login, sistema, cliente);
-                catalogoProductos.setVisible(true);
-                setVisible(false);
+            } catch (SQLException ex) {
+                Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
