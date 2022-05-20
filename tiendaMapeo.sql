@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS pedido(
     anticipo DOUBLE NOT NULL,
     registrado BOOLEAN NOT NULL,
     atrasado BOOLEAN,
+    entregado BOOLEAN NOT NULL,
     tienda_origen VARCHAR(45) NOT NULL,
     tienda_destino VARCHAR(45) NOT NULL,
     nit_cliente VARCHAR(13) NOT NULL,
