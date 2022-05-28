@@ -146,8 +146,12 @@ INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VA
 INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VALUES(4, 25, 2, 'HSN-3802');
 INSERT INTO detalleCompra(id, cantidad_articulos, id_compra, codigo_producto) VALUES(5, 25, 3, 'UVU-8844');
 
-INSERT INTO pedido(fecha, total, anticipo, registrado, tienda_origen, tienda_destino, nit_cliente) 
-VALUE(CURDATE(),500,300,0,'ABC-1','ABC-2','Q-8877');
+INSERT INTO pedido(id, fecha, total, anticipo, registrado, tienda_origen, tienda_destino, nit_cliente) 
+VALUE(28, NOW(),500,300,0,'ABC-1','ABC-2','Q-8877');
+INSERT INTO pedido(id, fecha, total, anticipo, registrado, tienda_origen, tienda_destino, nit_cliente) 
+VALUE(29, NOW(),500,300,0,'ABC-1','ABC-2','Q-8877');
+INSERT INTO pedido(id, fecha, total, anticipo, registrado, tienda_origen, tienda_destino, nit_cliente) 
+VALUE(30, NOW(),500,300,0,'ABC-1','ABC-2','Q-8877');
 
 INSERT INTO detallePedido(cantidad_articulos, sub_total, codigo_producto, id_pedido) 
 VALUE(25,300,'JPJ-196',28);
