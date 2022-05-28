@@ -80,6 +80,11 @@ public class Cliente implements Comparable<Cliente> {
         return this.getNit().compareTo(cliente.getNit());
     }
 
+    @Override
+    public String toString() {
+        return "Cliente{" + "nombreCliente=" + nombreCliente + ", nit=" + nit + ", telefono=" + telefono + ", credito=" + credito + ", DPI=" + DPI + ", correoElctronico=" + correoElctronico + ", direccion=" + direccion + '}';
+    }
+
     /**
      * @return the nombreCliente
      */

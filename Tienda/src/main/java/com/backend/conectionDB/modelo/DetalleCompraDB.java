@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -41,8 +43,8 @@ public class DetalleCompraDB {
      * @param detalleCompra
      */
     public void insert(DetalleCompra detalleCompra) {
-        try {
-            for (Producto producto : detalleCompra.getProductos()) {
+        for (Producto producto : detalleCompra.getProductos()) {
+            try {
                 conn = ConeccionDB.getConnection();
                 statement = conn.prepareStatement(CREATE_DETALLE_COMPRA);
                 statement.setInt(1, producto.getCantidad());
@@ -50,9 +52,9 @@ public class DetalleCompraDB {
                 statement.setString(3, producto.getCodigo());
 
                 statement.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(DetalleCompraDB.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
         }
     }
 

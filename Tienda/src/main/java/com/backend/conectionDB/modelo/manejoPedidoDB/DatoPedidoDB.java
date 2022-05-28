@@ -33,7 +33,7 @@ public class DatoPedidoDB {
     public List<Pedido> getPedidosLlegaranSinRegistradosSinFecha(String codigoTienda) {
         List<Pedido> pedidos = new ArrayList<>();
         for (int i = 0; i < sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).size(); i++) {
-            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i))
+            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
                     > sistema.getEnvioDB().getEnvio(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i)).getTiempoEnvio()) {
                 pedidos.add(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i));
             }
@@ -52,7 +52,7 @@ public class DatoPedidoDB {
         List<Pedido> pedidos = new ArrayList<>();
         for (int i = 0; i < sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, fecha1, fecha2).size(); i++) {
             if (sistema.getPedidoDB().getTiempoPedido(
-                    sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, fecha1, fecha2).get(i))
+                    sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, fecha1, fecha2).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
                     > sistema.getEnvioDB().getEnvio(
                             sistema.getPedidoDB().
                                     getPedidosPorTienda(codigoTienda, fecha1, fecha2).
@@ -72,7 +72,7 @@ public class DatoPedidoDB {
     public List<Pedido> getPedidosSalieron(String codigoTienda) {
         List<Pedido> pedidos = new ArrayList<>();
         for (int i = 0; i < sistema.getPedidoDB().getPedidosSalenDeTienda(codigoTienda).size(); i++) {
-            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i))
+            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
                     <= sistema.getEnvioDB().getEnvio(
                             sistema.getPedidoDB().
                                     getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).
@@ -88,7 +88,7 @@ public class DatoPedidoDB {
         ArrayList<Pedido> pedidos = new ArrayList<>();
         for (int i = 0; i < sistema.getPedidoDB().getPedidosSalenDeTienda(codigoTienda, fech1, fecha2).size(); i++) {
             if (sistema.getPedidoDB().getTiempoPedido(
-                    sistema.getPedidoDB().getPedidosSalenDeTienda(codigoTienda, fech1, fecha2).get(i))
+                    sistema.getPedidoDB().getPedidosSalenDeTienda(codigoTienda, fech1, fecha2).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
                     <= sistema.getEnvioDB().getEnvio(
                             sistema.getPedidoDB().
                                     getPedidosPorTienda(codigoTienda, PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA).
@@ -108,10 +108,10 @@ public class DatoPedidoDB {
      */
     public List<Pedido> getPedidosByCustomerEnCurso(String nitCliente) {
         List<Pedido> pedidos = new ArrayList<>();
-        for (int i = 0; i < sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente).size(); i++) {
-            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente).get(i))
-                    <= sistema.getEnvioDB().getEnvio(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente).get(i)).getTiempoEnvio()) {
-                pedidos.add(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente).get(i));
+        for (int i = 0; i < sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).size(); i++) {
+            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
+                    <= sistema.getEnvioDB().getEnvio(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).get(i)).getTiempoEnvio()) {
+                pedidos.add(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).get(i));
             }
         }
         return pedidos;
@@ -120,7 +120,7 @@ public class DatoPedidoDB {
     public List<Pedido> getPedidosByCustomerEnCurso(String nitCliente, String fecha1, String fecha2) {
         List<Pedido> pedidos = new ArrayList<>();
         for (int i = 0; i < sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, fecha1, fecha2).size(); i++) {
-            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, fecha1, fecha2).get(i))
+            if (sistema.getPedidoDB().getTiempoPedido(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, fecha1, fecha2).get(i), PedidoDB.TIEMPO_DE_PEDIDO)
                     <= sistema.getEnvioDB().getEnvio(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, fecha1, fecha2).get(i)).getTiempoEnvio()) {
                 pedidos.add(sistema.getPedidoDB().getPedidosEnCursoPorCliente(nitCliente, fecha1, fecha2).get(i));
             }

@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.Pedido;
 import com.backend.entidad.Sistema;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  *
@@ -39,9 +40,7 @@ public class probando {
             String fecha2 = "2022-02-15";
             String tienda = "ABC-1";
             
-            for (int i = 0; i < datoPedidoDB.getPedidosLlegaranSinRegistradosSinFecha(tienda).size(); i++) {
-                System.out.println(datoPedidoDB.getPedidosLlegaranSinRegistradosSinFecha(tienda).get(i).toString());
-            }
+            System.out.println(Arrays.toString(pedidoDB.getPedidosEnCursoPorCliente("b", PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).toArray()));
 
 //            for (int i = 0; i < productoExistenciaDB.getAllProductosByTienda(tienda).size(); i++) {
 //                System.out.println(productoExistenciaDB.getAllProductosByTienda(tienda).get(i).getInfo());

@@ -20,19 +20,22 @@ import java.util.logging.Logger;
 public class PedidoDB {
 
     private static final String PEDIDO_POR_CLIENTE_FECHA = "SELECT * FROM pedido WHERE nit_cliente = ? AND fecha BETWEEN ? AND ?";
-    private static final String PEDIDO_POR_CLIENTE_SIN_FECHA = "SELECT * FROM pedido WHERE nit_cliente = ?";
+    public static final String PEDIDO_POR_CLIENTE_SIN_FECHA = "SELECT * FROM pedido WHERE nit_cliente = ? AND entregado = 0";
     private static final String PEDIDO_QUE_LLEGARAN_A_LA_TIENDA = "SELECT * FROM pedido WHERE tienda_destino = ? AND registrado = 0 AND fecha BETWEEN ? AND ?";
     public static final String PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA
             = "SELECT * FROM pedido WHERE tienda_destino = ? AND registrado = 0";
-    public static final String PEDIDOS_ATRASADOS = "SELECT * FROM pedido WHERE tienda_destino = ? AND atrasado = 1";
+    public static final String PEDIDOS_ATRASADOS = "SELECT * FROM pedido WHERE tienda_destino = ? AND atrasado = 1 AND registrado = 0";
     private static final String PEDIDO_QUE_SALIERON_DE_LA_TIENDA = "SELECT * FROM pedido WHERE tienda_origen = ? AND registrado = 0 AND fecha BETWEEN ? AND ?";
     private static final String PEDIDO_QUE_SALIERON_DE_LA_TIENDA_SIN_FECHA
             = "SELECT * FROM pedido WHERE tienda_origen = ? AND registrado = 0";
 
-    private static final String TIEMPO_DE_PEDIDO = "SELECT TIMESTAMPDIFF(DAY, (select fecha from pedido where id = ? and registrado = 0), now()) AS dias";
+    public static final String TIEMPO_DE_PEDIDO = "SELECT TIMESTAMPDIFF(DAY, (select fecha from pedido where id = ? and registrado = 0), now()) AS dias";
+    public static final String TIEMPO_DE_PEDIDO2 = "SELECT TIMESTAMPDIFF(DAY, (select fecha from pedido where id = ?), now()) AS dias";
     private static final String ULTIMO_PEDIDO = "SELECT MAX(id) AS ultimo FROM pedido";
     private static final String UPDATE = "UPDATE pedido SET fecha = ?, total = ?, anticipo = ?, registrado = ?, atrasado = ?, entregado = ?, tienda_origen = ?, tienda_destino = ?, nit_cliente = ? WHERE id = ?";
 
+    public static final String PEDIDOS_A_ENTREGAR = "SELECT * FROM pedido WHERE tienda_destino = ? AND entregado = 0 AND registrado = 1";
+    private static final String PEDIDO_ID_CLIENTE = "SELECT * FROM pedido WHERE nit_cliente = ? AND id = ? AND entregado = 0 AND registrado = 1";
     private Connection conn;
     private PreparedStatement statement;
     private ResultSet resultSet;
@@ -274,15 +277,16 @@ public class PedidoDB {
     /**
      *
      * @param nitCliente
+     * @param query
      * @return
      */
-    public List<Pedido> getPedidosEnCursoPorCliente(String nitCliente) {
+    public List<Pedido> getPedidosEnCursoPorCliente(String nitCliente, String query) {
 
         Pedido pedido = null;
         List<Pedido> pedidos = new ArrayList<>();
         try {
             conn = ConeccionDB.getConnection();
-            statement = conn.prepareStatement(PEDIDO_POR_CLIENTE_SIN_FECHA);
+            statement = conn.prepareStatement(query);
             statement.setString(1, nitCliente);
             resultSet = statement.executeQuery();
 
@@ -323,13 +327,14 @@ public class PedidoDB {
      * id = ? and registrado = 0)) AS dias;
      *
      * @param p
+     * @param query
      * @return
      */
-    public int getTiempoPedido(Pedido p) {
+    public int getTiempoPedido(Pedido p, String query) {
         int t = -1;
         try {
             conn = ConeccionDB.getConnection();
-            statement = conn.prepareStatement(TIEMPO_DE_PEDIDO);
+            statement = conn.prepareStatement(query);
             statement.setInt(1, p.getCodigoPedido());
             resultSet = statement.executeQuery();
 
@@ -340,6 +345,24 @@ public class PedidoDB {
             Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
         }
         return t;
+    }
+
+    public Pedido getPedidoById(int id, String nitCliente) {
+        Pedido pedido = null;
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(PEDIDO_ID_CLIENTE);
+            statement.setString(1, nitCliente);
+            statement.setInt(2, id);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                pedido = getPedido(resultSet);
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(PedidoDB.class.getName()).log(Level.SEVERE, null, e);
+        }
+        return pedido;
     }
 
     /**

@@ -209,7 +209,7 @@ public final class Menu extends javax.swing.JFrame {
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
         // TODO add your handling code here:
         setVisible(false);
-        RastreoDelPedido rastreoDelPedido = new RastreoDelPedido(this, sistema);
+        RastreoDelPedido rastreoDelPedido = new RastreoDelPedido(this, sistema, cliente);
         rastreoDelPedido.setVisible(true);
     }//GEN-LAST:event_jPanel3MouseClicked
 

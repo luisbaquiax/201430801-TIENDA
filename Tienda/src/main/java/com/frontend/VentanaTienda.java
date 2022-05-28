@@ -5,15 +5,19 @@
  */
 package com.frontend;
 
+import com.backend.conectionDB.ConeccionDB;
+import com.backend.conectionDB.modelo.PedidoDB;
 import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.*;
 import com.frontend.venta.VentaForm;
 import com.tienda.utiles.Utiles;
 import java.awt.Toolkit;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -36,6 +40,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
     private ReportWindow reportWindow;
 
     private DefaultTableModel dfm;
+    private List<Pedido> pedidosEntregar;
 
     /**
      * Creates new form VentanaTienda
@@ -62,6 +67,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
         utiles.ponerIconoButton(btnVERtiempoEnvio, "/iconos/time.png", tam);
         utiles.ponerIconoLabel(labelPerfil, "/iconos/user.jpeg");
         utiles.ponerIconoLabel(labelEntregaPedidos, "/iconos/hacer-un-pedido.png");
+        utiles.ponerIconoButton(btnEntregado, "/iconos/comprobado.png", Utiles.TAM_25);
         this.labelNameUser.setText("Usuario: " + empleado.getCodigo());
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
@@ -70,13 +76,14 @@ public final class VentanaTienda extends javax.swing.JFrame {
         this.empleado = empleado;
         llenarTableProductosTienda(sistema.getProductoExistenciaDB().getAllProductosByTienda(tiendaSeleccionada));
 
-        super.setTitle("                 TIENDA: " + tiendaActual.getNombreTienda());
-        super.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        this.pedidosEntregar = new ArrayList<>();
         this.txtFiltroNOMBRE.setToolTipText("Búsqueda por nombre");
         this.txtFiltroCodigo.setToolTipText("Búsqueda por código");
         this.txtFiltroTIenda.setToolTipText("Búsqueda por código de tienda");
         this.btnMostrarTodosProductos.setToolTipText("Pulse el botón para ver todos los productos");
+        setTitle("                 TIENDA: " + tiendaActual.getNombreTienda());
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -107,6 +114,11 @@ public final class VentanaTienda extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableTiendaEnCuestion = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        btnEntregado = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableEntregaPedidos = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         btnRegitroTienda = new javax.swing.JButton();
         btnAllProducts = new javax.swing.JButton();
@@ -301,6 +313,71 @@ public final class VentanaTienda extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("", jPanel4);
 
+        jPanel5.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel7.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Pedidos a entregar");
+
+        btnEntregado.setBackground(new java.awt.Color(255, 204, 0));
+        btnEntregado.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnEntregado.setForeground(new java.awt.Color(0, 0, 0));
+        btnEntregado.setText("Marcar como entregado");
+        btnEntregado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntregadoActionPerformed(evt);
+            }
+        });
+
+        tableEntregaPedidos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "ID", "Fecha", "NIT-Cliente", "Total", "Anticipo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tableEntregaPedidos);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnEntregado)
+                        .addGap(0, 1282, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addGap(18, 18, 18)
+                .addComponent(btnEntregado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("3", jPanel5);
+
         javax.swing.GroupLayout panelTiendaLayout = new javax.swing.GroupLayout(panelTienda);
         panelTienda.setLayout(panelTiendaLayout);
         panelTiendaLayout.setHorizontalGroup(
@@ -311,7 +388,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
             panelTiendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTiendaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(0, 0, 0));
@@ -653,9 +730,53 @@ public final class VentanaTienda extends javax.swing.JFrame {
     }//GEN-LAST:event_tableTiendaEnCuestionMouseClicked
 
     private void panelEntregaPedidosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelEntregaPedidosMouseClicked
-        // TODO add your handling code here:
-        System.out.println("hola");
+        actualizarTablaPedidosEntregar();
     }//GEN-LAST:event_panelEntregaPedidosMouseClicked
+
+    private void btnEntregadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntregadoActionPerformed
+        // TODO add your handling code here:
+        int fila = this.tableEntregaPedidos.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione el pedido ha entregar");
+        } else {
+            try {
+                Pedido auxi = this.pedidosEntregar.get(fila);
+                Cliente cliente = this.sistema.getClienteDB().getClienteByNit(ConeccionDB.getConnection(), auxi.getNitCliente());
+                double aCancelar = auxi.getTotalPagar() - auxi.getAnticipo();
+                double acreditado = 0;
+                if (auxi.isAtrasado()) {
+                    if (auxi.getTotalPagar() == auxi.getAnticipo()) {
+                        acreditado = 0.05 * auxi.getTotalPagar();
+                        cliente.setCredito(cliente.getCredito() + (0.05 * auxi.getTotalPagar()));
+                    } else {
+                        acreditado = 0.02 * auxi.getTotalPagar();
+                        cliente.setCredito(cliente.getCredito() + (0.2 * auxi.getTotalPagar()));
+                    }
+                    this.sistema.getClienteDB().modificarCliente(
+                            ConeccionDB.getConnection(),
+                            cliente.getNombreCliente(),
+                            cliente.getTelefono(),
+                            cliente.getDPI(),
+                            String.valueOf(cliente.getCredito()),
+                            cliente.getCorreoElctronico(),
+                            cliente.getDireccion(),
+                            cliente.getNit());
+                    registrarVenta(auxi);
+                    JOptionPane.showMessageDialog(this, "El cliente debe cancelar la cantidad de: " + aCancelar + "\n Se le ha acreditado la cantidad de: " + acreditado,
+                            "Tarea hecha con éxito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    registrarVenta(auxi);
+                    JOptionPane.showMessageDialog(this, "El cliente debe cancelar la cantidad de: " + aCancelar, "Tarea hecha con éxito", JOptionPane.INFORMATION_MESSAGE);
+                }
+                auxi.setEntregado(true);
+                this.sistema.getPedidoDB().actualizar(auxi);
+                actualizarTablaPedidosEntregar();
+            } catch (SQLException ex) {
+                Logger.getLogger(VentanaTienda.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btnEntregadoActionPerformed
 
     public void llenarTablaProductos(List<Producto> productos) {
         dfm = (DefaultTableModel) tableProducts.getModel();
@@ -691,6 +812,32 @@ public final class VentanaTienda extends javax.swing.JFrame {
         }
     }
 
+    private void registrarVenta(Pedido auxi) {
+        this.sistema.getCompraDB().ceate(new Compra(auxi.getFecha(), auxi.getNitCliente(), auxi.getCodigoTiendaDESTINO(), auxi.getTotalPagar()));
+        int ultimo = this.sistema.getCompraDB().getUltimo();
+        List<DetallePedido> detalle = this.sistema.getDetallePedidoDB().getDetallePedido(auxi.getCodigoPedido());
+        List<Producto> productos = new ArrayList<>();
+        for (DetallePedido detallePedido : detalle) {
+            Producto p = new Producto();
+            p.setCodigo(detallePedido.getCodigoProduco());
+            p.setCantidad(detallePedido.getCantidadArticulos());
+            productos.add(p);
+        }
+        DetalleCompra detalleCompra = new DetalleCompra((ArrayList<Producto>) productos, ultimo);
+        this.sistema.getDetalleCompraDB().insert(detalleCompra);
+    }
+
+    private void actualizarTablaPedidosEntregar() {
+        try {
+            jTabbedPane1.setSelectedIndex(2);
+            this.reportWindow = new ReportWindow(this, sistema, tiendaActual);
+            this.pedidosEntregar = this.sistema.getPedidoDB().getPedidosPorTienda(tiendaSeleccionada, PedidoDB.PEDIDOS_A_ENTREGAR);
+            this.reportWindow.llenarTabla(pedidosEntregar, tableEntregaPedidos, dfm);
+        } catch (SQLException e) {
+            Logger.getLogger(VentanaTienda.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+
     public VerificadorTiempoEnvio getVerifidorTiempoEnvio() {
         return verifidorTiempoEnvio;
     }
@@ -706,6 +853,7 @@ public final class VentanaTienda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAllProducts;
+    private javax.swing.JButton btnEntregado;
     private javax.swing.JButton btnMostrarTodosProductos;
     private javax.swing.JButton btnNewProduct;
     private javax.swing.JButton btnProducts;
@@ -721,18 +869,22 @@ public final class VentanaTienda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel labelEntregaPedidos;
     private javax.swing.JLabel labelNameUser;
     private javax.swing.JLabel labelPerfil;
     private javax.swing.JPanel panelEntregaPedidos;
     private javax.swing.JPanel panelTienda;
+    private javax.swing.JTable tableEntregaPedidos;
     private javax.swing.JTable tableProducts;
     private javax.swing.JTable tableTiendaEnCuestion;
     private javax.swing.JLabel txtFechaSistema;
@@ -740,4 +892,5 @@ public final class VentanaTienda extends javax.swing.JFrame {
     private javax.swing.JTextField txtFiltroNOMBRE;
     private javax.swing.JTextField txtFiltroTIenda;
     // End of variables declaration//GEN-END:variables
+
 }

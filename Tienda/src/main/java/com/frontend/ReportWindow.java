@@ -27,12 +27,9 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -98,6 +95,7 @@ public final class ReportWindow extends javax.swing.JFrame {
         utiles.ponerIconoButton(btnSave8, "/iconos/saveBlue.jpeg", tam);
         utiles.ponerIconoButton(jButton2, "/iconos/saveBlue.jpeg", tam);
         utiles.ponerIconoButton(btnMarcar, "/iconos/comprobado.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnMarcar2, "/iconos/comprobado.png", Utiles.TAM_25);
         utiles.ponerIconoButton(btnMarcarComoAtrasado, "/iconos/comprobado.png", Utiles.TAM_25);
         utiles.ponerIconoButton(btnRealizarConsultaProductos, "/iconos/search.png", Utiles.TAM_25);
         utiles.ponerIconoButton(btnProductoMasVendido, "/iconos/search.png", Utiles.TAM_25);
@@ -149,6 +147,7 @@ public final class ReportWindow extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tableReport3 = new javax.swing.JTable();
         btnSaveReport3 = new javax.swing.JButton();
+        btnMarcar2 = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         table4 = new javax.swing.JTable();
@@ -274,7 +273,7 @@ public final class ReportWindow extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1284, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnReport1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -296,7 +295,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnMarcarComoAtrasado))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnReport1))
         );
@@ -361,7 +360,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(btnMarcar)
-                        .addGap(0, 969, Short.MAX_VALUE))
+                        .addGap(0, 975, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -374,7 +373,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addComponent(btnMarcar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
                 .addGap(24, 24, 24)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -409,6 +408,16 @@ public final class ReportWindow extends javax.swing.JFrame {
 
         btnSaveReport3.setText("Exportar reporte");
 
+        btnMarcar2.setBackground(new java.awt.Color(0, 204, 204));
+        btnMarcar2.setFont(new java.awt.Font("sansserif", 1, 13)); // NOI18N
+        btnMarcar2.setForeground(new java.awt.Color(0, 0, 0));
+        btnMarcar2.setText("Marcar como verificado");
+        btnMarcar2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarcar2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -417,10 +426,13 @@ public final class ReportWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnMarcar2)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnSaveReport3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1284, Short.MAX_VALUE))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE))
                         .addContainerGap())))
         );
         jPanel5Layout.setVerticalGroup(
@@ -428,10 +440,13 @@ public final class ReportWindow extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMarcar2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSaveReport3, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnSaveReport3)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("3", jPanel5);
@@ -475,7 +490,7 @@ public final class ReportWindow extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1284, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE)
                     .addComponent(btnSave4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -486,7 +501,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 629, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -497,6 +512,7 @@ public final class ReportWindow extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(0, 0, 0));
 
         jLabel5.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Compras por cliente");
 
@@ -539,7 +555,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                     .addComponent(btnSave5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1284, Short.MAX_VALUE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())))
             .addGroup(jPanel7Layout.createSequentialGroup()
@@ -558,7 +574,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(comoClientesCompras, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave5)
                 .addContainerGap())
@@ -569,6 +585,7 @@ public final class ReportWindow extends javax.swing.JFrame {
         jPanel8.setBackground(new java.awt.Color(0, 0, 0));
 
         jLabel7.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Pedidos en curso de un cliente");
 
@@ -598,6 +615,7 @@ public final class ReportWindow extends javax.swing.JFrame {
             }
         });
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Selecione cliente:");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -616,7 +634,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(comboClientesPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1284, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1290, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -628,7 +646,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                     .addComponent(jLabel8)
                     .addComponent(comboClientesPedidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave6)
                 .addContainerGap())
@@ -711,7 +729,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                         .addComponent(btnRealizarConsultaProductos)
                         .addGap(18, 18, 18)
                         .addComponent(btnProductoMasVendido)
-                        .addGap(0, 581, Short.MAX_VALUE)))
+                        .addGap(0, 587, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -729,7 +747,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                     .addComponent(fecha1Producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(fecha2Producto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave7)
                 .addContainerGap())
@@ -813,7 +831,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                         .addComponent(btnRealizarConsultaProductoTienda)
                         .addGap(18, 18, 18)
                         .addComponent(btnVerSinFiltro)
-                        .addGap(0, 183, Short.MAX_VALUE)))
+                        .addGap(0, 189, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
@@ -834,7 +852,7 @@ public final class ReportWindow extends javax.swing.JFrame {
                         .addComponent(btnRealizarConsultaProductoTienda)
                         .addComponent(btnVerSinFiltro)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 608, Short.MAX_VALUE)
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 620, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnSave8)
                 .addContainerGap())
@@ -846,11 +864,11 @@ public final class ReportWindow extends javax.swing.JFrame {
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1296, Short.MAX_VALUE)
+            .addGap(0, 1302, Short.MAX_VALUE)
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 750, Short.MAX_VALUE)
+            .addGap(0, 762, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("9", jPanel12);
@@ -908,9 +926,9 @@ public final class ReportWindow extends javax.swing.JFrame {
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRegresar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnOutoff)
-                .addGap(12, 12, 12))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -920,16 +938,12 @@ public final class ReportWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(jTabbedPane1))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1045,7 +1059,7 @@ public final class ReportWindow extends javax.swing.JFrame {
             }
         }
         this.pedidosSinRegistrar = this.datoPedidoDB.getPedidosLlegaranSinRegistradosSinFecha(this.tiendaActual.getCodigo());
-        llenarTabla(this.pedidosSinRegistrar, tableReport2);
+        llenarTabla(this.pedidosSinRegistrar, tableReport2, dfm);
     }//GEN-LAST:event_btnMarcarActionPerformed
 
     private void btnMarcarComoAtrasadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcarComoAtrasadoActionPerformed
@@ -1063,7 +1077,7 @@ public final class ReportWindow extends javax.swing.JFrame {
             }
         }
         this.pedidosAuxi = this.sistema.getPedidoDB().getPedidosPorTienda(this.tiendaActual.getCodigo(), PedidoDB.PEDIDO_QUE_LLEGARAN_A_LA_TIENDA_SIN_FECHA);
-        llenarTabla(this.pedidosAuxi, tableListaPedidosLlegaran);
+        llenarTabla(this.pedidosAuxi, tableListaPedidosLlegaran, dfm);
     }//GEN-LAST:event_btnMarcarComoAtrasadoActionPerformed
 
     private void tableListaPedidosLlegaranMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableListaPedidosLlegaranMouseClicked
@@ -1092,7 +1106,7 @@ public final class ReportWindow extends javax.swing.JFrame {
     private void comboClientesPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesPedidosActionPerformed
         // TODO add your handling code here:
         this.pedidosPorCliente = this.datoPedidoDB.getPedidosByCustomerEnCurso(this.clientes.get(comboClientesPedidos.getSelectedIndex()).getNit());
-        llenarTabla(this.pedidosPorCliente, table6);
+        llenarTabla(this.pedidosPorCliente, table6, dfm);
     }//GEN-LAST:event_comboClientesPedidosActionPerformed
 
     private void btnProductoMasVendidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductoMasVendidoActionPerformed
@@ -1129,7 +1143,24 @@ public final class ReportWindow extends javax.swing.JFrame {
         llenarTablaProductoMasVendido(productosMasVendidos, table8);
     }//GEN-LAST:event_btnRealizarConsultaProductoTiendaActionPerformed
 
-    public void llenarTabla(List<Pedido> pedidos, JTable tabla) {
+    private void btnMarcar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarcar2ActionPerformed
+        int fila = this.tableReport3.getSelectedRow();
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(this, "Debe elegir un pedido para poder marcarlo.", "Marcar pedido como registrado", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Pedido auxi = this.pedidosAtrasados.get(fila);
+            auxi.setRegistrado(true);
+            if (this.sistema.getPedidoDB().actualizar(auxi)) {
+                JOptionPane.showMessageDialog(this, "Se ha registrado el pedido como registrado");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo realizar la tarea", "Marcar pedido como registrado", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        this.pedidosAtrasados = this.sistema.getPedidoDB().getPedidosPorTienda(this.tiendaActual.getCodigo(), PedidoDB.PEDIDOS_ATRASADOS);
+        llenarTabla(this.pedidosAtrasados, tableReport3, dfm);
+    }//GEN-LAST:event_btnMarcar2ActionPerformed
+
+    public void llenarTabla(List<Pedido> pedidos, JTable tabla, DefaultTableModel dfm) {
         dfm = (DefaultTableModel) tabla.getModel();
         dfm.setRowCount(0);
         for (Pedido pedido : pedidos) {
@@ -1137,8 +1168,6 @@ public final class ReportWindow extends javax.swing.JFrame {
                 pedido.getCodigoPedido() + "",
                 pedido.getFecha(),
                 pedido.getNitCliente(),
-                pedido.getCodigoProductoPedido(),
-                pedido.getCantidadArticulos() + "",
                 pedido.getTotalPagar() + "",
                 pedido.getAnticipo() + "",};
             dfm.addRow(datos);
@@ -1211,14 +1240,15 @@ public final class ReportWindow extends javax.swing.JFrame {
         this.pedidosSinRegistrar = this.datoPedidoDB.getPedidosLlegaranSinRegistradosSinFecha(tiendaActual.getCodigo());
         this.pedidosAtrasados = this.sistema.getPedidoDB().getPedidosPorTienda(this.tiendaActual.getCodigo(), PedidoDB.PEDIDOS_ATRASADOS);
         this.pedidosSalenDeTienda = this.sistema.getPedidoDB().getPedidosSalenDeTienda(this.tiendaActual.getCodigo());
-        llenarTabla(pedidosAuxi, tableListaPedidosLlegaran);
-        llenarTabla(pedidosSinRegistrar, tableReport2);
-        llenarTabla(pedidosAtrasados, tableReport3);
-        llenarTabla(pedidosSalenDeTienda, table4);
+        llenarTabla(pedidosAuxi, tableListaPedidosLlegaran, dfm);
+        llenarTabla(pedidosSinRegistrar, tableReport2, dfm);
+        llenarTabla(pedidosAtrasados, tableReport3, dfm);
+        llenarTabla(pedidosSalenDeTienda, table4, dfm);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMarcar;
+    private javax.swing.JButton btnMarcar2;
     private javax.swing.JButton btnMarcarComoAtrasado;
     private javax.swing.JButton btnOutoff;
     private javax.swing.JButton btnProductoMasVendido;

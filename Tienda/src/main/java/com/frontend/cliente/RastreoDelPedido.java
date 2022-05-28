@@ -5,8 +5,15 @@
  */
 package com.frontend.cliente;
 
+import com.backend.conectionDB.modelo.PedidoDB;
+import com.backend.entidad.Cliente;
+import com.backend.entidad.DetallePedido;
+import com.backend.entidad.Pedido;
 import com.backend.entidad.Sistema;
+import com.tienda.utiles.Utiles;
 import java.awt.Toolkit;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,17 +24,30 @@ public class RastreoDelPedido extends javax.swing.JFrame {
 
     private Menu menu;
     private Sistema sistema;
+    private DefaultTableModel defaultTableModel;
+    private Cliente cliente;
+    private List<Pedido> pedidos;
 
     /**
      * Creates new form RastreoDelPedido
      *
      * @param menu
      * @param sistema
+     * @param cliente
      */
-    public RastreoDelPedido(Menu menu, Sistema sistema) {
+    public RastreoDelPedido(Menu menu, Sistema sistema, Cliente cliente) {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnSearch, "/iconos/search.png", Utiles.TAM_25);
+        utiles.ponerIconoButton(btnVerTodos, "/iconos/listGreen.png", Utiles.TAM_25);
         this.menu = menu;
+        this.cliente = cliente;
+        this.sistema = sistema;
+        this.pedidos = this.sistema.getPedidoDB().getPedidosEnCursoPorCliente(this.cliente.getNit(), PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA);
+        llenarTabla(pedidos);
     }
 
     /**
@@ -40,11 +60,89 @@ public class RastreoDelPedido extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnSearch = new javax.swing.JButton();
+        txtIdPedido = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtDias = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        comboProductos = new javax.swing.JComboBox<>();
+        btnVerTodos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+        jLabel1.setFont(new java.awt.Font("sansserif", 0, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Rastrear pedido");
+
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("INGESE CODIGO DE SU PEDIDO");
+
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
+
+        txtIdPedido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIdPedidoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIdPedidoKeyTyped(evt);
+            }
+        });
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Días restantes:");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Total", "Anticipo", "Pago", "Tienda origen", "Tienda destino"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Productos:");
+
+        comboProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboProductosMouseClicked(evt);
+            }
+        });
+
+        btnVerTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerTodosActionPerformed(evt);
             }
         });
 
@@ -52,22 +150,70 @@ public class RastreoDelPedido extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDias)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(jLabel4))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnVerTodos, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(comboProductos, 0, 349, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(txtIdPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnVerTodos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(comboProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -79,7 +225,96 @@ public class RastreoDelPedido extends javax.swing.JFrame {
         this.menu.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void txtIdPedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdPedidoKeyTyped
+        // TODO add your handling code here:
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtIdPedidoKeyTyped
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+        try {
+            Pedido buscado = this.sistema.getPedidoDB().getPedidoById(Integer.parseInt(txtIdPedido.getText()), this.cliente.getNit());
+            if (!txtIdPedido.getText().isBlank()) {
+                if (buscado != null) {
+                    this.pedidos.clear();
+                    this.pedidos.add(buscado);
+                    llenarTabla(pedidos);
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void txtIdPedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdPedidoKeyReleased
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtIdPedidoKeyReleased
+
+    private void comboProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboProductosMouseClicked
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_comboProductosMouseClicked
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // TODO add your handling code here:
+        int fila = jTable1.getSelectedRow();
+        if (fila > -1) {
+            List<DetallePedido> productos = this.sistema.getDetallePedidoDB().getDetallePedido(pedidos.get(fila).getCodigoPedido());
+            int tiempo = this.sistema.getEnvioDB().getEnvio(pedidos.get(fila)).getTiempoEnvio();
+            int restante = this.sistema.getPedidoDB().getTiempoPedido(pedidos.get(fila), PedidoDB.TIEMPO_DE_PEDIDO2);
+            int diferencia = (tiempo - restante);
+            if (diferencia <= 0) {
+                txtDias.setText("El producto está listo para recorgerse");
+            } else {
+                txtDias.setText(diferencia + "");
+            }
+            llenarCombo(productos);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void btnVerTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodosActionPerformed
+        this.pedidos = this.sistema.getPedidoDB().getPedidosEnCursoPorCliente(this.cliente.getNit(), PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA);
+        llenarTabla(pedidos);
+    }//GEN-LAST:event_btnVerTodosActionPerformed
+
+    private void llenarTabla(List<Pedido> pedidos) {
+        defaultTableModel = (DefaultTableModel) jTable1.getModel();
+        defaultTableModel.setRowCount(0);
+        for (Pedido pedido : pedidos) {
+            String[] datos = new String[]{
+                pedido.getCodigoPedido() + "",
+                pedido.getTotalPagar() + "",
+                pedido.getAnticipo() + "",
+                (pedido.getTotalPagar() - pedido.getAnticipo()) + "",
+                pedido.getCodigoTiendaORIGEN(),
+                pedido.getCodigoTiendaDESTINO()
+            };
+            defaultTableModel.addRow(datos);
+        }
+    }
+
+    private void llenarCombo(List<DetallePedido> detalles) {
+        this.comboProductos.removeAllItems();
+        for (DetallePedido detalle : detalles) {
+            this.comboProductos.addItem("Código producto: " + detalle.getCodigoProduco() + " Cantidad: " + detalle.getCantidadArticulos());
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JButton btnVerTodos;
+    private javax.swing.JComboBox<String> comboProductos;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField txtDias;
+    private javax.swing.JTextField txtIdPedido;
     // End of variables declaration//GEN-END:variables
 }
