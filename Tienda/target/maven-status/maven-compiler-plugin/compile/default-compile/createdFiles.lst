@@ -2,17 +2,6 @@ com/frontend/InicioSesion$2.class
 com/tienda/utiles/PathReport.class
 com/backend/conectionDB/modelo/ProductoDB.class
 com/frontend/ModificadorCliente$1.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-com/frontend/VentanaEmpleado$4.class
-com/frontend/TableClients.class
-=======
-com/frontend/TableClients.class
-com/frontend/venta/VentaForm$3.class
-com/backend/conectionDB/modelo/DetallePedidoDB.class
->>>>>>> versionOld
-=======
->>>>>>> versionOld
 com/frontend/RegistroNuevoCliente$1.class
 com/frontend/cliente/Menu$1.class
 com/frontend/VentanaEmpleado.class
@@ -25,36 +14,10 @@ com/frontend/RegistroNuevoEmpleado$3.class
 com/frontend/venta/VentaForm$6.class
 com/frontend/cliente/CatalogoProductos$12.class
 com/frontend/VerificadorTiempoEnvio$4.class
-<<<<<<< HEAD
-com/frontend/TablaEmpleados$6.class
-=======
 com/backend/conectionDB/modelo/probando.class
-<<<<<<< HEAD
->>>>>>> versionOld
-com/frontend/TableStores$2.class
-com/frontend/EditProduct$3.class
-com/backend/conectionDB/modelo/manejadorDatos/DatoPedidoDB.class
-com/principal/Inicio.class
-com/frontend/TableClients$10.class
-com/frontend/RegistroNuevoProducto$1.class
-com/frontend/Login$1.class
-com/frontend/venta/VentaForm$9.class
-com/frontend/ModificadorTiempoEnvio.class
-=======
->>>>>>> versionOld
 com/frontend/CargaDatos$2.class
 com/backend/entidad/Sistema$8.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-com/frontend/RegistroNuevoEmpleado$6.class
->>>>>>> versionOld
-=======
->>>>>>> versionOld
 com/frontend/CargaDatos.class
->>>>>>> versionOld
 com/frontend/cliente/RastreoDelPedido.class
 com/frontend/TableClients$5.class
 com/frontend/VentanaTienda$16.class
@@ -81,12 +44,14 @@ com/frontend/VentanaEmpleado$2.class
 com/frontend/ReportWindow$17.class
 com/frontend/DatoErroneo.class
 com/frontend/Login$3.class
+com/frontend/cliente/CatalogoProductos$17.class
 com/backend/entidad/Producto.class
 com/frontend/RegistroNuevoProducto.class
 com/frontend/ReportWindow$24.class
 com/frontend/ReportWindow$4.class
 com/frontend/VentanaTienda.class
 com/frontend/ReportWindow$12.class
+com/frontend/cliente/CatalogoProductos$18.class
 com/backend/entidad/Pedido.class
 com/frontend/cliente/CatalogoProductos$11.class
 com/frontend/ReportWindow$18.class
@@ -99,6 +64,7 @@ com/frontend/InicioSesion$1.class
 com/frontend/RegistroNuevaTienda$3.class
 com/frontend/VentanaTienda$18.class
 com/backend/conectionDB/modelo/manejoPedidoDB/DatoPedidoDB.class
+com/frontend/cliente/CatalogoProductos$19.class
 com/frontend/EditProduct$2.class
 com/frontend/TableClients$9.class
 com/backend/entidad/TiempoDeEnvio.class
@@ -118,6 +84,7 @@ com/frontend/venta/VentaForm$15.class
 com/frontend/TablaEmpleados$6.class
 com/frontend/venta/VentaForm.class
 com/frontend/VerificadorTiempoEnvio$2.class
+com/frontend/cliente/RastreoDelPedido$2.class
 com/frontend/venta/VentaForm$2.class
 com/frontend/venta/VentaForm$18.class
 com/frontend/Login.class
@@ -127,6 +94,7 @@ com/frontend/TablaEmpleados$9.class
 com/frontend/venta/VentaForm$21.class
 com/backend/conectionDB/modelo/ClienteDB.class
 com/frontend/EditProduct$1.class
+com/frontend/ReportWindow$26.class
 com/frontend/venta/VentaForm$17.class
 com/frontend/RegistroNuevoEmpleado$5.class
 com/frontend/cliente/CatalogoProductos.class
@@ -147,6 +115,7 @@ com/frontend/RegistroNuevoEmpleado.class
 com/backend/entidad/Sistema$5.class
 com/frontend/TableClients.class
 com/frontend/venta/VentaForm$3.class
+com/frontend/cliente/RastreoDelPedido$4.class
 com/backend/conectionDB/modelo/DetallePedidoDB.class
 com/frontend/ModificadorTiempoEnvio$2.class
 com/frontend/VerificadorTiempoEnvio$1.class
@@ -156,6 +125,7 @@ com/frontend/venta/VentaForm$19.class
 com/backend/entidad/DetalleCompra.class
 com/frontend/TablaEmpleados$7.class
 com/frontend/TableStores$2.class
+com/frontend/VentanaTienda$19.class
 com/frontend/EditProduct$3.class
 com/principal/Inicio.class
 com/frontend/TableClients$10.class
@@ -184,10 +154,12 @@ com/frontend/VentanaTienda$13.class
 com/frontend/TableStores$1.class
 com/frontend/TableClients$1.class
 com/frontend/cliente/CatalogoProductos$10.class
+com/frontend/VentanaTienda$20.class
 com/frontend/RegistroNuevaTienda$1.class
 com/frontend/TableClients$8.class
 com/frontend/venta/VentaForm$14.class
 com/frontend/VerificadorTiempoEnvio.class
+com/frontend/cliente/RastreoDelPedido$3.class
 com/frontend/cliente/CatalogoProductos$9.class
 com/frontend/RegistroNuevoEmpleado$1.class
 com/frontend/TableStores$7.class
@@ -229,6 +201,8 @@ com/frontend/VentanaTienda$1.class
 com/frontend/ReportWindow$16.class
 com/backend/entidad/Sistema$4.class
 com/frontend/InicioSesion$3.class
+com/frontend/cliente/RastreoDelPedido$5.class
+com/frontend/cliente/CatalogoProductos$21.class
 com/backend/entidad/Sistema$1.class
 com/frontend/RegistroNuevaTienda$8.class
 com/frontend/cliente/CatalogoProductos$16.class
@@ -241,52 +215,19 @@ com/frontend/VentanaEmpleado$6.class
 com/frontend/venta/VentaForm$11.class
 com/frontend/venta/VentaForm$8.class
 com/backend/entidad/Sistema$3.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-com/frontend/TableStores$1.class
-com/frontend/TablaEmpleados$5.class
-com/frontend/VentanaEmpleado$2.class
-com/frontend/TableClients$1.class
-com/frontend/VentanaTienda$2.class
-com/frontend/DatoErroneo.class
-com/frontend/TableStores$5.class
-com/frontend/TablaEmpleados.class
-com/frontend/Login$3.class
-=======
-=======
-com/backend/entidad/Compra.class
-com/frontend/venta/VentaForm$1.class
-com/frontend/TablaEmpleados$9.class
-=======
 com/frontend/ReportWindow$7.class
 com/frontend/cliente/CatalogoProductos$6.class
->>>>>>> versionOld
+com/frontend/cliente/CatalogoProductos$20.class
 com/frontend/ModificadorCliente$3.class
->>>>>>> versionOld
 com/frontend/VentanaTienda$2.class
 com/frontend/TableStores$5.class
 com/frontend/TablaEmpleados.class
->>>>>>> versionOld
 com/frontend/VentanaTienda$10.class
+com/frontend/cliente/RastreoDelPedido$6.class
 com/frontend/cliente/Menu.class
 com/frontend/TablaEmpleados$2.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-com/frontend/RegistroNuevaTienda$1.class
-=======
->>>>>>> versionOld
-=======
 com/frontend/TablaEmpleados$10.class
-<<<<<<< HEAD
->>>>>>> versionOld
-com/backend/entidad/Reporte.class
-com/backend/conectionDB/ConeccionDB.class
-com/frontend/RegistroNuevaTienda$4.class
-com/frontend/ModificadorCliente.class
-=======
 com/tienda/utiles/ContendioReporte.class
->>>>>>> versionOld
 com/frontend/VentanaEmpleado$5.class
 com/frontend/RegistroNuevaTienda$9.class
 com/frontend/ModificarEmpleado$2.class
@@ -298,31 +239,13 @@ com/frontend/ModificadorTiempoEnvio$1.class
 com/frontend/TableStores.class
 com/frontend/venta/VentaForm$7.class
 com/frontend/TableStores$4.class
-<<<<<<< HEAD
-com/frontend/ReportWindow$1.class
-<<<<<<< HEAD
-<<<<<<< HEAD
-com/frontend/Login$2.class
-com/frontend/VentanaTienda$3.class
-com/frontend/ReportWindow.class
-com/backend/entidad/Sistema$6.class
-=======
-com/frontend/VentanaTienda$3.class
->>>>>>> versionOld
-=======
-com/frontend/TablaEmpleados$8.class
-=======
->>>>>>> versionOld
 com/frontend/ModificadorCliente$4.class
 com/frontend/VentanaTienda$3.class
 com/frontend/venta/VentaForm$10.class
-<<<<<<< HEAD
->>>>>>> versionOld
-=======
 com/frontend/ReportWindow$15.class
->>>>>>> versionOld
 com/backend/entidad/FechaPedido.class
 com/frontend/RegistroNuevoCliente$3.class
+com/frontend/cliente/RastreoDelPedido$7.class
 com/backend/entidad/Sistema.class
 com/frontend/VentanaTienda$11.class
 com/frontend/ReportWindow$20.class
