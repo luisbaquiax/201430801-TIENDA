@@ -25,6 +25,14 @@ public class ProductReportDB {
             + "ON d.codigo_producto = p.codigo \n"
             + "WHERE c.fecha BETWEEN ? AND ? GROUP BY d.codigo_producto limit 10";
 
+    private static final String PRODUCTO_MAS_VENDIDO_SIN_FECHA = "SELECT d.codigo_producto, p.nombre, p.fabricante, SUM(d.cantidad_articulos) AS total\n"
+            + "FROM compra c\n"
+            + "INNER JOIN detalleCompra d\n"
+            + "ON c.id = d.id_compra \n"
+            + "INNER JOIN producto p\n"
+            + "ON d.codigo_producto = p.codigo \n"
+            + "GROUP BY d.codigo_producto limit 10";
+
     private static final String PRODUCTO_MAS_VENDIDO_POR_TIENDA_FECHA = "SELECT d.codigo_producto, p.nombre, p.fabricante, SUM(d.cantidad_articulos) AS total\n"
             + "FROM compra c\n"
             + "INNER JOIN detalleCompra d\n"
@@ -32,6 +40,14 @@ public class ProductReportDB {
             + "INNER JOIN producto p\n"
             + "ON d.codigo_producto = p.codigo \n"
             + "WHERE c.codigo_tienda = ? AND c.fecha BETWEEN ? AND ? GROUP BY d.codigo_producto";
+
+    private static final String PRODUCTO_MAS_VENDIDO_POR_TIENDA = "SELECT d.codigo_producto, p.nombre, p.fabricante, SUM(d.cantidad_articulos) AS total\n"
+            + "FROM compra c\n"
+            + "INNER JOIN detalleCompra d\n"
+            + "ON c.id = d.id_compra \n"
+            + "INNER JOIN producto p\n"
+            + "ON d.codigo_producto = p.codigo \n"
+            + "WHERE c.codigo_tienda = ? GROUP BY d.codigo_producto";
 
     private static final String CODIGOS_PRODUCTO_NO_VENDIDO = "SELECT codigo_producto FROM existencia WHERE codigo_tienda = ? AND producto_vendido = 0";
 
@@ -77,6 +93,33 @@ public class ProductReportDB {
     }
 
     /**
+     * 10 PRODUCTOS MAS VENDIDOS<br>
+     * QUERY: SELECT d.codigo_producto, p.nombre, p.fabricante,
+     * SUM(d.cantidad_articulos) AS total FROM compra c INNER JOIN detalleCompra
+     * d ON c.id = d.id_compra INNER JOIN producto p ON d.codigo_producto =
+     * p.codigo GROUP BY d.codigo_producto limit 10
+     *
+     * @return
+     */
+    public List<Producto> getProductosMasVendido() {
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(PRODUCTO_MAS_VENDIDO_SIN_FECHA);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                producto = getProduct(resultSet);
+                productos.add(producto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return productos;
+    }
+
+    /**
      * query: PRODUCTO_MAS_VENDIDO_POR_TIENDA_FECHA = SELECT d.codigo_producto,
      * p.nombre, p.fabricante, SUM(d.cantidad_articulos) AS total FROM compra c
      * INNER JOIN detalleCompra d ON c.id = d.id_compra INNER JOIN producto p ON
@@ -109,6 +152,31 @@ public class ProductReportDB {
         return productos;
     }
 
+    /**
+     * Producto más vendido por tienda
+     *
+     * @param codigoTienda
+     * @return
+     */
+    public List<Producto> getProductosMasVendidoPorTienda(String codigoTienda) {
+        Producto producto = null;
+        List<Producto> productos = new ArrayList<>();
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(PRODUCTO_MAS_VENDIDO_POR_TIENDA);
+            statement.setString(1, codigoTienda);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                producto = getProduct(resultSet);
+                productos.add(producto);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return productos;
+    }
+
     private Producto getProduct(ResultSet resultSet) throws SQLException {
         Producto producto = new Producto();
         producto.setCodigo(resultSet.getString("codigo_producto"));
@@ -117,7 +185,6 @@ public class ProductReportDB {
         producto.setCantidad(resultSet.getInt("total"));
         return producto;
     }
-    
 
     private List<String> getCodigoProduct(String codigoTienda) {
         List<String> codigos = new ArrayList<>();

@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Sistema;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -34,11 +35,13 @@ public class ModificadorCliente extends javax.swing.JFrame {
      */
     public ModificadorCliente(TableClients tableClients, Cliente cliente, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         int tam = 25;
-        Utiles.ponerIconoButton(btnGuardarDatosCliente, "iconos/saveBlue.jpeg", tam);
-        Utiles.ponerIconoButton(btnCancel, "iconos/cancel.png", tam);
-        Utiles.ponerIconoButton(btnOutoff, "iconos/outRed.jpeg");
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnGuardarDatosCliente, "/iconos/saveBlue.jpeg", tam);
+        utiles.ponerIconoButton(btnCancel, "/iconos/cancel.png", tam);
+        utiles.ponerIconoButton(btnOutoff, "/iconos/outRed.jpeg");
         setLocationRelativeTo(null);
         this.clienteDB = new ClienteDB();
         this.tableClients = tableClients;

@@ -22,6 +22,7 @@ public class ClienteDB {
     public static final String FILTRO_NIT = "SELECT * FROM cliente WHERE nit LIKE ? ORDER BY nit ASC";
     public static final String FILTRO_NAME = "SELECT * FROM cliente WHERE nombre LIKE ? ORDER BY nit ASC";
     public static final String SELECT_ALL_CLIENTES = "SELECT * FROM cliente";
+    private static final String SELECT_CLIENTE_BY_NIT = "SELECT * FROM cliente WHERE nit = ?";
 
     public ClienteDB() {
     }
@@ -49,7 +50,7 @@ public class ClienteDB {
 
         String query = "INSERT INTO cliente VALUES (?,?,?,?,?,?,?)";
 
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, nit);
             preSt.setString(2, nombre);
@@ -94,7 +95,7 @@ public class ClienteDB {
         String query = "UPDATE cliente SET nombre = ?, telefono = ?, dpi = ?, credito = ?, email = ?, direccion = ? WHERE nit = ?";
         String NIT = nit;
 
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, nombre);
             preSt.setString(2, telefono);
@@ -123,7 +124,7 @@ public class ClienteDB {
      */
     public List<Cliente> getClientesWhitFilter(Connection connection, String filtro, String query) {
         List<Cliente> clientes = new ArrayList<>();
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setString(1, "%" + filtro + "%");
             ResultSet result = preSt.executeQuery();
@@ -145,7 +146,7 @@ public class ClienteDB {
      */
     public List<Cliente> getClientesAllClientes(Connection connection, String query) {
         List<Cliente> clientes = new ArrayList<>();
-        try ( PreparedStatement preSt = connection.prepareStatement(query)) {
+        try (PreparedStatement preSt = connection.prepareStatement(query)) {
 
             ResultSet result = preSt.executeQuery();
 
@@ -156,6 +157,27 @@ public class ClienteDB {
             System.out.println("Error: " + e.getMessage());
         }
         return clientes;
+    }
+
+    /**
+     *
+     * @param connection
+     * @param nit
+     * @return
+     */
+    public Cliente getClienteByNit(Connection connection, String nit) {
+        Cliente cliente = null;
+        try (PreparedStatement preSt = connection.prepareStatement(SELECT_CLIENTE_BY_NIT)) {
+            preSt.setString(1, nit);
+            ResultSet result = preSt.executeQuery();
+
+            while (result.next()) {
+                cliente = getCliente(result);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error clienteDB: " + e.getMessage());
+        }
+        return cliente;
     }
 
     /**

@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.ClienteDB;
 import com.backend.entidad.Cliente;
 import com.backend.entidad.Sistema;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -35,12 +36,14 @@ public class RegistroNuevoCliente extends javax.swing.JFrame {
      */
     public RegistroNuevoCliente(TableClients tableClients, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         int tam = 25;
-        Utiles.ponerIconoButton(btnGuardarDatosCliente, "iconos/saveBlue.jpeg", tam);
-        Utiles.ponerIconoButton(btnVerClientes, "iconos/lis.png", tam);
-        Utiles.ponerIconoButton(btnNuevo, "iconos/addGreen.png");
-        Utiles.ponerIconoButton(btnSalir, "iconos/regresar.jpeg");
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnGuardarDatosCliente, "/iconos/saveBlue.jpeg", tam);
+        utiles.ponerIconoButton(btnVerClientes, "/iconos/lis.png", tam);
+        utiles.ponerIconoButton(btnNuevo, "/iconos/addGreen.png");
+        utiles.ponerIconoButton(btnSalir, "/iconos/regresar.jpeg");
         this.tableClients = tableClients;
         this.sistema = sistema;
         this.clienteDB = new ClienteDB();

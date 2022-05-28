@@ -13,9 +13,7 @@ import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
 import com.backend.entidad.datos.FileCarga;
 import com.tienda.utiles.Utiles;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.plaf.IconUIResource;
+import java.awt.Toolkit;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -51,9 +49,11 @@ public class CargaDatos extends javax.swing.JFrame {
         this.login = login;
         llenarTablas();
         int tam = 35;
-        Utiles.ponerIconoLabel(jLabel1, "iconos/file.jpg", tam);
-        Utiles.ponerIconoLabel(jLabel2, "iconos/up.png", tam);
-        Utiles.ponerIconoLabel(jLabel3, "iconos/exit.png", tam);
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoLabel(jLabel1, "/iconos/file.jpg", tam);
+        utiles.ponerIconoLabel(jLabel2, "/iconos/up.png", tam);
+        utiles.ponerIconoLabel(jLabel3, "/iconos/exit.png", tam);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
     }
 
     /**

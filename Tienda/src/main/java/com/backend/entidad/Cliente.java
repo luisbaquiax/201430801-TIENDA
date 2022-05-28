@@ -72,12 +72,17 @@ public class Cliente implements Comparable<Cliente> {
     }
 
     public String getInfoVenta() {
-        return "NIT: " + nit + ", Nombre: " + nombreCliente;
+        return "NIT: " + nit + ", \tNombre: " + nombreCliente;
     }
 
     @Override
     public int compareTo(Cliente cliente) {
         return this.getNit().compareTo(cliente.getNit());
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "nombreCliente=" + nombreCliente + ", nit=" + nit + ", telefono=" + telefono + ", credito=" + credito + ", DPI=" + DPI + ", correoElctronico=" + correoElctronico + ", direccion=" + direccion + '}';
     }
 
     /**

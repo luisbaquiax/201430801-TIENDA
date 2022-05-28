@@ -10,6 +10,7 @@ import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -36,9 +37,10 @@ public final class VerificadorTiempoEnvio extends javax.swing.JFrame {
      * @param tiendaActual
      */
     public VerificadorTiempoEnvio(VentanaTienda ventanaTienda, Sistema sistema, Tienda tiendaActual) {
-
         initComponents();
-        Utiles.ponerIconoButton(btnSalir, "iconos/exit.png");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnSalir, "/iconos/exit.png");
         this.ventanaTienda = ventanaTienda;
         this.sistema = sistema;
         this.tiendaActual = tiendaActual;

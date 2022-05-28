@@ -5,11 +5,12 @@
  */
 package com.backend.conectionDB.modelo;
 
-import com.backend.conectionDB.modelo.manejadorDatos.*;
+import com.backend.conectionDB.modelo.manejoPedidoDB.DatoPedidoDB;
 import com.backend.conectionDB.modelo.productoExistencia.ProductoExistenciaDB;
 import com.backend.entidad.Pedido;
 import com.backend.entidad.Sistema;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  *
@@ -33,14 +34,17 @@ public class probando {
             DetallePedidoDB detallePedidoDB = new DetallePedidoDB();
             ProductReportDB productReportDB = new ProductReportDB();
             ProductoExistenciaDB productoExistenciaDB = new ProductoExistenciaDB();
+            PedidoDB pedidoDB = new PedidoDB();
             String nit = "Q-8877";
             String fecha1 = "2022-02-14";
             String fecha2 = "2022-02-15";
             String tienda = "ABC-1";
+            
+            System.out.println(Arrays.toString(pedidoDB.getPedidosEnCursoPorCliente("b", PedidoDB.PEDIDO_POR_CLIENTE_SIN_FECHA).toArray()));
 
-            for (int i = 0; i < productoExistenciaDB.getAllProductosByTienda(tienda).size(); i++) {
-                System.out.println(productoExistenciaDB.getAllProductosByTienda(tienda).get(i).getInfo());
-            }
+//            for (int i = 0; i < productoExistenciaDB.getAllProductosByTienda(tienda).size(); i++) {
+//                System.out.println(productoExistenciaDB.getAllProductosByTienda(tienda).get(i).getInfo());
+//            }
 
 //            System.out.println("mas vendido por fecha");
 //            for (int i = 0; i < productReportDB.getProductosMasVendido(fecha1, fecha2).size(); i++) {

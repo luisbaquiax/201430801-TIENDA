@@ -75,6 +75,10 @@ public class Tienda implements Comparable<Tienda> {
         return "Tienda [" + "nombreTienda=" + nombreTienda + ", direccion=" + direccion + ", codigo=" + codigo + ", telefono=" + telefono + ", telefono2=" + telefono2 + ", correoElectronico=" + correoElectronico + ", horario=" + horario + ']';
     }
 
+    public String getInfo() {
+        return codigo + ", " + nombreTienda;
+    }
+
     /**
      * @return the nombreTienda
      */

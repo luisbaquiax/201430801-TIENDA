@@ -25,9 +25,9 @@ public class CompraDB {
     private static final String COMPRAS_POR_CLIENTE_SIN_FECHA = "SELECT * FROM compra WHERE nit_cliente = ?";
     private static final String COMPRAS_POR_CLIENTE_FECHA_POR_TIENDA = "SELECT * FROM compra WHERE nit_cliente = ? AND codigo_tienda = ? AND fecha BETWEEN ? AND ?";
     private static final String COMPRAS_POR_CLIENTE_SIN_FECHA_POR_TIENDA = "SELECT * FROM compra WHERE nit_cliente = ? AND codigo_tienda = ?";
-    
-    private static final String CREATE_COMPRA = "INSERT INTO compra (fecha, nit_cliente) VALUES(?,?)";
 
+    private static final String CREATE_COMPRA = "INSERT INTO compra (fecha, nit_cliente, codigo_tienda, total) VALUES(?,?,?,?)";
+    private static final String GET_ULTIMO_ID_COMPRA = "SELECT MAX(id) AS ultimo FROM compra";
     private Connection conn;
     private PreparedStatement statement;
     private ResultSet resultSet;
@@ -45,6 +45,7 @@ public class CompraDB {
             statement.setString(1, compra.getFecha());
             statement.setString(2, compra.getNitCliente());
             statement.setString(3, compra.getCodigoTienda());
+            statement.setDouble(4, compra.getTotal());
             statement.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(CompraDB.class.getName()).log(Level.SEVERE, null, ex);
@@ -66,7 +67,7 @@ public class CompraDB {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                compra = new Compra(resultSet.getInt("id"), resultSet.getString("fecha"), resultSet.getString("nit_cliente"), resultSet.getString("codigo_tienda"));
+                compra = getCompra(resultSet);
                 compras.add(compra);
             }
         } catch (SQLException e) {
@@ -94,7 +95,7 @@ public class CompraDB {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                 compra = new Compra(resultSet.getInt("id"), resultSet.getString("fecha"), resultSet.getString("nit_cliente"), resultSet.getString("codigo_tienda"));
+                compra = getCompra(resultSet);
                 compras.add(compra);
             }
         } catch (SQLException e) {
@@ -103,4 +104,32 @@ public class CompraDB {
         return compras;
     }
 
+    /**
+     * Obtiene el ultimo ID compra insertado
+     *
+     * @return
+     */
+    public int getUltimo() {
+        int ultimoId = 0;
+        try {
+            conn = ConeccionDB.getConnection();
+            statement = conn.prepareStatement(GET_ULTIMO_ID_COMPRA);
+            resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ultimoId = resultSet.getInt("ultimo");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return ultimoId;
+    }
+
+    private Compra getCompra(ResultSet resultSet) throws SQLException {
+        return new Compra(
+                resultSet.getInt("id"),
+                resultSet.getString("fecha"),
+                resultSet.getString("nit_cliente"),
+                resultSet.getString("codigo_tienda"),
+                resultSet.getDouble("total"));
+    }
 }

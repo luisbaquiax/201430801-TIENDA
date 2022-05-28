@@ -34,6 +34,16 @@ public class DetalleCompra {
         this.total = getTotal();
     }
 
+    /**
+     *
+     * @param productos
+     * @param idCompra
+     */
+    public DetalleCompra(ArrayList<Producto> productos, int idCompra) {
+        this.productos = productos;
+        this.idCompra = idCompra;
+    }
+
     private double calcularTotal() {
         double tot = 0;
         for (int i = 0; i < productos.size(); i++) {

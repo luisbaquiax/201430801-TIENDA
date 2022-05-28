@@ -1,6 +1,7 @@
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/probando.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/cliente/RastreoDelPedido.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/Tienda.java
+/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/cliente/Menu.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/Login.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/datos/FileCarga.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/VentanaTienda.java
@@ -15,7 +16,6 @@
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/CompraDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/DetallePedido.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/RegistroNuevoProducto.java
-/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/manejadorDatos/DatoPedidoDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/VerificadorTiempoEnvio.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/EnvioDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/Pedido.java
@@ -32,6 +32,7 @@
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/ReportWindow.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/DetalleCompraDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/venta/VentaForm.java
+/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/tienda/utiles/Panel.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/ConeccionDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/Sistema.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/ProductReportDB.java
@@ -42,11 +43,14 @@
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/DetalleCompra.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/ModificarEmpleado.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/Producto.java
+/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/tienda/utiles/PathReport.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/RegistroNuevoEmpleado.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/Empleado.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/TiendaDatos.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/DetallePedidoDB.java
+/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/tienda/utiles/ContendioReporte.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/VentanaEmpleado.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/entidad/FechaPedido.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/ProductoDB.java
+/home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/backend/conectionDB/modelo/manejoPedidoDB/DatoPedidoDB.java
 /home/luis/Documentos/201430801-TIENDA/Tienda/src/main/java/com/frontend/TableStores.java

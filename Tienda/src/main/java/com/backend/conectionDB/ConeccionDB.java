@@ -16,8 +16,8 @@ import java.sql.SQLException;
 public class ConeccionDB {
 
     private String URL = "jdbc:mysql://localhost:3306/TIENDA?allowPublicKeyRetrieval=true&useSSL=false";
-    private String USER = "root";
-    private String PASSWORD = "luisbaquiax1234";
+    private String USER = "tienda";
+    private String PASSWORD = "tienda1234";
 
     private static ConeccionDB conexionSingleton = null;
 

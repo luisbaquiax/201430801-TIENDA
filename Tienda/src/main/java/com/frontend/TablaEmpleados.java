@@ -10,11 +10,12 @@ import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
 import com.tienda.utiles.Utiles;
+import java.awt.Button;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,9 +27,7 @@ public final class TablaEmpleados extends javax.swing.JFrame {
 
     private VentanaEmpleado ventanaEmpleado;
     private Sistema sistema;
-    private Empleado empleadoModificando;
 
-    private ModificarEmpleado modificarEmpleado;
     private RegistroNuevoEmpleado registroNuevoEmpleado;
     private List<Empleado> empleados;
 
@@ -42,13 +41,15 @@ public final class TablaEmpleados extends javax.swing.JFrame {
      */
     public TablaEmpleados(VentanaEmpleado ventanaEmpleado, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         setTitle("Empleados");
         int tam = 25;
-        Utiles.ponerIconoButton(btnOut, "iconos/outRed.jpeg");
-        Utiles.ponerIconoButton(btnListEmployee, "iconos/lis.png", tam);
-        Utiles.ponerIconoButton(btnRegistroNuevoEmpleado, "iconos/addGreen.png", tam);
-        Utiles.ponerIconoButton(btnBack, "iconos/cancel.png", tam);
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnOut, "/iconos/outRed.jpeg");
+        utiles.ponerIconoButton(btnListEmployee, "/iconos/lis.png", tam);
+        utiles.ponerIconoButton(btnRegistroNuevoEmpleado, "/iconos/addGreen.png", tam);
+        utiles.ponerIconoButton(btnBack, "/iconos/cancel.png", tam);
         this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
         this.empleados = this.sistema.getEmpleadoDB().getEmpleados();
@@ -94,7 +95,7 @@ public final class TablaEmpleados extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código", "Nombre", "Teléfono", "NIT", "DPI", "E-mail", "Direción", "Editar"
+                "Código", "Nombre", "Telefóno", "NIT", "DPI", "Email", "Dirección", "Editar"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -111,6 +112,9 @@ public final class TablaEmpleados extends javax.swing.JFrame {
             }
         });
         scrollTablaEmpleados.setViewportView(tableListaEmpleados);
+        if (tableListaEmpleados.getColumnModel().getColumnCount() > 0) {
+            tableListaEmpleados.getColumnModel().getColumn(7).setPreferredWidth(5);
+        }
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -335,7 +339,7 @@ public final class TablaEmpleados extends javax.swing.JFrame {
         dfm.setRowCount(0);
         for (Empleado empleado : empleados) {
 
-            String[] datos = {empleado.getCodigo(),
+            Object[] datos = {empleado.getCodigo(),
                 empleado.getNomgre(),
                 empleado.getTelefono(),
                 empleado.getNit(),

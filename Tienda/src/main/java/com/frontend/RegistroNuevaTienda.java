@@ -12,16 +12,13 @@ import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.plaf.SpinnerUI;
 
 /**
  *
@@ -30,13 +27,8 @@ import javax.swing.plaf.SpinnerUI;
 public class RegistroNuevaTienda extends javax.swing.JFrame {
 
     private VentanaTienda ventanaTienda;
-    private VentanaEmpleado ventanaEmpleado;
-    private VerificadorTiempoEnvio vrEnvio;
     private Sistema sistema;
     private Tienda tiendaNueva;
-    private TiempoDeEnvio tiempoDeEnvioNueva;
-    private TiendaDB tiendaDB;
-    private EnvioDB envioDB;
 
     private List<Tienda> tiendas;
     private List<TiempoDeEnvio> envios;
@@ -50,28 +42,29 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
      */
     public RegistroNuevaTienda(VentanaTienda ventanaTienda, VentanaEmpleado ventanaEmpleado, VerificadorTiempoEnvio vrEnvio, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         int tam = 25;
-        Utiles.ponerIconoButton(btnCrearTienda, "iconos/addGreen.png", tam);
-        Utiles.ponerIconoButton(jButton1, "iconos/reset.jpeg", tam);
-        Utiles.ponerIconoButton(btnSaveChanges, "iconos/saveBlue.jpeg", tam);
-        Utiles.ponerIconoButton(btnCancel, "iconos/cancel.png", tam);
-        Utiles.ponerIconoButton(btnRegresarCancelar, "iconos/backBlueScreen.png", tam);
-        Utiles.ponerIconoButton(btnRegresarTienda, "iconos/backBlueScreen.png", tam);
-        Utiles.ponerIconoButton(btnAgregarTiempo, "iconos/add2.png", tam);
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnCrearTienda, "/iconos/addGreen.png", tam);
+        utiles.ponerIconoButton(jButton1, "/iconos/reset.jpeg", tam);
+        utiles.ponerIconoButton(btnSaveChanges, "/iconos/saveBlue.jpeg", tam);
+        utiles.ponerIconoButton(btnCancel, "/iconos/cancel.png", tam);
+        utiles.ponerIconoButton(btnRegresarCancelar, "/iconos/cancel.png", tam);
+        utiles.ponerIconoButton(btnRegresarTienda, "/iconos/regresar.jpeg", tam);
+        utiles.ponerIconoButton(btnAgregarTiempo, "/iconos/add2.png", tam);
+
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.jTabbedPane1.setSelectedIndex(1);
         this.ventanaTienda = ventanaTienda;
-        this.ventanaEmpleado = ventanaEmpleado;
         this.sistema = sistema;
-        this.tiendaDB = new TiendaDB();
-        this.envioDB = new EnvioDB();
 
         this.tiendas = sistema.getTiendaDB().getTiendas(TiendaDB.SELECT_TIENDAS);
         for (Tienda tienda : tiendas) {
             this.comoTiendas.addItem(tienda.getCodigo());
         }
         this.envios = new ArrayList<>();
+        this.txtNombreTienda.requestFocus();
         establecerFocus();
     }
 
@@ -353,7 +346,7 @@ public class RegistroNuevaTienda extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegresarCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegresarCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(btnCrearTienda))
                 .addGap(38, 38, 38)

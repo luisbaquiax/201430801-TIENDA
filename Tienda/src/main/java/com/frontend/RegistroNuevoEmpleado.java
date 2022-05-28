@@ -10,6 +10,7 @@ import com.backend.conectionDB.modelo.EmpleadoDB;
 import com.backend.entidad.Empleado;
 import com.backend.entidad.Sistema;
 import com.tienda.utiles.Utiles;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLException;
@@ -31,14 +32,16 @@ public class RegistroNuevoEmpleado extends javax.swing.JFrame {
      */
     public RegistroNuevoEmpleado(TablaEmpleados tablaEmpleados, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle("Nuevo empleado.");
         int tam = 25;
-        Utiles.ponerIconoButton(btnOutoff, "iconos/outRed.jpeg");
-        Utiles.ponerIconoButton(btnAdd, "iconos/addGreen.png", tam);
-        Utiles.ponerIconoButton(btnGuardarDatosEmpleado, "iconos/saveBlue.jpeg", tam);
-        Utiles.ponerIconoButton(btnCancelar, "iconos/cancel.png", tam);
+        Utiles utiles = new Utiles();
+        utiles.ponerIconoButton(btnOutoff, "/iconos/outRed.jpeg");
+        utiles.ponerIconoButton(btnAdd, "/iconos/addGreen.png", tam);
+        utiles.ponerIconoButton(btnGuardarDatosEmpleado, "/iconos/saveBlue.jpeg", tam);
+        utiles.ponerIconoButton(btnCancelar, "/iconos/cancel.png", tam);
 
         this.tablaEmpleados = tablaEmpleados;
         this.sistema = sistema;

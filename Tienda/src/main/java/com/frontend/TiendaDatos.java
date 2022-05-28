@@ -8,6 +8,7 @@ package com.frontend;
 import com.backend.entidad.Sistema;
 import com.backend.entidad.TiempoDeEnvio;
 import com.backend.entidad.Tienda;
+import java.awt.Toolkit;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
@@ -23,15 +24,17 @@ public class TiendaDatos extends javax.swing.JFrame {
 
     /**
      *
+     * @param verifidorTiempoEnvio
      * @param tiendaVerDatos
      * @param sistema
      */
     public TiendaDatos(VerificadorTiempoEnvio verifidorTiempoEnvio, Tienda tiendaVerDatos, Sistema sistema) {
         initComponents();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/iconos/tiendaIcono.png")));
         this.tiendaVerDatos = tiendaVerDatos;
         this.sistema = sistema;
         this.verifidorTiempoEnvio = verifidorTiempoEnvio;
-        
+
         this.txtCodigoTienda.setText(tiendaVerDatos.getCodigo());
         this.txtCorreoElectronico.setText(tiendaVerDatos.getCorreoElectronico());
         this.txtDireccionTienda.setText(tiendaVerDatos.getDireccion());

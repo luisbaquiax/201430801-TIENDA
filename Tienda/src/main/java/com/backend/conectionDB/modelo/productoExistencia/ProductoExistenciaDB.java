@@ -32,10 +32,55 @@ public class ProductoExistenciaDB {
             + "LEFT JOIN existencia e\n"
             + "ON p.codigo = e.codigo_producto WHERE p.codigo LIKE ? ORDER BY p.codigo ASC";
 
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_CODIGO_DESC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto WHERE p.codigo LIKE ? ORDER BY p.codigo DESC";
+
     public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_NOMBRE = "SELECT *\n"
             + "FROM producto p\n"
             + "LEFT JOIN existencia e\n"
             + "ON p.codigo = e.codigo_producto WHERE p.nombre LIKE ? ORDER BY p.codigo ASC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_NOMBRE_ASC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto WHERE p.nombre LIKE ? ORDER BY p.nombre ASC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_NOMBRE_DESC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto WHERE p.nombre LIKE ? ORDER BY p.nombre DESC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_FABRICANTE_ASC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto WHERE p.fabricante LIKE ? ORDER BY p.fabricante ASC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_FABRICANTE_DESC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto WHERE p.fabricante LIKE ? ORDER BY p.fabricante DESC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_CANTIDAD_ASC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto ORDER BY e.cantidad ASC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_CANTIDAD_DESC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto ORDER BY e.cantidad DESC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_PRECIO_ASC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto ORDER BY e.precio_unitario ASC";
+
+    public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_PRECIO_DESC = "SELECT *\n"
+            + "FROM producto p\n"
+            + "LEFT JOIN existencia e\n"
+            + "ON p.codigo = e.codigo_producto ORDER BY e.precio_unitario DESC";
 
     public static final String ALL_PRODUCTO_EXISTENCIA_FILTER_TIENDA = "SELECT *\n"
             + "FROM producto p\n"

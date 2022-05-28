@@ -64,8 +64,6 @@ public class ProductoDB {
 
     }
 
- 
-
     /**
      * Crea la existencia de un nuevo producto
      *
@@ -133,26 +131,28 @@ public class ProductoDB {
     }
 
     /**
-     * Modificamos la cantidad de artículos de la actual tienda
-     *
+     * Modificamos la cantidad de artículos de la actual tienda<br>
+     * query: UPDATE existencia SET cantidad = ?, producto_vendido = ? WHERE codigo_producto = ? AND codigo_tienda = ?
      * @param connection
      * @param cantidad
      * @param codgioProducto
      * @param codigoTienda
+     * @param vendido
      */
     public void modificarCantidadExistenciaProducto(Connection connection,
             String cantidad,
             String codgioProducto,
-            String codigoTienda) {
+            String codigoTienda,
+            boolean vendido) {
 
-        String query = "UPDATE existencia SET cantidad = ? WHERE codigo_producto = ? AND codigo_tienda = ?";
-        String codigo_producto = codgioProducto;
+        String query = "UPDATE existencia SET cantidad = ?, producto_vendido = ? WHERE codigo_producto = ? AND codigo_tienda = ?";
 
         try ( PreparedStatement preSt = connection.prepareStatement(query)) {
 
             preSt.setDouble(1, Double.parseDouble(cantidad));
-            preSt.setString(2, codigo_producto);
-            preSt.setString(3, codigoTienda);
+            preSt.setBoolean(2, vendido);
+            preSt.setString(3, codgioProducto);
+            preSt.setString(4, codigoTienda);
 
             preSt.executeUpdate();
 
