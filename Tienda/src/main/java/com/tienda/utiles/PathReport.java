@@ -5,8 +5,13 @@
  */
 package com.tienda.utiles;
 
+import com.frontend.Login;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -18,6 +23,7 @@ public class PathReport {
     private JFileChooser choser;
 
     public String getPath() {
+
         choser = new JFileChooser();
         choser.addChoosableFileFilter(new FileNameExtensionFilter("reporte", "html"));
         choser.setAcceptAllFileFilterUsed(false);
